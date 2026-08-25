@@ -14,7 +14,11 @@ import {
   CheckCircle2,
   Clock,
   Sparkles,
+  ArrowUpRight,
+  Info,
 } from 'lucide-react';
+import { FieldQueueDetailModal, QueueStatusModalType } from '../components/FieldQueueDetailModal';
+import { soundEffects } from '../utils/soundEffects';
 
 interface InputLapanganViewProps {
   queue: FieldQueueItem[];
@@ -33,23 +37,32 @@ export const InputLapanganView: React.FC<InputLapanganViewProps> = ({
 }) => {
   const [isSyncing, setIsSyncing] = useState(false);
   const [copiedSMS, setCopiedSMS] = useState(false);
+  const [selectedStatusModal, setSelectedStatusModal] = useState<QueueStatusModalType | null>(null);
 
   const pendingCount = queue.filter((i) => i.status === 'Pending Sync').length;
   const errorCount = queue.filter((i) => i.status === 'Gagal Validasi').length;
   const syncedCount = queue.filter((i) => i.status === 'Tersinkronisasi').length + 128;
 
   const handleSyncClick = () => {
+    soundEffects.playClick();
     setIsSyncing(true);
     setTimeout(() => {
       onSyncAll();
       setIsSyncing(false);
+      soundEffects.playSuccessChime();
     }, 1200);
   };
 
   const handleCopySms = () => {
+    soundEffects.playClick();
     navigator.clipboard.writeText('SIGAP#3201012304850001#320101#4#RUSAK_BERAT');
     setCopiedSMS(true);
     setTimeout(() => setCopiedSMS(false), 2000);
+  };
+
+  const handleOpenStatusModal = (type: QueueStatusModalType) => {
+    soundEffects.playClick();
+    setSelectedStatusModal(type);
   };
 
   return (
@@ -108,35 +121,104 @@ export const InputLapanganView: React.FC<InputLapanganViewProps> = ({
         </button>
       </div>
 
-      {/* 3 Status Cards */}
+      {/* 3 Interactive Expandable Status Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
-          <div>
-            <span className="text-xs font-medium text-slate-500">Antrean Lokal (Pending)</span>
-            <div className="text-2xl font-bold font-mono text-amber-600 mt-1">{pendingCount} Data</div>
+        {/* Card 1: Antrean Lokal */}
+        <div
+          id="card-status-pending"
+          onClick={() => handleOpenStatusModal('pending')}
+          className="group relative bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 hover:border-amber-400 shadow-xs hover:shadow-xl hover:shadow-amber-500/10 cursor-pointer transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02] flex flex-col justify-between overflow-hidden"
+        >
+          <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-bl-full pointer-events-none group-hover:bg-amber-500/10 transition-colors"></div>
+          <div className="flex items-start justify-between">
+            <div>
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 group-hover:text-amber-800 transition-colors">
+                <span>Antrean Lokal (Pending)</span>
+                <Sparkles className="w-3 h-3 text-amber-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
+              <div className="text-3xl font-extrabold font-mono text-amber-600 mt-1 tracking-tight">
+                {pendingCount} <span className="text-xs font-sans font-bold text-slate-400">Data</span>
+              </div>
+            </div>
+            <div className="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center group-hover:bg-amber-500 group-hover:text-white transition-all shadow-xs group-hover:rotate-6">
+              <Clock className="w-5 h-5" />
+            </div>
           </div>
-          <div className="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
-            <Clock className="w-5 h-5" />
+
+          <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+            <span className="flex items-center gap-1 text-amber-700 font-medium">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping"></span>
+              Menunggu transmisi
+            </span>
+            <span className="font-bold text-amber-600 group-hover:translate-x-1 transition-transform flex items-center gap-0.5">
+              Info & Aksi <ArrowUpRight className="w-3 h-3" />
+            </span>
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
-          <div>
-            <span className="text-xs font-medium text-slate-500">Berhasil Tersinkronisasi</span>
-            <div className="text-2xl font-bold font-mono text-emerald-600 mt-1">{syncedCount} Data</div>
+        {/* Card 2: Berhasil Tersinkronisasi */}
+        <div
+          id="card-status-synced"
+          onClick={() => handleOpenStatusModal('synced')}
+          className="group relative bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 hover:border-emerald-400 shadow-xs hover:shadow-xl hover:shadow-emerald-500/10 cursor-pointer transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02] flex flex-col justify-between overflow-hidden"
+        >
+          <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-bl-full pointer-events-none group-hover:bg-emerald-500/10 transition-colors"></div>
+          <div className="flex items-start justify-between">
+            <div>
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 group-hover:text-emerald-800 transition-colors">
+                <span>Berhasil Tersinkronisasi</span>
+                <Sparkles className="w-3 h-3 text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
+              <div className="text-3xl font-extrabold font-mono text-emerald-600 mt-1 tracking-tight">
+                {syncedCount} <span className="text-xs font-sans font-bold text-slate-400">Data</span>
+              </div>
+            </div>
+            <div className="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-white transition-all shadow-xs group-hover:rotate-6">
+              <CheckCircle2 className="w-5 h-5" />
+            </div>
           </div>
-          <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
-            <CheckCircle2 className="w-5 h-5" />
+
+          <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+            <span className="flex items-center gap-1 text-emerald-700 font-medium">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              Padan DTKS & SP2D
+            </span>
+            <span className="font-bold text-emerald-600 group-hover:translate-x-1 transition-transform flex items-center gap-0.5">
+              Info & Audit <ArrowUpRight className="w-3 h-3" />
+            </span>
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
-          <div>
-            <span className="text-xs font-medium text-slate-500">Gagal Validasi NIK</span>
-            <div className="text-2xl font-bold font-mono text-rose-600 mt-1">{errorCount} Data</div>
+        {/* Card 3: Gagal Validasi NIK */}
+        <div
+          id="card-status-failed"
+          onClick={() => handleOpenStatusModal('failed')}
+          className="group relative bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 hover:border-rose-400 shadow-xs hover:shadow-xl hover:shadow-rose-500/10 cursor-pointer transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02] flex flex-col justify-between overflow-hidden"
+        >
+          <div className="absolute top-0 right-0 w-24 h-24 bg-rose-500/5 rounded-bl-full pointer-events-none group-hover:bg-rose-500/10 transition-colors"></div>
+          <div className="flex items-start justify-between">
+            <div>
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 group-hover:text-rose-800 transition-colors">
+                <span>Gagal Validasi NIK</span>
+                <Sparkles className="w-3 h-3 text-rose-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
+              <div className="text-3xl font-extrabold font-mono text-rose-600 mt-1 tracking-tight">
+                {errorCount} <span className="text-xs font-sans font-bold text-slate-400">Data</span>
+              </div>
+            </div>
+            <div className="w-11 h-11 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center group-hover:bg-rose-600 group-hover:text-white transition-all shadow-xs group-hover:rotate-6">
+              <AlertCircle className="w-5 h-5" />
+            </div>
           </div>
-          <div className="w-10 h-10 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
-            <AlertCircle className="w-5 h-5" />
+
+          <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+            <span className="flex items-center gap-1 text-rose-700 font-medium">
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse"></span>
+              Butuh koreksi Tagana
+            </span>
+            <span className="font-bold text-rose-600 group-hover:translate-x-1 transition-transform flex items-center gap-0.5">
+              Info & Perbaikan <ArrowUpRight className="w-3 h-3" />
+            </span>
           </div>
         </div>
       </div>
@@ -182,19 +264,28 @@ export const InputLapanganView: React.FC<InputLapanganViewProps> = ({
                   <td className="py-3.5 px-4 text-slate-400">{item.timestamp}</td>
                   <td className="py-3.5 px-4">
                     {item.status === 'Pending Sync' && (
-                      <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
+                      <span
+                        onClick={() => handleOpenStatusModal('pending')}
+                        className="inline-flex items-center gap-1.5 text-[11px] font-bold text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200 cursor-pointer hover:bg-amber-100 transition-colors"
+                      >
                         <Clock className="w-3 h-3" />
                         <span>Pending Sync</span>
                       </span>
                     )}
                     {item.status === 'Tersinkronisasi' && (
-                      <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                      <span
+                        onClick={() => handleOpenStatusModal('synced')}
+                        className="inline-flex items-center gap-1.5 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 cursor-pointer hover:bg-emerald-100 transition-colors"
+                      >
                         <CheckCircle2 className="w-3 h-3" />
                         <span>Tersinkronisasi</span>
                       </span>
                     )}
                     {item.status === 'Gagal Validasi' && (
-                      <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-rose-700 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200">
+                      <span
+                        onClick={() => handleOpenStatusModal('failed')}
+                        className="inline-flex items-center gap-1.5 text-[11px] font-bold text-rose-700 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200 cursor-pointer hover:bg-rose-100 transition-colors"
+                      >
                         <AlertCircle className="w-3 h-3" />
                         <span>Gagal Validasi</span>
                       </span>
@@ -245,6 +336,16 @@ export const InputLapanganView: React.FC<InputLapanganViewProps> = ({
           </button>
         </div>
       </div>
+
+      {/* Detail Modal for Queue Status */}
+      <FieldQueueDetailModal
+        statusType={selectedStatusModal}
+        isOpen={!!selectedStatusModal}
+        onClose={() => setSelectedStatusModal(null)}
+        queue={queue}
+        onSyncAll={onSyncAll}
+        onDeleteEntry={onDeleteEntry}
+      />
     </div>
   );
 };

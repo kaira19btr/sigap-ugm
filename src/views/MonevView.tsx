@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { AnimatedCounter } from '../components/AnimatedCounter';
 import { MonevMetricModal, MonevMetricType } from '../components/MonevMetricModal';
+import { MonevCharts } from '../components/MonevCharts';
 
 interface MonevViewProps {}
 
@@ -217,6 +218,9 @@ export const MonevView: React.FC<MonevViewProps> = () => {
           </div>
         </div>
       </div>
+
+      {/* Stunning Interactive Analytics Diagrams (Recharts Multi-Tab Studio) */}
+      <MonevCharts />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Comparison & Efficiency Analytics */}
