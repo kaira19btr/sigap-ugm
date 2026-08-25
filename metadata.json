@@ -1,0 +1,6 @@
+{
+  "name": "SIGAP - Perlindungan Sosial Adaptif",
+  "description": "Platform terpadu untuk respons cepat, penilaian risiko, dan manajemen bantuan sosial berbasis data.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
