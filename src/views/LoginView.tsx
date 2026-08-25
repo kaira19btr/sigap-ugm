@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { UserRole } from '../types';
 import { SigapLogo } from '../components/SigapLogo';
+import { soundEffects } from '../utils/soundEffects';
 import {
   Shield,
   Lock,
@@ -14,6 +15,8 @@ import {
   Loader2,
   Sparkles,
   CheckCircle2,
+  Volume2,
+  VolumeX,
 } from 'lucide-react';
 
 interface LoginViewProps {
@@ -32,9 +35,19 @@ export const LoginView: React.FC<LoginViewProps> = ({
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [authStep, setAuthStep] = useState<number>(0);
   const [targetRole, setTargetRole] = useState<UserRole | null>(null);
+  const [isMuted, setIsMuted] = useState(soundEffects.getMuted());
+
+  const toggleSound = () => {
+    const nextMuted = soundEffects.toggleMute();
+    setIsMuted(nextMuted);
+    if (!nextMuted) {
+      soundEffects.playClick();
+    }
+  };
 
   const handleTabChange = (tab: 'daerah' | 'pusat') => {
     if (isAuthenticating) return;
+    soundEffects.playTabSwitch();
     setActiveTab(tab);
     if (tab === 'pusat') {
       setEmail('dr.budi.setiawan@kemensos.go.id');
@@ -49,19 +62,27 @@ export const LoginView: React.FC<LoginViewProps> = ({
     setTargetRole(role);
     setAuthStep(1);
 
+    // Audio SFX: High-tech resonance & energy sweep
+    soundEffects.playLoginStart();
+
     // Step 1: Verification of credentials & TLS handshake
     const timer1 = setTimeout(() => {
       setAuthStep(2);
+      soundEffects.playTabSwitch();
     }, 450);
 
     // Step 2: Satu Data Kemensos link
     const timer2 = setTimeout(() => {
       setAuthStep(3);
+      soundEffects.playRoleSelect();
     }, 850);
 
-    // Step 3: Success and redirect
+    // Step 3: Success fanfare chime & redirect
     const timer3 = setTimeout(() => {
-      onLoginSuccess(role);
+      soundEffects.playSuccessChime();
+      setTimeout(() => {
+        onLoginSuccess(role);
+      }, 250);
     }, 1200);
 
     return () => {
@@ -86,16 +107,43 @@ export const LoginView: React.FC<LoginViewProps> = ({
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_25%,rgba(225,29,72,0.2),rgba(245,158,11,0.1),transparent_70%)] animate-pulse pointer-events-none transition-all duration-700"></div>
       )}
 
-      {/* Top return button */}
-      <div className="absolute top-6 left-6 z-20">
+      {/* Top action controls: return & sound toggle */}
+      <div className="absolute top-6 left-6 right-6 z-20 flex items-center justify-between pointer-events-none">
         <button
           id="btn-back-to-landing"
           disabled={isAuthenticating}
-          onClick={onBackToLanding}
-          className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700 hover:border-slate-600 transition-all disabled:opacity-50"
+          onClick={() => {
+            soundEffects.playClick();
+            onBackToLanding();
+          }}
+          className="pointer-events-auto flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700 hover:border-slate-600 transition-all disabled:opacity-50 hover:scale-105 active:scale-95"
         >
           <ChevronLeft className="w-4 h-4" />
           <span>Kembali ke Beranda</span>
+        </button>
+
+        <button
+          id="btn-toggle-sound"
+          type="button"
+          onClick={toggleSound}
+          title={isMuted ? 'Aktifkan Efek Suara' : 'Bisukan Efek Suara'}
+          className={`pointer-events-auto flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border transition-all hover:scale-105 active:scale-95 shadow-sm ${
+            isMuted
+              ? 'bg-slate-800/80 text-slate-400 border-slate-700 hover:text-slate-200'
+              : 'bg-emerald-950/70 text-emerald-300 border-emerald-500/40 hover:bg-emerald-900/80 shadow-emerald-500/10'
+          }`}
+        >
+          {isMuted ? (
+            <>
+              <VolumeX className="w-4 h-4 text-slate-400" />
+              <span className="hidden sm:inline">Suara: Mati</span>
+            </>
+          ) : (
+            <>
+              <Volume2 className="w-4 h-4 text-emerald-400 animate-pulse" />
+              <span className="hidden sm:inline">Efek Suara: Aktif</span>
+            </>
+          )}
         </button>
       </div>
 
@@ -231,7 +279,10 @@ export const LoginView: React.FC<LoginViewProps> = ({
                   type="checkbox"
                   disabled={isAuthenticating}
                   checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
+                  onChange={(e) => {
+                    soundEffects.playClick();
+                    setRememberMe(e.target.checked);
+                  }}
                   className="w-4 h-4 rounded bg-slate-900 border-slate-700 text-blue-600 focus:ring-blue-500 disabled:opacity-60"
                 />
                 <span className="text-slate-400">Ingat sesi saya</span>
@@ -240,7 +291,10 @@ export const LoginView: React.FC<LoginViewProps> = ({
                 type="button"
                 disabled={isAuthenticating}
                 className="text-blue-400 hover:text-blue-300 transition-colors disabled:opacity-60"
-                onClick={() => alert('Fitur pemulihan kata sandi dapat dihubungi melalui Helpdesk Pusdatin Kemensos.')}
+                onClick={() => {
+                  soundEffects.playClick();
+                  alert('Fitur pemulihan kata sandi dapat dihubungi melalui Helpdesk Pusdatin Kemensos.');
+                }}
               >
                 Lupa kata sandi?
               </button>

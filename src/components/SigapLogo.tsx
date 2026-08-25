@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Info, Sparkles, Shield, Zap, Heart, Database } from 'lucide-react';
 import { LogoPhilosophyModal } from './LogoPhilosophyModal';
+import { soundEffects } from '../utils/soundEffects';
 
 interface SigapLogoProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
@@ -65,7 +66,10 @@ export const SigapLogo: React.FC<SigapLogoProps> = ({
         className={`flex items-center ${cfg.gap} ${className} ${
           interactive ? 'group cursor-pointer' : ''
         }`}
-        onClick={interactive ? () => setModalOpen(true) : undefined}
+        onClick={interactive ? () => {
+          soundEffects.playClick();
+          setModalOpen(true);
+        } : undefined}
         title={interactive ? 'Klik untuk melihat filosofi makna logo SIGAP' : undefined}
       >
         {/* Custom Symbolic Vector Emblem */}
