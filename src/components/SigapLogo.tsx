@@ -9,6 +9,7 @@ interface SigapLogoProps {
   showSubtitle?: boolean;
   showBadge?: boolean;
   interactive?: boolean;
+  isAuthenticating?: boolean;
   className?: string;
 }
 
@@ -19,6 +20,7 @@ export const SigapLogo: React.FC<SigapLogoProps> = ({
   showSubtitle = true,
   showBadge = false,
   interactive = true,
+  isAuthenticating = false,
   className = '',
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -67,14 +69,31 @@ export const SigapLogo: React.FC<SigapLogoProps> = ({
         title={interactive ? 'Klik untuk melihat filosofi makna logo SIGAP' : undefined}
       >
         {/* Custom Symbolic Vector Emblem */}
-        <div className={`relative shrink-0 ${cfg.container} flex items-center justify-center transition-transform duration-300 ${interactive ? 'group-hover:scale-105' : ''}`}>
+        <div className={`relative shrink-0 ${cfg.container} flex items-center justify-center transition-transform duration-300 ${interactive && !isAuthenticating ? 'group-hover:scale-105' : ''}`}>
+          {/* Authentication Dynamic Pulse Waves & Orbit Rings */}
+          {isAuthenticating && (
+            <>
+              {/* Outer Energy Shockwave Rings */}
+              <div className="absolute inset-0 rounded-full border-2 border-rose-500/80 bg-rose-500/10 animate-sigap-wave pointer-events-none"></div>
+              <div className="absolute inset-0 rounded-full border border-amber-400/80 bg-amber-500/10 animate-sigap-wave-delay pointer-events-none"></div>
+              
+              {/* Orbital Rotating Ring with Satellite Sparks */}
+              <div className="absolute -inset-2.5 rounded-full border border-dashed border-blue-400/60 animate-sigap-orbit pointer-events-none">
+                <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_8px_#f59e0b]"></div>
+              </div>
+              <div className="absolute -inset-4 rounded-full border border-dotted border-rose-400/40 animate-sigap-orbit-reverse pointer-events-none">
+                <div className="absolute -bottom-1 right-1/4 w-1.5 h-1.5 rounded-full bg-rose-400 shadow-[0_0_6px_#f43f5e]"></div>
+              </div>
+            </>
+          )}
+
           <svg
             width={cfg.svgSize}
             height={cfg.svgSize}
             viewBox="0 0 100 100"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="drop-shadow-md"
+            className={`drop-shadow-md transition-all ${isAuthenticating ? 'animate-sigap-pulse scale-110' : ''}`}
           >
             <defs>
               {/* Outer Shield Gradient */}
@@ -98,8 +117,11 @@ export const SigapLogo: React.FC<SigapLogoProps> = ({
               </linearGradient>
 
               {/* Glow filter */}
-              <filter id="sigapGlow" x="-10%" y="-10%" width="120%" height="120%">
-                <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#E11D48" floodOpacity="0.35" />
+              <filter id="sigapGlow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="2" stdDeviation={isAuthenticating ? "6" : "3"} floodColor="#E11D48" floodOpacity={isAuthenticating ? "0.8" : "0.35"} />
+                {isAuthenticating && (
+                  <feDropShadow dx="0" dy="0" stdDeviation="8" floodColor="#F59E0B" floodOpacity="0.7" />
+                )}
               </filter>
             </defs>
 
@@ -113,7 +135,7 @@ export const SigapLogo: React.FC<SigapLogoProps> = ({
             <path
               d="M50 11C62 11 81 16 85 28C85 54 65 79 50 88C35 79 15 54 15 28C19 16 38 11 50 11Z"
               stroke="#FFFFFF"
-              strokeOpacity="0.18"
+              strokeOpacity={isAuthenticating ? "0.4" : "0.18"}
               strokeWidth="2"
               fill="none"
             />
@@ -123,13 +145,13 @@ export const SigapLogo: React.FC<SigapLogoProps> = ({
             <path
               d="M50 32C42 22 28 24 22 36C18 45 22 58 32 66C38 71 44 75 50 78C46 71 34 60 30 52C26 44 30 36 38 34C43 32 48 35 50 38Z"
               fill="url(#sigapHandsGrad)"
-              fillOpacity="0.9"
+              fillOpacity={isAuthenticating ? "1" : "0.9"}
             />
             {/* Right Wing / Caring Hand */}
             <path
               d="M50 32C58 22 72 24 78 36C82 45 78 58 68 66C62 71 56 75 50 78C54 71 66 60 70 52C74 44 70 36 62 34C57 32 52 35 50 38Z"
               fill="url(#sigapHandsGrad)"
-              fillOpacity="0.9"
+              fillOpacity={isAuthenticating ? "1" : "0.9"}
             />
 
             {/* Dynamic Lightning Bolt / Adaptive Response Wave (Gerak Cepat & Peringatan Dini) */}
@@ -140,12 +162,12 @@ export const SigapLogo: React.FC<SigapLogoProps> = ({
             />
 
             {/* Central Unified Data Hub Core (Titik Satu Data Terpadu DTKS-Regsosek) */}
-            <circle cx="50" cy="46" r="3.5" fill="#FFFFFF" />
-            <circle cx="50" cy="46" r="6" stroke="#FFFFFF" strokeWidth="1.2" strokeDasharray="2 2" strokeOpacity="0.75" />
+            <circle cx="50" cy="46" r={isAuthenticating ? "4.5" : "3.5"} fill="#FFFFFF" />
+            <circle cx="50" cy="46" r={isAuthenticating ? "8" : "6"} stroke="#FFFFFF" strokeWidth="1.2" strokeDasharray="2 2" strokeOpacity={isAuthenticating ? "1" : "0.75"} />
           </svg>
 
           {/* Interactive small info indicator */}
-          {interactive && (
+          {interactive && !isAuthenticating && (
             <span className="absolute -bottom-1 -right-1 w-4 h-4 bg-slate-900 text-rose-300 rounded-full border border-slate-700 flex items-center justify-center text-[9px] shadow-xs group-hover:bg-rose-600 group-hover:text-white transition-colors">
               <Info className="w-2.5 h-2.5" />
             </span>
