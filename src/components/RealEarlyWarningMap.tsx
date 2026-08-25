@@ -16,6 +16,8 @@ import {
   Wind,
   ShieldAlert,
   RotateCcw,
+  ChevronUp,
+  ChevronDown,
 } from 'lucide-react';
 
 interface RealEarlyWarningMapProps {
@@ -42,6 +44,7 @@ export const RealEarlyWarningMap: React.FC<RealEarlyWarningMapProps> = ({
   const [activeLayer, setActiveLayer] = useState<MapLayerType>('dark');
   const [showRadius, setShowRadius] = useState<boolean>(true);
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
+  const [isLegendExpanded, setIsLegendExpanded] = useState<boolean>(false);
 
   // Basemap URLs
   const tileUrls: Record<MapLayerType, { url: string; attribution: string; subdomains?: string[] }> = {
@@ -417,53 +420,119 @@ export const RealEarlyWarningMap: React.FC<RealEarlyWarningMapProps> = ({
         </button>
       </div>
 
-      {/* Bottom Left: Live Telemetry Legend */}
-      <div className="absolute bottom-3 left-3 z-10 bg-slate-950/90 backdrop-blur-md p-3 rounded-xl border border-slate-800/90 text-white shadow-2xl max-w-xs pointer-events-auto">
-        <div className="flex items-center justify-between gap-2 border-b border-slate-800 pb-1.5 mb-2">
-          <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-            <Radio className="w-3.5 h-3.5 text-rose-500 animate-pulse" />
-            <span>Telemetri Live SIGAP</span>
-          </span>
-          <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-1.5 py-0.2 rounded">
-            Aktif
-          </span>
-        </div>
-
-        <div className="space-y-1.5 text-[11px]">
-          <div className="flex items-center justify-between">
+      {/* Bottom Left: Compact Streamlined Telemetry Micro-Widget */}
+      <div className="absolute bottom-3 left-3 z-10 pointer-events-auto">
+        {!isLegendExpanded ? (
+          /* Sleek Micro Pill Bar */
+          <div
+            onClick={() => setIsLegendExpanded(true)}
+            className="flex items-center gap-2 bg-slate-950/85 hover:bg-slate-950/95 backdrop-blur-md px-2.5 py-1.5 rounded-lg border border-slate-800/80 hover:border-slate-700 text-white shadow-xl cursor-pointer transition-all duration-200 hover:scale-[1.02] select-none"
+            title="Klik untuk melihat detail ambang batas telemetri"
+          >
             <div className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-sm shadow-rose-500"></span>
-              <span className="font-medium text-slate-300">Darurat (Indeks &gt; 8.0)</span>
+              <Radio className="w-3 h-3 text-rose-500 animate-pulse" />
+              <span className="text-[10px] font-extrabold uppercase tracking-wide text-slate-300">
+                Telemetri Live
+              </span>
             </div>
-            <span className="font-bold font-mono text-rose-400">
-              {regions.filter((r) => r.status === 'darurat').length} Titik
-            </span>
-          </div>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-sm shadow-amber-400"></span>
-              <span className="font-medium text-slate-300">Siaga (Indeks 6.0 - 7.9)</span>
+            <div className="h-3 w-px bg-slate-800"></div>
+
+            {/* Quick Status Chips */}
+            <div className="flex items-center gap-2 text-[10px] font-mono">
+              <span className="flex items-center gap-1 text-rose-400 font-semibold" title="Darurat (Indeks > 8.0)">
+                <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shadow-xs shadow-rose-500"></span>
+                <span>{regions.filter((r) => r.status === 'darurat').length}</span>
+                <span className="text-[9px] font-sans text-slate-400 hidden sm:inline">Darurat</span>
+              </span>
+
+              <span className="flex items-center gap-1 text-amber-400 font-semibold" title="Siaga (Indeks 6.0 - 7.9)">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shadow-xs shadow-amber-400"></span>
+                <span>{regions.filter((r) => r.status === 'siaga').length}</span>
+                <span className="text-[9px] font-sans text-slate-400 hidden sm:inline">Siaga</span>
+              </span>
+
+              <span className="flex items-center gap-1 text-emerald-400 font-semibold" title="Normal (Indeks < 6.0)">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                <span>{regions.filter((r) => r.status === 'normal').length}</span>
+                <span className="text-[9px] font-sans text-slate-400 hidden sm:inline">Normal</span>
+              </span>
             </div>
-            <span className="font-bold font-mono text-amber-400">
-              {regions.filter((r) => r.status === 'siaga').length} Titik
-            </span>
-          </div>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-              <span className="font-medium text-slate-300">Normal (&lt; 6.0)</span>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsLegendExpanded(true);
+              }}
+              className="text-slate-400 hover:text-white p-0.5 rounded hover:bg-slate-800/80 transition-colors ml-0.5"
+              title="Perluas rincian"
+            >
+              <ChevronUp className="w-3 h-3" />
+            </button>
+          </div>
+        ) : (
+          /* Expanded Modal Popover */
+          <div className="bg-slate-950/95 backdrop-blur-md p-3 rounded-xl border border-slate-700/80 text-white shadow-2xl w-64 animate-in fade-in zoom-in-95 duration-200">
+            <div className="flex items-center justify-between gap-2 border-b border-slate-800 pb-1.5 mb-2">
+              <div className="flex items-center gap-1.5">
+                <Radio className="w-3 h-3 text-rose-500 animate-pulse" />
+                <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-200">
+                  Telemetri Live SIGAP
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="text-[9px] font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-1 rounded">
+                  Live
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setIsLegendExpanded(false)}
+                  className="text-slate-400 hover:text-white p-0.5 rounded hover:bg-slate-800 transition-colors"
+                  title="Perkecil ke mode mini"
+                >
+                  <ChevronDown className="w-3.5 h-3.5" />
+                </button>
+              </div>
             </div>
-            <span className="font-bold font-mono text-emerald-400">
-              {regions.filter((r) => r.status === 'normal').length} Titik
-            </span>
-          </div>
-        </div>
 
-        <p className="text-[9px] text-slate-400 mt-2 pt-1.5 border-t border-slate-800/80 leading-snug">
-          Tip: Klik marker pada peta untuk melihat detail telemetri atau menjalankan respon darurat.
-        </p>
+            <div className="space-y-1.5 text-[10px]">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-rose-500 shadow-xs shadow-rose-500"></span>
+                  <span className="font-medium text-slate-300">Darurat (&gt; 8.0)</span>
+                </div>
+                <span className="font-bold font-mono text-rose-400">
+                  {regions.filter((r) => r.status === 'darurat').length} Titik
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-amber-400 shadow-xs shadow-amber-400"></span>
+                  <span className="font-medium text-slate-300">Siaga (6.0 - 7.9)</span>
+                </div>
+                <span className="font-bold font-mono text-amber-400">
+                  {regions.filter((r) => r.status === 'siaga').length} Titik
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+                  <span className="font-medium text-slate-300">Normal (&lt; 6.0)</span>
+                </div>
+                <span className="font-bold font-mono text-emerald-400">
+                  {regions.filter((r) => r.status === 'normal').length} Titik
+                </span>
+              </div>
+            </div>
+
+            <p className="text-[9px] text-slate-400 mt-2 pt-1.5 border-t border-slate-800/80 leading-tight">
+              Tip: Klik pin marker pada peta untuk detail telemetri atau tindakan tanggap darurat.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
