@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SigapLogo } from '../components/SigapLogo';
+import { TechnicalArchitectureModal } from '../components/TechnicalArchitectureModal';
 import {
   Shield,
   Radio,
@@ -16,6 +17,11 @@ import {
   Globe,
   Award,
   Sparkles,
+  Workflow,
+  Users,
+  Building2,
+  Clock,
+  TrendingUp,
 } from 'lucide-react';
 
 interface LandingViewProps {
@@ -27,6 +33,8 @@ export const LandingView: React.FC<LandingViewProps> = ({
   onLoginClick,
   onEnterDashboard,
 }) => {
+  const [isArchitectureModalOpen, setIsArchitectureModalOpen] = useState(false);
+
   return (
     <div id="landing-page-container" className="min-h-screen bg-white text-slate-900 flex flex-col selection:bg-blue-100">
       {/* Top Navigation */}
@@ -38,9 +46,15 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
             <a href="#fitur" className="hover:text-blue-600 transition-colors">Fitur Utama</a>
+            <a href="#agregat-data" className="hover:text-blue-600 transition-colors">Data Agregat</a>
             <a href="#alur-kerja" className="hover:text-blue-600 transition-colors">Alur Kerja</a>
-            <a href="#arsitektur" className="hover:text-blue-600 transition-colors">Integrasi Data</a>
-            <a href="#kontak" className="hover:text-blue-600 transition-colors">Bantuan</a>
+            <button
+              onClick={() => setIsArchitectureModalOpen(true)}
+              className="text-slate-600 hover:text-blue-600 transition-colors flex items-center gap-1.5"
+            >
+              <Workflow className="w-3.5 h-3.5 text-blue-600" />
+              <span>Arsitektur SPBE</span>
+            </button>
           </div>
 
           <div className="flex items-center gap-3">
@@ -68,7 +82,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-100/80 text-blue-800 text-xs font-semibold mb-6 border border-blue-200">
             <Activity className="w-3.5 h-3.5 text-blue-600" />
-            <span>Platform Siaga Bencana & Perlindungan Adaptif Indonesia</span>
+            <span>Platform Siaga Bencana &amp; Perlindungan Adaptif Indonesia</span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.15]">
@@ -77,7 +91,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
           </h1>
 
           <p className="mt-6 text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto font-normal leading-relaxed">
-            Platform terpadu untuk respons cepat, penilaian risiko otomatis, dan tata kelola bantuan sosial berbasis data geospasial real-time saat krisis dan bencana.
+            Platform terpadu untuk respons cepat, penilaian risiko otomatis berbasis 7 indikator analitis (105 Poin), dan tata kelola bantuan sosial adaptif geospasial real-time saat krisis dan bencana.
           </p>
 
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
@@ -90,9 +104,17 @@ export const LandingView: React.FC<LandingViewProps> = ({
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
             <button
+              id="btn-hero-architecture"
+              onClick={() => setIsArchitectureModalOpen(true)}
+              className="px-7 py-3.5 text-base font-bold text-slate-700 bg-white hover:bg-slate-50 rounded-xl border border-slate-300 shadow-sm transition-all flex items-center gap-2"
+            >
+              <Workflow className="w-4 h-4 text-blue-600" />
+              <span>Diagram Arsitektur</span>
+            </button>
+            <button
               id="btn-hero-login-modal"
               onClick={onLoginClick}
-              className="px-7 py-3.5 text-base font-bold text-slate-700 bg-white hover:bg-slate-50 rounded-xl border border-slate-300 shadow-sm transition-all"
+              className="px-6 py-3.5 text-base font-bold text-slate-600 hover:text-slate-900 bg-transparent hover:bg-slate-100 rounded-xl transition-all"
             >
               Masuk Dinas / Instansi
             </button>
@@ -102,19 +124,19 @@ export const LandingView: React.FC<LandingViewProps> = ({
           <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto pt-8 border-t border-slate-200">
             <div className="text-center p-3">
               <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono">4.2 Hari</div>
-              <div className="text-xs text-slate-500 font-medium mt-1">Kecepatan Respons Penyaluran</div>
+              <div className="text-xs text-slate-500 font-medium mt-1">Kecepatan Respons Penyaluran (SLA)</div>
             </div>
             <div className="text-center p-3">
               <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono">94.8%</div>
-              <div className="text-xs text-slate-500 font-medium mt-1">Akurasi Target Penerima</div>
+              <div className="text-xs text-slate-500 font-medium mt-1">Akurasi Target Penerima (DTKS)</div>
             </div>
             <div className="text-center p-3">
-              <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono">100%</div>
-              <div className="text-xs text-slate-500 font-medium mt-1">Interoperabilitas DTKS & BNPB</div>
+              <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono">105 Poin</div>
+              <div className="text-xs text-slate-500 font-medium mt-1">Standar Matriks 7 Indikator</div>
             </div>
             <div className="text-center p-3">
-              <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono">Offline</div>
-              <div className="text-xs text-slate-500 font-medium mt-1">Dukungan Pendataan Lapangan</div>
+              <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono">Offline-First</div>
+              <div className="text-xs text-slate-500 font-medium mt-1">Dukungan Pendataan Lapangan Tagana</div>
             </div>
           </div>
         </div>
@@ -135,7 +157,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                 </div>
                 <div className="text-[10px] text-emerald-400 font-mono flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                  LIVE TELEMETRY
+                  LIVE TELEMETRY (12 WILAYAH)
                 </div>
               </div>
 
@@ -145,20 +167,20 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
                       <Radio className="w-3.5 h-3.5 text-rose-500 animate-ping" />
-                      Peta Pantauan Krisis & Kerentanan Multi-Bahaya
+                      Peta Pantauan Krisis &amp; Kerentanan Multi-Bahaya
                     </span>
                     <span className="text-[10px] bg-rose-950 text-rose-300 border border-rose-800 px-2 py-0.5 rounded font-mono font-bold">
-                      2 WILAYAH DARURAT
+                      2 WILAYAH DARURAT • 5 SIAGA
                     </span>
                   </div>
                   <div className="h-52 rounded-lg bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800/80 flex items-center justify-center relative overflow-hidden">
                     <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px]"></div>
                     <div className="text-center z-10">
                       <p className="text-sm font-semibold text-slate-200">
-                        Telemetri Sensor Iklim, Harga Pangan & Seismik Aktif
+                        Telemetri Sensor Iklim, Harga Pangan &amp; Seismik Aktif
                       </p>
                       <p className="text-xs text-slate-400 mt-1">
-                        Sumba Timur (Defisit Hujan 12mm) • Cianjur (Pasca Gempa) • Semarang (Rob)
+                        Sumba Timur (Defisit Hujan 12mm) • Cianjur (Pasca Gempa) • Demak (Banjir Tanggul)
                       </p>
                     </div>
                   </div>
@@ -184,6 +206,88 @@ export const LandingView: React.FC<LandingViewProps> = ({
                     Buka Dasbor Interaktif →
                   </button>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Aggregate National Metrics Section (Item C1) */}
+      <section id="agregat-data" className="py-16 px-6 bg-slate-900 text-white border-y border-slate-800">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold mb-2 border border-blue-500/30">
+                <Globe className="w-3.5 h-3.5 text-blue-400" />
+                <span>Statistik Agregat Nasional Terpadu</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+                Cakupan Intervensi &amp; Kinerja Perlindungan Sosial
+              </h2>
+              <p className="text-sm text-slate-400 mt-1">
+                Rekapitulasi nasional dari 12 wilayah fokus pilot project SIGAP di seluruh Indonesia
+              </p>
+            </div>
+            <button
+              onClick={onEnterDashboard}
+              className="mt-4 md:mt-0 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-md transition-colors flex items-center gap-1.5 self-start"
+            >
+              <span>Eksplorasi 12 Wilayah di Peta</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800 shadow-sm space-y-1">
+              <div className="flex items-center justify-between text-slate-400 text-xs">
+                <span>Total Jiwa Terdampak</span>
+                <Users className="w-4 h-4 text-blue-400" />
+              </div>
+              <div className="text-3xl font-extrabold font-mono text-white pt-1">
+                445.800
+              </div>
+              <div className="text-[11px] text-emerald-400 font-semibold flex items-center gap-1 pt-1">
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                <span>Terdata dalam DTKS Desil 1-2</span>
+              </div>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800 shadow-sm space-y-1">
+              <div className="flex items-center justify-between text-slate-400 text-xs">
+                <span>Rata-rata SLA Penyaluran</span>
+                <Clock className="w-4 h-4 text-amber-400" />
+              </div>
+              <div className="text-3xl font-extrabold font-mono text-amber-400 pt-1">
+                4.2 Hari
+              </div>
+              <div className="text-[11px] text-slate-400 font-semibold pt-1">
+                Target resmi: 3-5 Hari kerja
+              </div>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800 shadow-sm space-y-1">
+              <div className="flex items-center justify-between text-slate-400 text-xs">
+                <span>Alokasi Bantuan Adaptif</span>
+                <Building2 className="w-4 h-4 text-emerald-400" />
+              </div>
+              <div className="text-3xl font-extrabold font-mono text-emerald-400 pt-1">
+                Rp 28.6 M
+              </div>
+              <div className="text-[11px] text-slate-400 font-semibold pt-1">
+                Tersalurkan via Himbara &amp; PT Pos
+              </div>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800 shadow-sm space-y-1">
+              <div className="flex items-center justify-between text-slate-400 text-xs">
+                <span>Wilayah Pantauan Pilot</span>
+                <Radio className="w-4 h-4 text-rose-400" />
+              </div>
+              <div className="text-3xl font-extrabold font-mono text-white pt-1">
+                12 Wilayah
+              </div>
+              <div className="text-[11px] text-rose-400 font-semibold pt-1">
+                2 Darurat • 5 Siaga • 5 Normal
               </div>
             </div>
           </div>
@@ -219,7 +323,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
               </p>
             </div>
             <div className="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-semibold text-blue-600">
-              <span>Sensor BMKG & BPS Terpadu</span>
+              <span>Sensor BMKG &amp; BPS Terpadu</span>
             </div>
           </div>
 
@@ -248,10 +352,10 @@ export const LandingView: React.FC<LandingViewProps> = ({
                 <Zap className="w-6 h-6" />
               </div>
               <h3 className="text-lg font-bold text-slate-900 mb-2">
-                Penyaluran Cepat & Tepat
+                Penyaluran Cepat &amp; Tepat
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Mekanisme aktivasi protokol darurat yang memangkas birokrasi verifikasi, menyalurkan bantuan adaptif dalam hitungan hari.
+                Mekanisme aktivasi protokol darurat standar 7 indikator yang memangkas birokrasi verifikasi, menyalurkan bantuan adaptif dalam rata-rata 4.2 hari.
               </p>
             </div>
             <div className="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-semibold text-amber-600">
@@ -297,7 +401,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
             <div className="bg-white p-6 rounded-xl border border-slate-200 relative">
               <div className="text-3xl font-mono font-extrabold text-blue-600 mb-3">01</div>
-              <h4 className="font-bold text-slate-900 mb-1">Deteksi & Peringatan</h4>
+              <h4 className="font-bold text-slate-900 mb-1">Deteksi &amp; Peringatan</h4>
               <p className="text-xs text-slate-600 leading-relaxed">
                 Data anomali cuaca, seismik, dan pasar memicu sinyal peringatan dini ke Command Center.
               </p>
@@ -305,9 +409,9 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
             <div className="bg-white p-6 rounded-xl border border-slate-200 relative">
               <div className="text-3xl font-mono font-extrabold text-indigo-600 mb-3">02</div>
-              <h4 className="font-bold text-slate-900 mb-1">Penilaian Risiko</h4>
+              <h4 className="font-bold text-slate-900 mb-1">Penilaian Risiko (105 Poin)</h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Algoritma kalkulasi risiko menilai keparahan dan mengusulkan jenis bantuan adaptif.
+                Algoritma 7 parameter menilai keparahan dan mengusulkan jenis bantuan adaptif.
               </p>
             </div>
 
@@ -321,9 +425,9 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
             <div className="bg-white p-6 rounded-xl border border-slate-200 relative">
               <div className="text-3xl font-mono font-extrabold text-emerald-600 mb-3">04</div>
-              <h4 className="font-bold text-slate-900 mb-1">Penyaluran & Monev</h4>
+              <h4 className="font-bold text-slate-900 mb-1">Penyaluran &amp; Monev</h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Distribusi bantuan langsung dan survei kepuasan penerima via WhatsApp bot & SMS.
+                Distribusi bantuan langsung dan survei kepuasan penerima via WhatsApp bot &amp; SMS.
               </p>
             </div>
           </div>
@@ -348,7 +452,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                     <span>Filosofi Desain Identitas SIGAP</span>
                   </div>
                   <h3 className="text-2xl font-extrabold tracking-tight text-white">
-                    Simbolisme Perlindungan Sosial yang Tangkas & Humanis
+                    Simbolisme Perlindungan Sosial yang Tangkas &amp; Humanis
                   </h3>
                   <p className="text-sm text-slate-400 mt-2 leading-relaxed">
                     Logo SIGAP menggabungkan <strong>Perisai Ketahanan Sosial</strong>, <strong>Sayap Merangkul Kemanusiaan</strong>, <strong>Kilat Gerak Cepat</strong>, dan <strong>Nukleus Satu Data</strong>. Selaras dengan mandat sistem: respons darurat dalam hitungan hari dengan akurasi target berbasis data terpadu.
@@ -359,7 +463,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
               <div className="shrink-0">
                 <SigapLogo size="md" variant="dark" showText={false} interactive={true} />
                 <p className="text-[11px] text-slate-400 text-center mt-2">
-                  Klik logo untuk eksplorasi makna simbol & warna
+                  Klik logo untuk eksplorasi makna simbol &amp; warna
                 </p>
               </div>
             </div>
@@ -381,6 +485,9 @@ export const LandingView: React.FC<LandingViewProps> = ({
             <button onClick={onEnterDashboard} className="hover:text-white transition-colors">
               Satu Data DTKS
             </button>
+            <button onClick={() => setIsArchitectureModalOpen(true)} className="hover:text-white transition-colors">
+              Arsitektur Sistem
+            </button>
             <button onClick={onLoginClick} className="hover:text-white transition-colors">
               Portal Dinas Sosial
             </button>
@@ -391,6 +498,12 @@ export const LandingView: React.FC<LandingViewProps> = ({
           </div>
         </div>
       </footer>
+
+      {/* Technical Architecture Modal */}
+      <TechnicalArchitectureModal
+        isOpen={isArchitectureModalOpen}
+        onClose={() => setIsArchitectureModalOpen(false)}
+      />
     </div>
   );
 };

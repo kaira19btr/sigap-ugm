@@ -18,6 +18,8 @@ import {
   RotateCcw,
   ChevronUp,
   ChevronDown,
+  Radar,
+  Zap,
 } from 'lucide-react';
 
 interface RealEarlyWarningMapProps {
@@ -25,6 +27,7 @@ interface RealEarlyWarningMapProps {
   selectedRegion: RegionRiskData;
   onSelectRegion: (region: RegionRiskData) => void;
   onOpenEmergencyAction: (region: RegionRiskData) => void;
+  onOpenRadar?: (region: RegionRiskData) => void;
 }
 
 type MapLayerType = 'dark' | 'street' | 'satellite' | 'terrain';
@@ -34,6 +37,7 @@ export const RealEarlyWarningMap: React.FC<RealEarlyWarningMapProps> = ({
   selectedRegion,
   onSelectRegion,
   onOpenEmergencyAction,
+  onOpenRadar,
 }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
@@ -200,7 +204,7 @@ export const RealEarlyWarningMap: React.FC<RealEarlyWarningMapProps> = ({
         : '<span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-300">NORMAL</span>';
 
       const popupContent = `
-        <div class="p-1 min-w-[200px] font-sans">
+        <div class="p-1 min-w-[210px] font-sans">
           <div class="flex items-center justify-between gap-2 border-b border-slate-200 pb-2 mb-2">
             <div>
               <h4 class="font-extrabold text-sm text-slate-900">${region.name}</h4>
@@ -213,6 +217,10 @@ export const RealEarlyWarningMap: React.FC<RealEarlyWarningMapProps> = ({
             <div class="flex justify-between py-0.5">
               <span class="text-slate-500">Krisis:</span>
               <span class="font-bold text-slate-900">${region.crisisType}</span>
+            </div>
+            <div class="flex justify-between py-0.5">
+              <span class="text-slate-500">Target SLA Penyaluran:</span>
+              <span class="font-bold font-mono text-blue-600 bg-blue-50 px-1.5 py-0.2 rounded border border-blue-200">${region.slaTargetDays} Hari</span>
             </div>
             <div class="flex justify-between py-0.5">
               <span class="text-slate-500">Indeks Kerentanan:</span>
@@ -373,166 +381,74 @@ export const RealEarlyWarningMap: React.FC<RealEarlyWarningMapProps> = ({
           </button>
         </div>
 
-        {/* Radius Toggle */}
+        {/* Toggle Radius */}
         <button
           onClick={() => setShowRadius(!showRadius)}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold backdrop-blur-md shadow-lg transition-all ${
+          className={`px-3 py-1.5 rounded-xl text-xs font-semibold backdrop-blur-md border shadow-lg transition-all flex items-center gap-1.5 ${
             showRadius
-              ? 'bg-rose-950/80 border-rose-500/50 text-rose-300'
+              ? 'bg-blue-600/90 border-blue-500 text-white'
               : 'bg-slate-900/80 border-slate-700 text-slate-400 hover:text-white'
           }`}
         >
-          <ShieldAlert className="w-3.5 h-3.5" />
-          <span>Zona Dampak</span>
+          <Radio className="w-3.5 h-3.5" />
+          <span>Radius Bahaya</span>
         </button>
       </div>
 
       {/* Top Right: Quick Navigation Tools */}
-      <div className="absolute top-3 right-3 z-10 flex items-center gap-2">
+      <div className="absolute top-3 right-3 z-10 flex items-center gap-1.5">
         <button
           onClick={handleFitAll}
-          title="Fokuskan Semua Titik Wilayah"
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/90 backdrop-blur-md border border-slate-700/80 text-xs font-semibold text-white hover:bg-slate-800 transition-all shadow-lg"
+          className="p-2 bg-slate-900/90 hover:bg-slate-800 text-slate-200 hover:text-white rounded-xl border border-slate-700 shadow-lg backdrop-blur-md transition-colors"
+          title="Fokus Seluruh Indonesia"
         >
-          <Compass className="w-3.5 h-3.5 text-blue-400" />
-          <span className="hidden sm:inline">Fit Wilayah</span>
+          <Compass className="w-4 h-4" />
         </button>
-
         <button
           onClick={handleResetView}
-          title="Reset Sudut Pandang Nusantara"
-          className="p-1.5 rounded-xl bg-slate-900/90 backdrop-blur-md border border-slate-700/80 text-slate-300 hover:text-white hover:bg-slate-800 transition-all shadow-lg"
+          className="p-2 bg-slate-900/90 hover:bg-slate-800 text-slate-200 hover:text-white rounded-xl border border-slate-700 shadow-lg backdrop-blur-md transition-colors"
+          title="Reset Sudut Pandang Default"
         >
           <RotateCcw className="w-4 h-4" />
         </button>
-
         <button
-          onClick={() => {
-            setIsFullScreen(!isFullScreen);
-            setTimeout(() => {
-              mapInstanceRef.current?.invalidateSize();
-            }, 300);
-          }}
-          title={isFullScreen ? 'Perkecil Peta' : 'Layar Penuh'}
-          className="p-1.5 rounded-xl bg-slate-900/90 backdrop-blur-md border border-slate-700/80 text-slate-300 hover:text-white hover:bg-slate-800 transition-all shadow-lg"
+          onClick={() => setIsFullScreen(!isFullScreen)}
+          className="p-2 bg-slate-900/90 hover:bg-slate-800 text-slate-200 hover:text-white rounded-xl border border-slate-700 shadow-lg backdrop-blur-md transition-colors"
+          title={isFullScreen ? 'Keluar Layar Penuh' : 'Mode Layar Penuh'}
         >
           {isFullScreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
         </button>
       </div>
 
-      {/* Bottom Left: Compact Streamlined Telemetry Micro-Widget */}
-      <div className="absolute bottom-3 left-3 z-10 pointer-events-auto">
-        {!isLegendExpanded ? (
-          /* Sleek Micro Pill Bar */
-          <div
-            onClick={() => setIsLegendExpanded(true)}
-            className="flex items-center gap-2 bg-slate-950/85 hover:bg-slate-950/95 backdrop-blur-md px-2.5 py-1.5 rounded-lg border border-slate-800/80 hover:border-slate-700 text-white shadow-xl cursor-pointer transition-all duration-200 hover:scale-[1.02] select-none"
-            title="Klik untuk melihat detail ambang batas telemetri"
+      {/* Bottom Left: Collapsible Legend */}
+      <div className="absolute bottom-3 left-3 z-10">
+        <div className="bg-slate-900/95 backdrop-blur-md rounded-xl border border-slate-700 shadow-xl overflow-hidden transition-all text-xs text-white">
+          <button
+            onClick={() => setIsLegendExpanded(!isLegendExpanded)}
+            className="w-full px-3 py-1.5 flex items-center justify-between gap-3 text-slate-300 hover:text-white font-bold text-[11px] bg-slate-800/80"
           >
-            <div className="flex items-center gap-1.5">
-              <Radio className="w-3 h-3 text-rose-500 animate-pulse" />
-              <span className="text-[10px] font-extrabold uppercase tracking-wide text-slate-300">
-                Telemetri Live
-              </span>
-            </div>
+            <span>Legenda Status &amp; SLA Penyaluran</span>
+            {isLegendExpanded ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronUp className="w-3.5 h-3.5" />}
+          </button>
 
-            <div className="h-3 w-px bg-slate-800"></div>
-
-            {/* Quick Status Chips */}
-            <div className="flex items-center gap-2 text-[10px] font-mono">
-              <span className="flex items-center gap-1 text-rose-400 font-semibold" title="Darurat (Indeks > 8.0)">
-                <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shadow-xs shadow-rose-500"></span>
-                <span>{regions.filter((r) => r.status === 'darurat').length}</span>
-                <span className="text-[9px] font-sans text-slate-400 hidden sm:inline">Darurat</span>
-              </span>
-
-              <span className="flex items-center gap-1 text-amber-400 font-semibold" title="Siaga (Indeks 6.0 - 7.9)">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shadow-xs shadow-amber-400"></span>
-                <span>{regions.filter((r) => r.status === 'siaga').length}</span>
-                <span className="text-[9px] font-sans text-slate-400 hidden sm:inline">Siaga</span>
-              </span>
-
-              <span className="flex items-center gap-1 text-emerald-400 font-semibold" title="Normal (Indeks < 6.0)">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                <span>{regions.filter((r) => r.status === 'normal').length}</span>
-                <span className="text-[9px] font-sans text-slate-400 hidden sm:inline">Normal</span>
-              </span>
-            </div>
-
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsLegendExpanded(true);
-              }}
-              className="text-slate-400 hover:text-white p-0.5 rounded hover:bg-slate-800/80 transition-colors ml-0.5"
-              title="Perluas rincian"
-            >
-              <ChevronUp className="w-3 h-3" />
-            </button>
-          </div>
-        ) : (
-          /* Expanded Modal Popover */
-          <div className="bg-slate-950/95 backdrop-blur-md p-3 rounded-xl border border-slate-700/80 text-white shadow-2xl w-64 animate-in fade-in zoom-in-95 duration-200">
-            <div className="flex items-center justify-between gap-2 border-b border-slate-800 pb-1.5 mb-2">
-              <div className="flex items-center gap-1.5">
-                <Radio className="w-3 h-3 text-rose-500 animate-pulse" />
-                <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-200">
-                  Telemetri Live SIGAP
-                </span>
+          {isLegendExpanded && (
+            <div className="p-3 space-y-2 text-[11px]">
+              <div className="flex items-center gap-2">
+                <span className="w-3 h-3 rounded-full bg-rose-500 animate-ping"></span>
+                <span className="w-3 h-3 rounded-full bg-rose-600"></span>
+                <span><strong>Darurat</strong>: Risiko &gt;= 71 Poin (SLA Target 3-4 Hari)</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-[9px] font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-1 rounded">
-                  Live
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setIsLegendExpanded(false)}
-                  className="text-slate-400 hover:text-white p-0.5 rounded hover:bg-slate-800 transition-colors"
-                  title="Perkecil ke mode mini"
-                >
-                  <ChevronDown className="w-3.5 h-3.5" />
-                </button>
+              <div className="flex items-center gap-2">
+                <span className="w-3 h-3 rounded-full bg-amber-500"></span>
+                <span><strong>Siaga</strong>: Risiko 36-70 Poin (SLA Target 5-6 Hari)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-3 h-3 rounded-full bg-emerald-500"></span>
+                <span><strong>Normal</strong>: Risiko 0-35 Poin (SLA Target 14 Hari)</span>
               </div>
             </div>
-
-            <div className="space-y-1.5 text-[10px]">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-rose-500 shadow-xs shadow-rose-500"></span>
-                  <span className="font-medium text-slate-300">Darurat (&gt; 8.0)</span>
-                </div>
-                <span className="font-bold font-mono text-rose-400">
-                  {regions.filter((r) => r.status === 'darurat').length} Titik
-                </span>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-amber-400 shadow-xs shadow-amber-400"></span>
-                  <span className="font-medium text-slate-300">Siaga (6.0 - 7.9)</span>
-                </div>
-                <span className="font-bold font-mono text-amber-400">
-                  {regions.filter((r) => r.status === 'siaga').length} Titik
-                </span>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-                  <span className="font-medium text-slate-300">Normal (&lt; 6.0)</span>
-                </div>
-                <span className="font-bold font-mono text-emerald-400">
-                  {regions.filter((r) => r.status === 'normal').length} Titik
-                </span>
-              </div>
-            </div>
-
-            <p className="text-[9px] text-slate-400 mt-2 pt-1.5 border-t border-slate-800/80 leading-tight">
-              Tip: Klik pin marker pada peta untuk detail telemetri atau tindakan tanggap darurat.
-            </p>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

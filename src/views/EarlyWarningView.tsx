@@ -3,6 +3,8 @@ import { RegionRiskData } from '../types';
 import { RealEarlyWarningMap } from '../components/RealEarlyWarningMap';
 import { AnimatedCounter } from '../components/AnimatedCounter';
 import { EarlyWarningMetricModal, EarlyWarningMetricType } from '../components/EarlyWarningMetricModal';
+import { RegionRadarChartModal } from '../components/RegionRadarChartModal';
+import { TechnicalArchitectureModal } from '../components/TechnicalArchitectureModal';
 import {
   AlertTriangle,
   Radio,
@@ -19,6 +21,9 @@ import {
   Sparkles,
   Info,
   MousePointerClick,
+  Radar,
+  Workflow,
+  ShieldCheck,
 } from 'lucide-react';
 
 interface EarlyWarningViewProps {
@@ -36,6 +41,8 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
 }) => {
   const [filterStatus, setFilterStatus] = useState<'all' | 'darurat' | 'siaga' | 'normal'>('all');
   const [activeMetricModal, setActiveMetricModal] = useState<EarlyWarningMetricType | null>(null);
+  const [isRadarModalOpen, setIsRadarModalOpen] = useState<boolean>(false);
+  const [isArchitectureModalOpen, setIsArchitectureModalOpen] = useState<boolean>(false);
 
   const filteredRegions = regions.filter((r) => {
     if (filterStatus === 'all') return true;
@@ -47,18 +54,31 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
 
   return (
     <div id="early-warning-module" className="p-6 space-y-6">
-      {/* Header Title */}
-      <div>
-        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-blue-600">
-          <span className="w-2 h-2 rounded-full bg-blue-600"></span>
-          <span>Modul 01 • Telemetri Geospasial</span>
+      {/* Header Title & Quick Architecture Action */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-blue-600">
+            <span className="w-2 h-2 rounded-full bg-blue-600"></span>
+            <span>Modul 01 • Telemetri Geospasial</span>
+          </div>
+          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight mt-1">
+            Deteksi Dini &amp; Peringatan Bencana
+          </h1>
+          <p className="text-xs text-slate-500 mt-0.5">
+            Pemantauan telemetri multi-bahaya real-time di 12 wilayah target dengan SLA adaptif dan matriks 7 dimensi risiko
+          </p>
         </div>
-        <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight mt-1">
-          Deteksi Dini & Peringatan Bencana
-        </h1>
-        <p className="text-xs text-slate-500 mt-0.5">
-          Pemantauan indikator risiko multi-bahaya secara real-time di seluruh wilayah Indonesia (Klik kartu metrik untuk melihat rincian & audit telemetri)
-        </p>
+
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setIsArchitectureModalOpen(true)}
+            className="px-3.5 py-2 text-xs font-bold text-slate-700 hover:text-blue-600 bg-white hover:bg-slate-50 rounded-xl border border-slate-200 shadow-xs flex items-center gap-2 transition-all"
+            title="Buka Diagram Arsitektur Teknis Sistem Terintegrasi"
+          >
+            <Workflow className="w-4 h-4 text-blue-600" />
+            <span>Diagram Arsitektur Teknis</span>
+          </button>
+        </div>
       </div>
 
       {/* 4 Interactive KPI Metrics with Hover Expand & Counter Animation */}
@@ -189,7 +209,7 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
               <span className="text-xs font-bold text-slate-800 uppercase tracking-wide">
                 Peta Pantauan Kerentanan Wilayah
               </span>
-              <span className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono">
+              <span className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono font-bold">
                 {filteredRegions.length} Titik Fokus Aktif
               </span>
             </div>
@@ -246,6 +266,10 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
               selectedRegion={selectedRegion}
               onSelectRegion={onSelectRegion}
               onOpenEmergencyAction={onOpenEmergencyAction}
+              onOpenRadar={(region) => {
+                onSelectRegion(region);
+                setIsRadarModalOpen(true);
+              }}
             />
           </div>
 
@@ -306,20 +330,30 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
               </span>
             </div>
 
-            {/* Crisis Type Summary */}
-            <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
-              <span className="text-[10px] font-semibold text-slate-500 uppercase block">
-                Pemicu Utama Anomali
-              </span>
-              <p className="text-xs font-bold text-slate-800 mt-0.5">
-                {selectedRegion.crisisType}
-              </p>
-              <p className="text-[11px] text-slate-500 mt-1">
-                Estimasi Terdampak:{' '}
-                <strong className="text-slate-800">
+            {/* Crisis Type Summary & SLA */}
+            <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-2">
+              <div>
+                <span className="text-[10px] font-semibold text-slate-500 uppercase block">
+                  Pemicu Utama Anomali
+                </span>
+                <p className="text-xs font-bold text-slate-800 mt-0.5">
+                  {selectedRegion.crisisType}
+                </p>
+              </div>
+              
+              <div className="flex items-center justify-between pt-1 border-t border-slate-200/60 text-xs">
+                <span className="text-slate-500">Target SLA Penyaluran:</span>
+                <span className="font-bold font-mono text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                  {selectedRegion.slaTargetDays} Hari Kerja
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-500">Estimasi Terdampak:</span>
+                <span className="font-bold text-slate-800">
                   {selectedRegion.affectedPopulation.toLocaleString('id-ID')} Jiwa
-                </strong>
-              </p>
+                </span>
+              </div>
             </div>
 
             {/* Key Telemetry Metrics */}
@@ -368,30 +402,14 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
               </div>
             </div>
 
-            {/* Sensor Trend Chart (12 Months) */}
-            <div className="pt-2">
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-2">
-                Tren Fluktuasi Sensor 12 Bulan
-              </span>
-              <div className="h-20 flex items-end gap-1.5 pt-2 border-b border-slate-200">
-                {selectedRegion.sensorData.map((d) => (
-                  <div key={d.day} className="flex-1 flex flex-col items-center gap-1">
-                    <div
-                      className={`w-full rounded-t transition-all ${
-                        d.alertLevel >= 80
-                          ? 'bg-rose-500'
-                          : d.alertLevel >= 60
-                          ? 'bg-amber-400'
-                          : 'bg-blue-400'
-                      }`}
-                      style={{ height: `${d.alertLevel * 0.7}px` }}
-                      title={`${d.day}: ${d.alertLevel}%`}
-                    ></div>
-                    <span className="text-[9px] text-slate-400 font-mono">{d.day}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            {/* Radar 7-Indikator Quick View Button */}
+            <button
+              onClick={() => setIsRadarModalOpen(true)}
+              className="w-full py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs border border-slate-300 transition-all flex items-center justify-center gap-2"
+            >
+              <Radar className="w-4 h-4 text-blue-600" />
+              <span>Lihat Grafik Radar 7 Indikator</span>
+            </button>
 
             {/* Action Trigger Button */}
             <button
@@ -415,7 +433,20 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
         onSelectRegion={onSelectRegion}
         onOpenEmergencyAction={onOpenEmergencyAction}
       />
+
+      {/* Region 7-Indicator Radar Chart Modal */}
+      <RegionRadarChartModal
+        region={selectedRegion}
+        isOpen={isRadarModalOpen}
+        onClose={() => setIsRadarModalOpen(false)}
+        onOpenEmergencyAction={onOpenEmergencyAction}
+      />
+
+      {/* Technical Architecture Modal */}
+      <TechnicalArchitectureModal
+        isOpen={isArchitectureModalOpen}
+        onClose={() => setIsArchitectureModalOpen(false)}
+      />
     </div>
   );
 };
-

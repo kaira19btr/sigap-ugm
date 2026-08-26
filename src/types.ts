@@ -36,7 +36,17 @@ export interface RegionRiskData {
   ricePrice: string; // e.g. "Rp 15.500 (+15%)"
   crisisType: string;
   affectedPopulation: number;
+  slaTargetDays: number; // e.g. 3.5 days for darurat, 6 days for siaga, 14 days for normal
   sensorData: { day: string; inflation: number; drought: number; alertLevel: number }[];
+  sevenIndicators: {
+    shockIntensity: number; // 1-15
+    infraDamage: number; // 1-15
+    vulnerableRatio: number; // 1-15
+    dependencyRatio: number; // 1-15
+    fiscalDeficit: number; // 1-15
+    supplyChainDistruption: number; // 1-15
+    crisisDuration: number; // 1-15
+  };
 }
 
 export interface SatuDataItem {
