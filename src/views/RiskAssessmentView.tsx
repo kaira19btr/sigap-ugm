@@ -163,7 +163,7 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
         <div>
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-blue-600">
             <span className="w-2 h-2 rounded-full bg-blue-600"></span>
-            <span>Modul 03 • Algoritma Penilaian Multi-Parameter</span>
+            <span>Modul 03 • Aktivasi &amp; Penyaluran Kilat (Activation)</span>
           </div>
           <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight mt-1">
             Penilaian Risiko &amp; Simulasi Aktivasi
@@ -493,9 +493,12 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
                     </span>
                   </div>
                   <div className="p-2 bg-white rounded-lg border border-slate-200">
-                    <span className="text-[10px] text-slate-500 block">Target SLA Distribusi:</span>
+                    <span className="text-[10px] text-slate-500 block font-medium">Target SLA Kasus Ini:</span>
                     <span className="font-bold font-mono text-blue-600 text-xs">
                       {targetSLADays} Hari
+                    </span>
+                    <span className="text-[9px] text-slate-400 block mt-0.5">
+                      (proyeksi spesifik wilayah simulasi)
                     </span>
                   </div>
                 </div>

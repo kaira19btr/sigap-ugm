@@ -59,7 +59,7 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
         <div>
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-blue-600">
             <span className="w-2 h-2 rounded-full bg-blue-600"></span>
-            <span>Modul 01 • Telemetri Geospasial</span>
+            <span>Modul 01 • Deteksi Dini &amp; Peringatan (Sensing)</span>
           </div>
           <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight mt-1">
             Deteksi Dini &amp; Peringatan Bencana

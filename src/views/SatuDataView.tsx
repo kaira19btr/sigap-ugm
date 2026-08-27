@@ -141,7 +141,7 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
         <div>
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-indigo-600">
             <span className="w-2 h-2 rounded-full bg-indigo-600"></span>
-            <span>Modul 02 • Interoperabilitas DTKS & Regsosek</span>
+            <span>Modul 02 • Satu Data &amp; Penilaian Risiko (Targeting)</span>
           </div>
           <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight mt-1">
             Satu Data Terpadu Perlindungan Sosial

@@ -145,7 +145,7 @@ export const PrivasiView: React.FC<PrivasiViewProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="p-3.5 bg-white rounded-xl border border-slate-200 shadow-xs">
               <Lock className="w-4 h-4 text-blue-600 mb-1.5" />
-              <h5 className="text-xs font-bold text-slate-800">Enkripsi Standar Militer</h5>
+              <h5 className="text-xs font-bold text-slate-800">Enkripsi AES-256 GCM (Standar Keamanan Data Tinggi)</h5>
               <p className="text-[10px] text-slate-500 mt-1 leading-snug">
                 Data disimpan dan dikirim dengan TLS 1.3 dan enkripsi AES-256 GCM.
               </p>

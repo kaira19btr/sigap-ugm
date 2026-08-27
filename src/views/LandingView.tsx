@@ -124,19 +124,23 @@ export const LandingView: React.FC<LandingViewProps> = ({
           <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto pt-8 border-t border-slate-200">
             <div className="text-center p-3">
               <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono">4.2 Hari</div>
-              <div className="text-xs text-slate-500 font-medium mt-1">Kecepatan Respons Penyaluran (SLA)</div>
+              <div className="text-xs text-slate-600 font-semibold mt-1">Rata-rata SLA Penyaluran Nasional</div>
+              <div className="text-[10px] text-slate-400 font-medium">(agregat 12 wilayah pilot)</div>
             </div>
             <div className="text-center p-3">
               <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono">94.8%</div>
-              <div className="text-xs text-slate-500 font-medium mt-1">Akurasi Target Penerima (DTKS)</div>
+              <div className="text-xs text-slate-600 font-semibold mt-1">Akurasi Target Penerima (DTKS)</div>
+              <div className="text-[10px] text-slate-400 font-medium">(Desil 1-2 &amp; Regsosek)</div>
             </div>
             <div className="text-center p-3">
               <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono">105 Poin</div>
-              <div className="text-xs text-slate-500 font-medium mt-1">Standar Matriks 7 Indikator</div>
+              <div className="text-xs text-slate-600 font-semibold mt-1">Standar Matriks 7 Indikator</div>
+              <div className="text-[10px] text-slate-400 font-medium">(Maks. 15 Poin per Parameter)</div>
             </div>
             <div className="text-center p-3">
               <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono">Offline-First</div>
-              <div className="text-xs text-slate-500 font-medium mt-1">Dukungan Pendataan Lapangan Tagana</div>
+              <div className="text-xs text-slate-600 font-semibold mt-1">Pendataan Lapangan Tagana</div>
+              <div className="text-[10px] text-slate-400 font-medium">(Sinkronisasi Cepat PWA)</div>
             </div>
           </div>
         </div>
@@ -254,14 +258,14 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
             <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800 shadow-sm space-y-1">
               <div className="flex items-center justify-between text-slate-400 text-xs">
-                <span>Rata-rata SLA Penyaluran</span>
+                <span>Rata-rata SLA Penyaluran Nasional</span>
                 <Clock className="w-4 h-4 text-amber-400" />
               </div>
               <div className="text-3xl font-extrabold font-mono text-amber-400 pt-1">
                 4.2 Hari
               </div>
               <div className="text-[11px] text-slate-400 font-semibold pt-1">
-                Target resmi: 3-5 Hari kerja
+                (agregat 12 wilayah pilot • Target: 3-5 Hari)
               </div>
             </div>
 
@@ -304,7 +308,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
             Dari Reaktif Menjadi Proaktif
           </p>
           <p className="text-slate-600 text-base mt-3">
-            Mengubah pendekatan bantuan sosial konvensional dengan sistem cerdas berbasis data terintegrasi.
+            Mengubah pendekatan bantuan sosial konvensional dengan 4 pilar sistem terintegrasi yang tanggap krisis.
           </p>
         </div>
 
@@ -315,8 +319,9 @@ export const LandingView: React.FC<LandingViewProps> = ({
               <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-5">
                 <Radio className="w-6 h-6" />
               </div>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-blue-600 mb-1">Tahap 01 • Deteksi Cepat</div>
               <h3 className="text-lg font-bold text-slate-900 mb-2">
-                Deteksi Dini Berbasis Data
+                Deteksi Dini &amp; Peringatan (Sensing)
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed">
                 Pemantauan real-time anomali iklim, fluktuasi harga pangan pokok, dan seismik multi-sensor untuk peringatan cepat sebelum krisis meluas.
@@ -333,8 +338,9 @@ export const LandingView: React.FC<LandingViewProps> = ({
               <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-5">
                 <Database className="w-6 h-6" />
               </div>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-indigo-600 mb-1">Tahap 02 • Validasi Target</div>
               <h3 className="text-lg font-bold text-slate-900 mb-2">
-                Satu Data Terpadu
+                Satu Data &amp; Penilaian Risiko (Targeting)
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed">
                 Interoperabilitas DTKS, Regsosek, dan data geospasial kebencanaan untuk validasi kelayakan otomatis tanpa tumpang tindih penerima manfaat.
@@ -351,11 +357,12 @@ export const LandingView: React.FC<LandingViewProps> = ({
               <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-5">
                 <Zap className="w-6 h-6" />
               </div>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-amber-600 mb-1">Tahap 03 • Respons Kilat</div>
               <h3 className="text-lg font-bold text-slate-900 mb-2">
-                Penyaluran Cepat &amp; Tepat
+                Aktivasi &amp; Penyaluran Kilat (Activation)
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Mekanisme aktivasi protokol darurat standar 7 indikator yang memangkas birokrasi verifikasi, menyalurkan bantuan adaptif dalam rata-rata 4.2 hari.
+                Mekanisme aktivasi protokol darurat standar 7 indikator yang memangkas birokrasi verifikasi, menyalurkan bantuan adaptif dalam rata-rata 4.2 hari nasional.
               </p>
             </div>
             <div className="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-semibold text-amber-600">
@@ -369,8 +376,9 @@ export const LandingView: React.FC<LandingViewProps> = ({
               <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-5">
                 <BarChart3 className="w-6 h-6" />
               </div>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 mb-1">Tahap 04 • Respons Berkelanjutan</div>
               <h3 className="text-lg font-bold text-slate-900 mb-2">
-                Respons Berkelanjutan
+                Monitoring &amp; Evaluasi Berkelanjutan (Feedback)
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed">
                 Monitoring transparan, survei kepuasan dua arah berbasis SMS/WhatsApp, dan pemulihan kemandirian pasca-bencana secara terukur.
@@ -391,43 +399,47 @@ export const LandingView: React.FC<LandingViewProps> = ({
               Mekanisme Kerja
             </h2>
             <p className="text-3xl font-extrabold text-slate-900">
-              Proses Kerja Sistem SIGAP
+              4 Tahap Alur Kerja Sistem SIGAP
             </p>
             <p className="text-slate-600 text-sm mt-2">
-              4 tahap terstruktur dari deteksi anomali hingga pelaporan akuntabilitas.
+              Alur kerja terstandardisasi dari deteksi anomali hingga pelaporan akuntabilitas dua arah.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
             <div className="bg-white p-6 rounded-xl border border-slate-200 relative">
               <div className="text-3xl font-mono font-extrabold text-blue-600 mb-3">01</div>
-              <h4 className="font-bold text-slate-900 mb-1">Deteksi &amp; Peringatan</h4>
+              <div className="text-[10px] font-mono font-bold text-slate-400 uppercase mb-1">Tahap 1 • Sensing</div>
+              <h4 className="font-bold text-slate-900 mb-1">Deteksi Dini &amp; Peringatan</h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Data anomali cuaca, seismik, dan pasar memicu sinyal peringatan dini ke Command Center.
+                Data anomali cuaca BMKG, seismik PVMBG, dan harga pangan memicu sinyal peringatan dini ke Command Center.
               </p>
             </div>
 
             <div className="bg-white p-6 rounded-xl border border-slate-200 relative">
               <div className="text-3xl font-mono font-extrabold text-indigo-600 mb-3">02</div>
-              <h4 className="font-bold text-slate-900 mb-1">Penilaian Risiko (105 Poin)</h4>
+              <div className="text-[10px] font-mono font-bold text-slate-400 uppercase mb-1">Tahap 2 • Targeting</div>
+              <h4 className="font-bold text-slate-900 mb-1">Satu Data &amp; Penilaian Risiko</h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Algoritma 7 parameter menilai keparahan dan mengusulkan jenis bantuan adaptif.
+                Pencocokan data DTKS &amp; Regsosek serta evaluasi 7 parameter analitis (Skala 105 Poin) secara objektif.
               </p>
             </div>
 
             <div className="bg-white p-6 rounded-xl border border-slate-200 relative">
               <div className="text-3xl font-mono font-extrabold text-amber-600 mb-3">03</div>
-              <h4 className="font-bold text-slate-900 mb-1">Verifikasi Kilat</h4>
+              <div className="text-[10px] font-mono font-bold text-slate-400 uppercase mb-1">Tahap 3 • Activation</div>
+              <h4 className="font-bold text-slate-900 mb-1">Aktivasi &amp; Penyaluran Kilat</h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Pencocokan data DTKS serta pendataan lapangan petugas Tagana secara offline-first.
+                Otorisasi protokol darurat dan penyaluran bantuan adaptif langsung via Himbara dan PT Pos Kilat.
               </p>
             </div>
 
             <div className="bg-white p-6 rounded-xl border border-slate-200 relative">
               <div className="text-3xl font-mono font-extrabold text-emerald-600 mb-3">04</div>
-              <h4 className="font-bold text-slate-900 mb-1">Penyaluran &amp; Monev</h4>
+              <div className="text-[10px] font-mono font-bold text-slate-400 uppercase mb-1">Tahap 4 • Feedback</div>
+              <h4 className="font-bold text-slate-900 mb-1">Monitoring &amp; Evaluasi Berkelanjutan</h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Distribusi bantuan langsung dan survei kepuasan penerima via WhatsApp bot &amp; SMS.
+                Pelacakan penyaluran real-time, bot pengaduan warga, dan survei kepuasan via WhatsApp &amp; SMS.
               </p>
             </div>
           </div>
@@ -486,7 +498,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
               Satu Data DTKS
             </button>
             <button onClick={() => setIsArchitectureModalOpen(true)} className="hover:text-white transition-colors">
-              Arsitektur Sistem
+              Arsitektur SPBE
             </button>
             <button onClick={onLoginClick} className="hover:text-white transition-colors">
               Portal Dinas Sosial

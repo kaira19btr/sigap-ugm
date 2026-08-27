@@ -83,13 +83,13 @@ export const MonevView: React.FC<MonevViewProps> = () => {
       <div>
         <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-600">
           <span className="w-2 h-2 rounded-full bg-emerald-600"></span>
-          <span>Modul 04 • Evaluasi Dampak & Kepuasan</span>
+          <span>Modul 04 • Monitoring &amp; Evaluasi Berkelanjutan (Feedback)</span>
         </div>
         <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight mt-1">
-          Monitoring & Evaluasi Penyaluran
+          Monitoring &amp; Evaluasi Penyaluran
         </h1>
         <p className="text-xs text-slate-500 mt-0.5">
-          Pelacakan efektivitas penyaluran bantuan sosial adaptif dan umpan balik kepuasan penerima manfaat (Klik kartu metrik untuk melihat laporan & audit mendalam)
+          Pelacakan efektivitas penyaluran bantuan sosial adaptif dan umpan balik kepuasan penerima manfaat (Klik kartu metrik untuk melihat laporan &amp; audit mendalam)
         </p>
       </div>
 

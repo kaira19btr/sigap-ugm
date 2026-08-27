@@ -40,6 +40,7 @@ interface NavItem {
   id: AppModule;
   label: string;
   moduleNumber: string;
+  stageName?: string;
   icon: React.ElementType;
   badgeCount?: number;
   allowedRoles: UserRole[];
@@ -62,20 +63,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
       id: 'early_warning',
       moduleNumber: '01',
       label: 'Deteksi Dini & Peringatan',
+      stageName: 'Sensing',
       icon: Radio,
       allowedRoles: ['admin_pusat', 'admin_daerah', 'petugas_lapangan'],
     },
     {
       id: 'satu_data',
       moduleNumber: '02',
-      label: 'Satu Data Terpadu',
+      label: 'Satu Data & Penilaian Risiko',
+      stageName: 'Targeting',
       icon: Database,
       allowedRoles: ['admin_pusat', 'admin_daerah', 'petugas_lapangan'],
     },
     {
       id: 'risk_assessment',
       moduleNumber: '03',
-      label: 'Penilaian Risiko & Aktivasi',
+      label: 'Aktivasi & Penyaluran Kilat',
+      stageName: 'Activation',
       icon: SlidersHorizontal,
       allowedRoles: ['admin_pusat', 'admin_daerah'],
     },
@@ -83,6 +87,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       id: 'monev',
       moduleNumber: '04',
       label: 'Monitoring & Evaluasi',
+      stageName: 'Feedback',
       icon: BarChart3,
       allowedRoles: ['admin_pusat', 'admin_daerah'],
     },
@@ -185,6 +190,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     </span>
                     <span className="truncate">{item.label}</span>
                   </div>
+                  {item.stageName && (
+                    <div className="text-[9px] font-mono text-blue-300/80 font-medium tracking-wide">
+                      Tahap {item.moduleNumber} • {item.stageName}
+                    </div>
+                  )}
                 </div>
               </div>
 
