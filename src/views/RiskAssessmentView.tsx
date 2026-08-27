@@ -285,27 +285,27 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: 7 Sliders & Dynamic Confidence Score Engine */}
-        <div className="lg:col-span-7 bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-5">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div className="lg:col-span-7 bg-gradient-to-br from-white via-slate-50/80 to-rose-50/20 rounded-xl border border-rose-200/60 shadow-sm p-5 space-y-5">
+          <div className="flex items-center justify-between border-b border-rose-100 pb-3">
             <div className="flex items-center gap-2">
-              <SlidersHorizontal className="w-4 h-4 text-blue-600" />
+              <SlidersHorizontal className="w-4 h-4 text-rose-600" />
               <span className="text-xs font-bold text-slate-800 uppercase tracking-wide">
                 Konfigurasi 7 Parameter Risiko Utama
               </span>
             </div>
-            <span className="text-[11px] font-mono text-slate-500 font-bold">Skala 1 - 15 per Indikator (Maks 105)</span>
+            <span className="text-[11px] font-mono text-rose-700 font-bold bg-rose-50 px-2 py-0.5 rounded border border-rose-200/60">Skala 1 - 15 per Indikator (Maks 105)</span>
           </div>
 
           {/* Region & Disaster target selection */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 bg-slate-50 rounded-xl border border-slate-200">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 bg-gradient-to-r from-rose-50/40 via-amber-50/30 to-blue-50/30 rounded-xl border border-rose-200/60 shadow-2xs">
             <div>
-              <label className="block text-[11px] font-bold text-slate-600 mb-1">
+              <label className="block text-[11px] font-bold text-slate-700 mb-1">
                 Wilayah Target Simulasi
               </label>
               <select
                 value={regionTarget}
                 onChange={(e) => setRegionTarget(e.target.value)}
-                className="w-full p-2 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 font-semibold"
+                className="w-full p-2 text-xs bg-white border border-rose-200/80 rounded-lg text-slate-800 font-semibold focus:ring-2 focus:ring-rose-500 shadow-2xs"
               >
                 <option value="Kab. Cianjur, Jawa Barat">Kab. Cianjur, Jawa Barat</option>
                 <option value="Kab. Sumba Timur, NTT">Kab. Sumba Timur, NTT</option>
@@ -319,14 +319,14 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
               </select>
             </div>
             <div>
-              <label className="block text-[11px] font-bold text-slate-600 mb-1">
+              <label className="block text-[11px] font-bold text-slate-700 mb-1">
                 Kategori Bahaya / Krisis
               </label>
               <input
                 type="text"
                 value={disasterType}
                 onChange={(e) => setDisasterType(e.target.value)}
-                className="w-full p-2 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 font-semibold"
+                className="w-full p-2 text-xs bg-white border border-rose-200/80 rounded-lg text-slate-800 font-semibold focus:ring-2 focus:ring-rose-500 shadow-2xs"
               />
             </div>
           </div>
@@ -337,7 +337,7 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
             <div>
               <div className="flex items-center justify-between text-xs mb-1">
                 <span className="font-semibold text-slate-700">1. Intensitas Shock / Bencana Fisik (BMKG/PVMBG)</span>
-                <span className="font-bold font-mono text-blue-600">{params.shockIntensity} / 15</span>
+                <span className="font-bold font-mono text-rose-600">{params.shockIntensity} / 15</span>
               </div>
               <input
                 type="range"
@@ -345,7 +345,7 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
                 max="15"
                 value={params.shockIntensity}
                 onChange={(e) => setParams({ ...params, shockIntensity: Number(e.target.value) })}
-                className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-rose-600"
               />
             </div>
 
@@ -353,7 +353,7 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
             <div>
               <div className="flex items-center justify-between text-xs mb-1">
                 <span className="font-semibold text-slate-700">2. Kerusakan Infrastruktur &amp; Aksesibilitas Posko</span>
-                <span className="font-bold font-mono text-blue-600">{params.infraDamage} / 15</span>
+                <span className="font-bold font-mono text-rose-600">{params.infraDamage} / 15</span>
               </div>
               <input
                 type="range"
@@ -361,7 +361,7 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
                 max="15"
                 value={params.infraDamage}
                 onChange={(e) => setParams({ ...params, infraDamage: Number(e.target.value) })}
-                className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-rose-600"
               />
             </div>
 
@@ -369,7 +369,7 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
             <div>
               <div className="flex items-center justify-between text-xs mb-1">
                 <span className="font-semibold text-slate-700">3. Proporsi Rumah Tangga Rentan (DTKS Desil 1-2 &amp; Regsosek)</span>
-                <span className="font-bold font-mono text-blue-600">{params.vulnerableRatio} / 15</span>
+                <span className="font-bold font-mono text-rose-600">{params.vulnerableRatio} / 15</span>
               </div>
               <input
                 type="range"
@@ -377,7 +377,7 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
                 max="15"
                 value={params.vulnerableRatio}
                 onChange={(e) => setParams({ ...params, vulnerableRatio: Number(e.target.value) })}
-                className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-rose-600"
               />
             </div>
 
@@ -385,7 +385,7 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
             <div>
               <div className="flex items-center justify-between text-xs mb-1">
                 <span className="font-semibold text-slate-700">4. Rasio Beban Ketergantungan (Lansia, Balita, Disabilitas)</span>
-                <span className="font-bold font-mono text-blue-600">{params.dependencyRatio} / 15</span>
+                <span className="font-bold font-mono text-rose-600">{params.dependencyRatio} / 15</span>
               </div>
               <input
                 type="range"
@@ -393,7 +393,7 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
                 max="15"
                 value={params.dependencyRatio}
                 onChange={(e) => setParams({ ...params, dependencyRatio: Number(e.target.value) })}
-                className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-rose-600"
               />
             </div>
 
@@ -401,7 +401,7 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
             <div>
               <div className="flex items-center justify-between text-xs mb-1">
                 <span className="font-semibold text-slate-700">5. Keterbatasan Kapasitas Fiskal &amp; Logistik Daerah</span>
-                <span className="font-bold font-mono text-blue-600">{params.fiscalDeficit} / 15</span>
+                <span className="font-bold font-mono text-rose-600">{params.fiscalDeficit} / 15</span>
               </div>
               <input
                 type="range"
@@ -409,7 +409,7 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
                 max="15"
                 value={params.fiscalDeficit}
                 onChange={(e) => setParams({ ...params, fiscalDeficit: Number(e.target.value) })}
-                className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-rose-600"
               />
             </div>
 
@@ -417,7 +417,7 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
             <div>
               <div className="flex items-center justify-between text-xs mb-1">
                 <span className="font-semibold text-slate-700">6. Gangguan Rantai Pasok Pangan Pokok &amp; Pasar Lokal</span>
-                <span className="font-bold font-mono text-blue-600">{params.supplyChainDistruption} / 15</span>
+                <span className="font-bold font-mono text-rose-600">{params.supplyChainDistruption} / 15</span>
               </div>
               <input
                 type="range"
@@ -425,7 +425,7 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
                 max="15"
                 value={params.supplyChainDistruption}
                 onChange={(e) => setParams({ ...params, supplyChainDistruption: Number(e.target.value) })}
-                className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-rose-600"
               />
             </div>
 
@@ -433,7 +433,7 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
             <div>
               <div className="flex items-center justify-between text-xs mb-1">
                 <span className="font-semibold text-slate-700">7. Proyeksi Durasi Krisis &amp; Risiko Bencana Susulan</span>
-                <span className="font-bold font-mono text-blue-600">{params.crisisDuration} / 15</span>
+                <span className="font-bold font-mono text-rose-600">{params.crisisDuration} / 15</span>
               </div>
               <input
                 type="range"
@@ -441,17 +441,17 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
                 max="15"
                 value={params.crisisDuration}
                 onChange={(e) => setParams({ ...params, crisisDuration: Number(e.target.value) })}
-                className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-rose-600"
               />
             </div>
           </div>
 
           {/* DYNAMIC CONFIDENCE SCORE ENGINE & DATA QUALITY PARAMETERS */}
-          <div className="p-4 rounded-xl bg-slate-900 text-white space-y-4 border border-slate-800 shadow-md">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-slate-800">
+          <div className="p-4 rounded-xl bg-gradient-to-br from-[#0B0F19] via-[#1C0A22] to-[#0A1429] text-white space-y-4 border border-rose-900/40 shadow-md">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-rose-950/60">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span className="text-xs font-bold uppercase tracking-wide">
+                <span className="text-xs font-bold uppercase tracking-wide text-slate-100">
                   Mesin Kalkulasi Dynamic Confidence Score
                 </span>
               </div>
@@ -485,21 +485,21 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
                 <button
                   type="button"
                   onClick={() => applyPresetScenario('ideal')}
-                  className="px-2.5 py-1.5 rounded-lg text-[11px] font-bold bg-emerald-950/60 hover:bg-emerald-900 border border-emerald-700/50 text-emerald-300 transition-all text-center"
+                  className="px-2.5 py-1.5 rounded-lg text-[11px] font-bold bg-emerald-950/60 hover:bg-emerald-900 border border-emerald-700/50 text-emerald-300 transition-all text-center cursor-pointer shadow-xs"
                 >
                   🟢 Skenario Normal (93%)
                 </button>
                 <button
                   type="button"
                   onClick={() => applyPresetScenario('partial')}
-                  className="px-2.5 py-1.5 rounded-lg text-[11px] font-bold bg-amber-950/60 hover:bg-amber-900 border border-amber-700/50 text-amber-300 transition-all text-center"
+                  className="px-2.5 py-1.5 rounded-lg text-[11px] font-bold bg-amber-950/60 hover:bg-amber-900 border border-amber-700/50 text-amber-300 transition-all text-center cursor-pointer shadow-xs"
                 >
                   🟡 Skenario Parsial (72%)
                 </button>
                 <button
                   type="button"
                   onClick={() => applyPresetScenario('isolated')}
-                  className="px-2.5 py-1.5 rounded-lg text-[11px] font-bold bg-rose-950/60 hover:bg-rose-900 border border-rose-700/50 text-rose-300 transition-all text-center"
+                  className="px-2.5 py-1.5 rounded-lg text-[11px] font-bold bg-rose-950/60 hover:bg-rose-900 border border-rose-700/50 text-rose-300 transition-all text-center cursor-pointer shadow-xs"
                 >
                   🔴 Skenario Terisolir (44%)
                 </button>
@@ -556,7 +556,7 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
                   <span className="text-slate-300 font-medium text-[11px]">
                     3. Kepadanan NIK &amp; Validasi Basis Data DTKS-Regsosek (Bobot 20%)
                   </span>
-                  <span className="font-bold font-mono text-indigo-400">{dataQuality.identityMatchRate}%</span>
+                  <span className="font-bold font-mono text-rose-400">{dataQuality.identityMatchRate}%</span>
                 </div>
                 <input
                   type="range"
@@ -567,13 +567,13 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
                     setDataQuality({ ...dataQuality, identityMatchRate: Number(e.target.value) });
                     setManualVerificationConfirmed(false);
                   }}
-                  className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-400"
+                  className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-rose-400"
                 />
               </div>
             </div>
 
-            <p className="text-[10px] text-slate-400 leading-relaxed pt-1 border-t border-slate-800">
-              Formula: <code className="text-slate-300 font-mono font-bold">Confidence = (Lapangan × 0.45) + (Sensor × 0.35) + (NIK × 0.20)</code>. Jika skor di bawah <strong>70%</strong>, sistem secara otomatis mengunci otorisasi langsung dan mewajibkan verifikasi manual faktual (Human-in-the-Loop Safeguard).
+            <p className="text-[10px] text-slate-400 leading-relaxed pt-1 border-t border-rose-950/60">
+              Formula: <code className="text-amber-300 font-mono font-bold">Confidence = (Lapangan × 0.45) + (Sensor × 0.35) + (NIK × 0.20)</code>. Jika skor di bawah <strong>70%</strong>, sistem secara otomatis mengunci otorisasi langsung dan mewajibkan verifikasi manual faktual (Human-in-the-Loop Safeguard).
             </p>
           </div>
         </div>
@@ -581,9 +581,9 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
         {/* Right Column: Dynamic Score & Recommendation */}
         <div className="lg:col-span-5 space-y-4">
           {/* Risk Card */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-4">
-            <div className="text-center pb-2 border-b border-slate-100">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+          <div className="bg-gradient-to-br from-white via-rose-50/40 to-amber-50/20 rounded-xl border border-rose-200/70 shadow-sm p-5 space-y-4">
+            <div className="text-center pb-2 border-b border-rose-100">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-rose-700">
                 Skor Indeks Risiko Gabungan (7 Indikator)
               </span>
               <div className="flex items-baseline justify-center gap-2 mt-1">
@@ -601,11 +601,11 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
 
             {/* Progress Gauge */}
             <div>
-              <div className="flex items-center justify-between text-xs text-slate-500 mb-1 font-medium">
+              <div className="flex items-center justify-between text-xs text-slate-600 mb-1 font-medium">
                 <span>Tingkat Keparahan Krisis:</span>
                 <span className="font-mono font-bold text-slate-800">{percentage}%</span>
               </div>
-              <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+              <div className="w-full bg-slate-200 rounded-full h-2.5 overflow-hidden">
                 <div
                   className={`h-2.5 transition-all duration-300 ${badgeColor}`}
                   style={{ width: `${percentage}%` }}
@@ -652,30 +652,30 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
             )}
 
             {/* Automated Recommendation Box */}
-            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
-              <div className="flex items-center gap-2 text-xs font-bold text-slate-800 uppercase">
-                <Sparkles className="w-4 h-4 text-blue-600" />
+            <div className="p-4 rounded-xl bg-gradient-to-br from-[#0F172A] via-[#1A0B22] to-[#0A1325] text-white border border-rose-900/40 space-y-3 shadow-sm">
+              <div className="flex items-center gap-2 text-xs font-bold text-rose-400 uppercase">
+                <Sparkles className="w-4 h-4 text-amber-400" />
                 <span>Rekomendasi Otomatis SIGAP AI</span>
               </div>
 
               <div className="space-y-2 text-xs">
                 <div>
-                  <span className="text-slate-500 block text-[11px]">Protokol Terpicu:</span>
-                  <span className="font-bold text-slate-900 leading-snug block">
+                  <span className="text-slate-400 block text-[11px]">Protokol Terpicu:</span>
+                  <span className="font-bold text-slate-100 leading-snug block">
                     {protocolAction}
                   </span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2 pt-1">
-                  <div className="p-2 bg-white rounded-lg border border-slate-200">
-                    <span className="text-[10px] text-slate-500 block">Kebutuhan Anggaran:</span>
-                    <span className="font-bold font-mono text-slate-900 text-xs">
+                  <div className="p-2.5 bg-slate-900/80 rounded-lg border border-slate-800">
+                    <span className="text-[10px] text-slate-400 block">Kebutuhan Anggaran:</span>
+                    <span className="font-bold font-mono text-amber-300 text-xs">
                       {budgetRecommendation}
                     </span>
                   </div>
-                  <div className="p-2 bg-white rounded-lg border border-slate-200">
-                    <span className="text-[10px] text-slate-500 block font-medium">Target SLA Kasus Ini:</span>
-                    <span className="font-bold font-mono text-blue-600 text-xs">
+                  <div className="p-2.5 bg-slate-900/80 rounded-lg border border-slate-800">
+                    <span className="text-[10px] text-slate-400 block font-medium">Target SLA Kasus Ini:</span>
+                    <span className="font-bold font-mono text-blue-400 text-xs">
                       {targetSLADays} Hari
                     </span>
                     <span className="text-[9px] text-slate-400 block mt-0.5">
@@ -695,9 +695,9 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
                 className={`w-full py-3 px-4 rounded-xl font-bold text-xs shadow-md transition-all flex items-center justify-center gap-2 ${
                   isHumanInTheLoopRequired
                     ? manualVerificationConfirmed
-                      ? 'bg-amber-600 hover:bg-amber-700 text-white shadow-amber-600/20 cursor-pointer'
+                      ? 'bg-gradient-to-r from-amber-600 to-rose-600 hover:from-amber-500 hover:to-rose-500 text-white shadow-amber-600/20 cursor-pointer'
                       : 'bg-slate-200 text-slate-400 border border-slate-300 cursor-not-allowed shadow-none'
-                    : 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-600/20 cursor-pointer'
+                    : 'bg-gradient-to-r from-rose-600 via-rose-500 to-blue-600 hover:from-rose-500 hover:to-blue-500 text-white shadow-rose-600/20 cursor-pointer'
                 }`}
               >
                 {isHumanInTheLoopRequired ? (
@@ -728,9 +728,9 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
           </div>
 
           {/* Audit Panel & Parameter Validity */}
-          <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-xs space-y-2.5 text-xs text-slate-600">
-            <div className="flex items-center gap-2 font-bold text-slate-800 uppercase tracking-wide text-[11px] pb-1 border-b border-slate-100">
-              <Fingerprint className="w-4 h-4 text-indigo-600" />
+          <div className="p-4 bg-gradient-to-br from-white via-slate-50/70 to-rose-50/20 rounded-xl border border-rose-200/60 shadow-xs space-y-2.5 text-xs text-slate-600">
+            <div className="flex items-center gap-2 font-bold text-slate-800 uppercase tracking-wide text-[11px] pb-1 border-b border-rose-100">
+              <Fingerprint className="w-4 h-4 text-rose-600" />
               <span>Panel Jejak Audit &amp; Validitas Model</span>
             </div>
             <div className="space-y-1 font-mono text-[10px]">

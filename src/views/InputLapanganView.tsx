@@ -127,12 +127,12 @@ export const InputLapanganView: React.FC<InputLapanganViewProps> = ({
         <div
           id="card-status-pending"
           onClick={() => handleOpenStatusModal('pending')}
-          className="group relative bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 hover:border-amber-400 shadow-xs hover:shadow-xl hover:shadow-amber-500/10 cursor-pointer transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02] flex flex-col justify-between overflow-hidden"
+          className="group relative bg-gradient-to-br from-white via-amber-50/50 to-rose-50/20 p-4 sm:p-5 rounded-2xl border border-amber-200/80 hover:border-amber-400 shadow-xs hover:shadow-xl hover:shadow-amber-500/10 cursor-pointer transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02] flex flex-col justify-between overflow-hidden"
         >
-          <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-bl-full pointer-events-none group-hover:bg-amber-500/10 transition-colors"></div>
+          <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/10 rounded-bl-full pointer-events-none group-hover:bg-amber-500/15 transition-colors"></div>
           <div className="flex items-start justify-between">
             <div>
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 group-hover:text-amber-800 transition-colors">
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 group-hover:text-amber-900 transition-colors">
                 <span>Antrean Lokal (Pending)</span>
                 <Sparkles className="w-3 h-3 text-amber-500 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
@@ -140,18 +140,18 @@ export const InputLapanganView: React.FC<InputLapanganViewProps> = ({
                 {pendingCount} <span className="text-xs font-sans font-bold text-slate-400">Data</span>
               </div>
             </div>
-            <div className="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center group-hover:bg-amber-500 group-hover:text-white transition-all shadow-xs group-hover:rotate-6">
+            <div className="w-11 h-11 rounded-xl bg-amber-100/70 text-amber-700 flex items-center justify-center group-hover:bg-amber-500 group-hover:text-white transition-all shadow-xs group-hover:rotate-6">
               <Clock className="w-5 h-5" />
             </div>
           </div>
 
-          <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
-            <span className="flex items-center gap-1 text-amber-700 font-medium">
+          <div className="mt-3 pt-3 border-t border-amber-100/80 flex items-center justify-between text-[11px] text-slate-500">
+            <span className="flex items-center gap-1 text-amber-800 font-medium">
               <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping"></span>
               Menunggu transmisi
             </span>
-            <span className="font-bold text-amber-600 group-hover:translate-x-1 transition-transform flex items-center gap-0.5">
-              Info & Aksi <ArrowUpRight className="w-3 h-3" />
+            <span className="font-bold text-amber-700 group-hover:translate-x-1 transition-transform flex items-center gap-0.5">
+              Info &amp; Aksi <ArrowUpRight className="w-3 h-3" />
             </span>
           </div>
         </div>
@@ -160,12 +160,12 @@ export const InputLapanganView: React.FC<InputLapanganViewProps> = ({
         <div
           id="card-status-synced"
           onClick={() => handleOpenStatusModal('synced')}
-          className="group relative bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 hover:border-emerald-400 shadow-xs hover:shadow-xl hover:shadow-emerald-500/10 cursor-pointer transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02] flex flex-col justify-between overflow-hidden"
+          className="group relative bg-gradient-to-br from-white via-emerald-50/50 to-blue-50/20 p-4 sm:p-5 rounded-2xl border border-emerald-200/80 hover:border-emerald-400 shadow-xs hover:shadow-xl hover:shadow-emerald-500/10 cursor-pointer transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02] flex flex-col justify-between overflow-hidden"
         >
-          <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-bl-full pointer-events-none group-hover:bg-emerald-500/10 transition-colors"></div>
+          <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 rounded-bl-full pointer-events-none group-hover:bg-emerald-500/15 transition-colors"></div>
           <div className="flex items-start justify-between">
             <div>
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 group-hover:text-emerald-800 transition-colors">
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 group-hover:text-emerald-900 transition-colors">
                 <span>Berhasil Tersinkronisasi</span>
                 <Sparkles className="w-3 h-3 text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
@@ -173,18 +173,18 @@ export const InputLapanganView: React.FC<InputLapanganViewProps> = ({
                 {syncedCount} <span className="text-xs font-sans font-bold text-slate-400">Data</span>
               </div>
             </div>
-            <div className="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-white transition-all shadow-xs group-hover:rotate-6">
+            <div className="w-11 h-11 rounded-xl bg-emerald-100/70 text-emerald-700 flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-white transition-all shadow-xs group-hover:rotate-6">
               <CheckCircle2 className="w-5 h-5" />
             </div>
           </div>
 
-          <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
-            <span className="flex items-center gap-1 text-emerald-700 font-medium">
+          <div className="mt-3 pt-3 border-t border-emerald-100/80 flex items-center justify-between text-[11px] text-slate-500">
+            <span className="flex items-center gap-1 text-emerald-800 font-medium">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-              Padan DTKS & SP2D
+              Padan DTKS &amp; SP2D
             </span>
-            <span className="font-bold text-emerald-600 group-hover:translate-x-1 transition-transform flex items-center gap-0.5">
-              Info & Audit <ArrowUpRight className="w-3 h-3" />
+            <span className="font-bold text-emerald-700 group-hover:translate-x-1 transition-transform flex items-center gap-0.5">
+              Info &amp; Audit <ArrowUpRight className="w-3 h-3" />
             </span>
           </div>
         </div>
@@ -193,12 +193,12 @@ export const InputLapanganView: React.FC<InputLapanganViewProps> = ({
         <div
           id="card-status-failed"
           onClick={() => handleOpenStatusModal('failed')}
-          className="group relative bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 hover:border-rose-400 shadow-xs hover:shadow-xl hover:shadow-rose-500/10 cursor-pointer transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02] flex flex-col justify-between overflow-hidden"
+          className="group relative bg-gradient-to-br from-white via-rose-50/50 to-amber-50/20 p-4 sm:p-5 rounded-2xl border border-rose-200/80 hover:border-rose-400 shadow-xs hover:shadow-xl hover:shadow-rose-500/10 cursor-pointer transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02] flex flex-col justify-between overflow-hidden"
         >
-          <div className="absolute top-0 right-0 w-24 h-24 bg-rose-500/5 rounded-bl-full pointer-events-none group-hover:bg-rose-500/10 transition-colors"></div>
+          <div className="absolute top-0 right-0 w-24 h-24 bg-rose-500/10 rounded-bl-full pointer-events-none group-hover:bg-rose-500/15 transition-colors"></div>
           <div className="flex items-start justify-between">
             <div>
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 group-hover:text-rose-800 transition-colors">
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 group-hover:text-rose-900 transition-colors">
                 <span>Gagal Validasi NIK</span>
                 <Sparkles className="w-3 h-3 text-rose-500 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
@@ -206,38 +206,38 @@ export const InputLapanganView: React.FC<InputLapanganViewProps> = ({
                 {errorCount} <span className="text-xs font-sans font-bold text-slate-400">Data</span>
               </div>
             </div>
-            <div className="w-11 h-11 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center group-hover:bg-rose-600 group-hover:text-white transition-all shadow-xs group-hover:rotate-6">
+            <div className="w-11 h-11 rounded-xl bg-rose-100/70 text-rose-700 flex items-center justify-center group-hover:bg-rose-600 group-hover:text-white transition-all shadow-xs group-hover:rotate-6">
               <AlertCircle className="w-5 h-5" />
             </div>
           </div>
 
-          <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
-            <span className="flex items-center gap-1 text-rose-700 font-medium">
+          <div className="mt-3 pt-3 border-t border-rose-100/80 flex items-center justify-between text-[11px] text-slate-500">
+            <span className="flex items-center gap-1 text-rose-800 font-medium">
               <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse"></span>
               Butuh koreksi Tagana
             </span>
-            <span className="font-bold text-rose-600 group-hover:translate-x-1 transition-transform flex items-center gap-0.5">
-              Info & Perbaikan <ArrowUpRight className="w-3 h-3" />
+            <span className="font-bold text-rose-700 group-hover:translate-x-1 transition-transform flex items-center gap-0.5">
+              Info &amp; Perbaikan <ArrowUpRight className="w-3 h-3" />
             </span>
           </div>
         </div>
       </div>
 
       {/* Local Queue Table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <div className="p-4 border-b border-slate-200 flex items-center justify-between">
+      <div className="bg-gradient-to-br from-white via-slate-50/70 to-rose-50/20 rounded-xl border border-rose-200/60 shadow-sm overflow-hidden">
+        <div className="p-4 border-b border-rose-100/80 flex items-center justify-between bg-gradient-to-r from-white via-rose-50/20 to-amber-50/10">
           <div className="flex items-center gap-2">
-            <Database className="w-4 h-4 text-slate-500" />
+            <Database className="w-4 h-4 text-rose-600" />
             <span className="text-xs font-bold text-slate-800 uppercase tracking-wide">
               Daftar Antrean Pendataan Lokal
             </span>
           </div>
-          <span className="text-[11px] font-mono text-slate-400">Total: {queue.length} Item</span>
+          <span className="text-[11px] font-mono text-rose-700 font-bold bg-rose-50 px-2 py-0.5 rounded border border-rose-200/60">Total: {queue.length} Item</span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs text-slate-700">
-            <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold uppercase text-[10px] tracking-wider">
+            <thead className="bg-slate-50/90 border-b border-slate-200 text-slate-500 font-semibold uppercase text-[10px] tracking-wider">
               <tr>
                 <th className="py-3 px-4">Nama Kepala Keluarga</th>
                 <th className="py-3 px-4">NIK (Terenkripsi)</th>
@@ -294,7 +294,7 @@ export const InputLapanganView: React.FC<InputLapanganViewProps> = ({
                   <td className="py-3.5 px-4 text-right">
                     <button
                       onClick={() => onDeleteEntry(item.id)}
-                      className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                      className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
                       title="Hapus dari antrean lokal"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -308,15 +308,15 @@ export const InputLapanganView: React.FC<InputLapanganViewProps> = ({
       </div>
 
       {/* SMS Gateway Helper */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-3">
+      <div className="bg-gradient-to-br from-white via-blue-50/40 to-rose-50/20 rounded-xl border border-blue-200/80 shadow-sm p-5 space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <MessageSquare className="w-4 h-4 text-blue-600" />
+            <MessageSquare className="w-4 h-4 text-rose-600" />
             <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wide">
               Panduan Jalur Darurat SMS Gateway (Khusus 0% Sinyal Internet)
             </h3>
           </div>
-          <span className="text-[10px] bg-blue-50 text-blue-700 font-mono font-bold px-2 py-0.5 rounded">
+          <span className="text-[10px] bg-rose-50 text-rose-700 font-mono font-bold px-2.5 py-0.5 rounded-full border border-rose-200">
             Nomor: 99123 (Bebas Pulsa)
           </span>
         </div>
@@ -325,13 +325,13 @@ export const InputLapanganView: React.FC<InputLapanganViewProps> = ({
           Jika jaringan data 3G/4G lumpuh total, petugas dapat mengirim data warga terdampak melalui SMS format terstandar:
         </p>
 
-        <div className="p-3 bg-slate-900 text-slate-200 rounded-xl font-mono text-xs flex items-center justify-between overflow-x-auto">
-          <span>SIGAP#NIK#KODE_DESA#JUMLAH_ART#KONDISI</span>
+        <div className="p-3.5 bg-gradient-to-r from-[#0F172A] via-[#1A0B22] to-[#0B1328] text-slate-200 rounded-xl font-mono text-xs flex items-center justify-between overflow-x-auto border border-rose-900/40 shadow-inner">
+          <span className="text-amber-300 font-bold">SIGAP#NIK#KODE_DESA#JUMLAH_ART#KONDISI</span>
           <button
             onClick={handleCopySms}
-            className="flex items-center gap-1.5 px-3 py-1 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-sans transition-colors shrink-0 ml-4"
+            className="flex items-center gap-1.5 px-3 py-1 bg-gradient-to-r from-rose-600 to-blue-600 hover:from-rose-500 hover:to-blue-500 text-white rounded-lg text-xs font-sans transition-colors shrink-0 ml-4 cursor-pointer shadow-xs"
           >
-            {copiedSMS ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+            {copiedSMS ? <Check className="w-3.5 h-3.5 text-emerald-300" /> : <Copy className="w-3.5 h-3.5" />}
             <span>{copiedSMS ? 'Tersalin!' : 'Salin Format'}</span>
           </button>
         </div>

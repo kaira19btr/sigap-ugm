@@ -99,12 +99,12 @@ export const MonevView: React.FC<MonevViewProps> = () => {
         <div
           id="card-kpi-waktu-penyaluran"
           onClick={() => setActiveMetricModal('waktu_penyaluran')}
-          className="bg-white p-4 rounded-xl border border-emerald-200 shadow-xs hover:shadow-xl hover:border-emerald-400 hover:ring-2 hover:ring-emerald-400/30 transform hover:-translate-y-1 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer flex items-start justify-between group relative overflow-hidden"
+          className="bg-gradient-to-br from-white via-emerald-50/50 to-blue-50/20 p-4 rounded-xl border border-emerald-200/80 shadow-xs hover:shadow-xl hover:border-emerald-400 hover:ring-2 hover:ring-emerald-400/30 transform hover:-translate-y-1 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer flex items-start justify-between group relative overflow-hidden"
         >
-          <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-emerald-500/10 to-transparent rounded-bl-full pointer-events-none"></div>
+          <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-emerald-500/15 to-transparent rounded-bl-full pointer-events-none"></div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="text-xs font-semibold text-slate-600 group-hover:text-emerald-700 transition-colors">
+              <span className="text-xs font-semibold text-slate-700 group-hover:text-emerald-700 transition-colors">
                 Rata-rata Waktu Penyaluran
               </span>
             </div>
@@ -112,7 +112,7 @@ export const MonevView: React.FC<MonevViewProps> = () => {
               <AnimatedCounter value={4.2} duration={1200} decimalPlaces={1} />
               <span className="text-xs font-sans font-bold text-slate-500">Hari</span>
             </div>
-            <div className="flex items-center gap-1 text-[11px] text-emerald-600 font-semibold mt-1">
+            <div className="flex items-center gap-1 text-[11px] text-emerald-700 font-semibold mt-1">
               <TrendingDown className="w-3 h-3" />
               <span>Turun dari 21 hari (Manual)</span>
             </div>
@@ -121,7 +121,7 @@ export const MonevView: React.FC<MonevViewProps> = () => {
               <span>Klik timeline T+0 s.d T+4</span>
             </div>
           </div>
-          <div className="w-11 h-11 rounded-xl bg-emerald-50 group-hover:bg-emerald-600 group-hover:text-white text-emerald-600 flex items-center justify-center transition-all duration-300 shadow-xs">
+          <div className="w-11 h-11 rounded-xl bg-emerald-100/70 group-hover:bg-emerald-600 group-hover:text-white text-emerald-700 flex items-center justify-center transition-all duration-300 shadow-xs">
             <Clock className="w-5 h-5" />
           </div>
         </div>
@@ -130,12 +130,12 @@ export const MonevView: React.FC<MonevViewProps> = () => {
         <div
           id="card-kpi-total-dana"
           onClick={() => setActiveMetricModal('total_dana')}
-          className="bg-white p-4 rounded-xl border border-blue-200 shadow-xs hover:shadow-xl hover:border-blue-400 hover:ring-2 hover:ring-blue-400/30 transform hover:-translate-y-1 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer flex items-start justify-between group relative overflow-hidden"
+          className="bg-gradient-to-br from-white via-blue-50/50 to-rose-50/20 p-4 rounded-xl border border-blue-200/80 shadow-xs hover:shadow-xl hover:border-blue-400 hover:ring-2 hover:ring-blue-400/30 transform hover:-translate-y-1 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer flex items-start justify-between group relative overflow-hidden"
         >
-          <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-blue-500/10 to-transparent rounded-bl-full pointer-events-none"></div>
+          <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-blue-500/15 to-transparent rounded-bl-full pointer-events-none"></div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="text-xs font-semibold text-slate-600 group-hover:text-blue-700 transition-colors">
+              <span className="text-xs font-semibold text-slate-700 group-hover:text-blue-700 transition-colors">
                 Total Dana Tersalurkan
               </span>
             </div>
@@ -144,7 +144,7 @@ export const MonevView: React.FC<MonevViewProps> = () => {
               <AnimatedCounter value={12.4} duration={1200} decimalPlaces={1} />
               <span className="text-xs font-sans font-bold text-slate-500">Triliun</span>
             </div>
-            <div className="text-[11px] text-blue-600 font-semibold mt-1">
+            <div className="text-[11px] text-blue-700 font-semibold mt-1">
               Realisasi 92.4% Alokasi Darurat
             </div>
             <div className="text-[10px] text-slate-400 group-hover:text-blue-600 font-medium flex items-center gap-1 mt-2 transition-colors">
@@ -152,7 +152,7 @@ export const MonevView: React.FC<MonevViewProps> = () => {
               <span>Klik rincian pos bencana</span>
             </div>
           </div>
-          <div className="w-11 h-11 rounded-xl bg-blue-50 group-hover:bg-blue-600 group-hover:text-white text-blue-600 flex items-center justify-center transition-all duration-300 shadow-xs">
+          <div className="w-11 h-11 rounded-xl bg-blue-100/70 group-hover:bg-blue-600 group-hover:text-white text-blue-700 flex items-center justify-center transition-all duration-300 shadow-xs">
             <Coins className="w-5 h-5" />
           </div>
         </div>
@@ -161,28 +161,28 @@ export const MonevView: React.FC<MonevViewProps> = () => {
         <div
           id="card-kpi-akurasi-sasaran"
           onClick={() => setActiveMetricModal('akurasi_sasaran')}
-          className="bg-white p-4 rounded-xl border border-indigo-200 shadow-xs hover:shadow-xl hover:border-indigo-400 hover:ring-2 hover:ring-indigo-400/30 transform hover:-translate-y-1 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer flex items-start justify-between group relative overflow-hidden"
+          className="bg-gradient-to-br from-white via-rose-50/50 to-blue-50/20 p-4 rounded-xl border border-rose-200/80 shadow-xs hover:shadow-xl hover:border-rose-400 hover:ring-2 hover:ring-rose-400/30 transform hover:-translate-y-1 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer flex items-start justify-between group relative overflow-hidden"
         >
-          <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-indigo-500/10 to-transparent rounded-bl-full pointer-events-none"></div>
+          <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-rose-500/15 to-transparent rounded-bl-full pointer-events-none"></div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="text-xs font-semibold text-slate-600 group-hover:text-indigo-700 transition-colors">
+              <span className="text-xs font-semibold text-slate-700 group-hover:text-rose-700 transition-colors">
                 Akurasi Sasaran Penerima
               </span>
             </div>
-            <div className="text-3xl font-extrabold font-mono text-indigo-600 mt-1 flex items-baseline gap-1">
+            <div className="text-3xl font-extrabold font-mono text-rose-600 mt-1 flex items-baseline gap-1">
               <AnimatedCounter value={94.8} duration={1200} decimalPlaces={1} />
               <span className="text-xs font-sans font-bold text-slate-500">%</span>
             </div>
-            <div className="text-[11px] text-emerald-600 font-semibold mt-1">
-              Diverifikasi BPKP & NIK Klir
+            <div className="text-[11px] text-rose-700 font-semibold mt-1">
+              Diverifikasi BPKP &amp; NIK Klir
             </div>
-            <div className="text-[10px] text-slate-400 group-hover:text-indigo-600 font-medium flex items-center gap-1 mt-2 transition-colors">
+            <div className="text-[10px] text-slate-400 group-hover:text-rose-600 font-medium flex items-center gap-1 mt-2 transition-colors">
               <MousePointerClick className="w-3 h-3" />
               <span>Klik 4 pilar akurasi data</span>
             </div>
           </div>
-          <div className="w-11 h-11 rounded-xl bg-indigo-50 group-hover:bg-indigo-600 group-hover:text-white text-indigo-600 flex items-center justify-center transition-all duration-300 shadow-xs">
+          <div className="w-11 h-11 rounded-xl bg-rose-100/70 group-hover:bg-rose-600 group-hover:text-white text-rose-700 flex items-center justify-center transition-all duration-300 shadow-xs">
             <Target className="w-5 h-5" />
           </div>
         </div>
@@ -191,12 +191,12 @@ export const MonevView: React.FC<MonevViewProps> = () => {
         <div
           id="card-kpi-skor-kepuasan"
           onClick={() => setActiveMetricModal('kepuasan_warga')}
-          className="bg-white p-4 rounded-xl border border-amber-200 shadow-xs hover:shadow-xl hover:border-amber-400 hover:ring-2 hover:ring-amber-400/30 transform hover:-translate-y-1 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer flex items-start justify-between group relative overflow-hidden"
+          className="bg-gradient-to-br from-white via-amber-50/50 to-rose-50/20 p-4 rounded-xl border border-amber-200/80 shadow-xs hover:shadow-xl hover:border-amber-400 hover:ring-2 hover:ring-amber-400/30 transform hover:-translate-y-1 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer flex items-start justify-between group relative overflow-hidden"
         >
-          <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-amber-500/10 to-transparent rounded-bl-full pointer-events-none"></div>
+          <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-amber-500/15 to-transparent rounded-bl-full pointer-events-none"></div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="text-xs font-semibold text-slate-600 group-hover:text-amber-700 transition-colors">
+              <span className="text-xs font-semibold text-slate-700 group-hover:text-amber-700 transition-colors">
                 Skor Kepuasan Warga
               </span>
             </div>
@@ -213,7 +213,7 @@ export const MonevView: React.FC<MonevViewProps> = () => {
               <span>Klik rincian hasil survei</span>
             </div>
           </div>
-          <div className="w-11 h-11 rounded-xl bg-amber-50 group-hover:bg-amber-500 group-hover:text-white text-amber-500 flex items-center justify-center transition-all duration-300 shadow-xs">
+          <div className="w-11 h-11 rounded-xl bg-amber-100/70 group-hover:bg-amber-500 group-hover:text-white text-amber-600 flex items-center justify-center transition-all duration-300 shadow-xs">
             <Smile className="w-5 h-5" />
           </div>
         </div>
@@ -224,26 +224,26 @@ export const MonevView: React.FC<MonevViewProps> = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Comparison & Efficiency Analytics */}
-        <div className="lg:col-span-7 bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-5">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div className="lg:col-span-7 bg-gradient-to-br from-white via-slate-50/70 to-rose-50/20 rounded-xl border border-rose-200/60 shadow-sm p-5 space-y-5">
+          <div className="flex items-center justify-between border-b border-rose-100 pb-3">
             <span className="text-xs font-bold text-slate-800 uppercase tracking-wide">
               Komparasi Efisiensi: Sebelum vs Sesudah SIGAP
             </span>
-            <span className="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded font-bold">
+            <span className="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded font-bold border border-emerald-200">
               Efisiensi +78%
             </span>
           </div>
 
           <div className="space-y-4">
             {/* Process 1 */}
-            <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+            <div className="p-3.5 bg-white/90 rounded-xl border border-rose-100/80 shadow-2xs space-y-2">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-bold text-slate-800">1. Waktu Identifikasi & Otorisasi Bencana</span>
+                <span className="font-bold text-slate-800">1. Waktu Identifikasi &amp; Otorisasi Bencana</span>
                 <span className="font-mono text-xs font-bold text-emerald-600">4 Jam (vs 7 Hari)</span>
               </div>
               <div className="w-full bg-slate-200 rounded-full h-2 flex overflow-hidden">
                 <div className="bg-emerald-500 h-2 w-[15%]"></div>
-                <div className="bg-rose-300 h-2 w-[85%]"></div>
+                <div className="bg-rose-400 h-2 w-[85%]"></div>
               </div>
               <div className="flex justify-between text-[10px] text-slate-500 font-medium">
                 <span className="text-emerald-700 font-bold">● SIGAP (4 Jam)</span>
@@ -252,14 +252,14 @@ export const MonevView: React.FC<MonevViewProps> = () => {
             </div>
 
             {/* Process 2 */}
-            <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+            <div className="p-3.5 bg-white/90 rounded-xl border border-rose-100/80 shadow-2xs space-y-2">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-bold text-slate-800">2. Validasi & Rekonsiliasi NIK Penerima</span>
+                <span className="font-bold text-slate-800">2. Validasi &amp; Rekonsiliasi NIK Penerima</span>
                 <span className="font-mono text-xs font-bold text-emerald-600">Real-time (vs 10 Hari)</span>
               </div>
               <div className="w-full bg-slate-200 rounded-full h-2 flex overflow-hidden">
                 <div className="bg-emerald-500 h-2 w-[10%]"></div>
-                <div className="bg-rose-300 h-2 w-[90%]"></div>
+                <div className="bg-rose-400 h-2 w-[90%]"></div>
               </div>
               <div className="flex justify-between text-[10px] text-slate-500 font-medium">
                 <span className="text-emerald-700 font-bold">● SIGAP (Instan Otomatis)</span>
@@ -268,14 +268,14 @@ export const MonevView: React.FC<MonevViewProps> = () => {
             </div>
 
             {/* Process 3 */}
-            <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+            <div className="p-3.5 bg-white/90 rounded-xl border border-rose-100/80 shadow-2xs space-y-2">
               <div className="flex items-center justify-between text-xs">
                 <span className="font-bold text-slate-800">3. Pencairan Dana Bantuan ke Pos/Bank</span>
                 <span className="font-mono text-xs font-bold text-emerald-600">3 Hari (vs 14 Hari)</span>
               </div>
               <div className="w-full bg-slate-200 rounded-full h-2 flex overflow-hidden">
                 <div className="bg-emerald-500 h-2 w-[22%]"></div>
-                <div className="bg-rose-300 h-2 w-[78%]"></div>
+                <div className="bg-rose-400 h-2 w-[78%]"></div>
               </div>
               <div className="flex justify-between text-[10px] text-slate-500 font-medium">
                 <span className="text-emerald-700 font-bold">● SIGAP (3 Hari)</span>
@@ -286,25 +286,25 @@ export const MonevView: React.FC<MonevViewProps> = () => {
         </div>
 
         {/* Right: Live WhatsApp Survey Simulator */}
-        <div className="lg:col-span-5 bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col overflow-hidden">
+        <div className="lg:col-span-5 bg-gradient-to-br from-white via-slate-50/70 to-rose-50/20 rounded-xl border border-rose-200/60 shadow-sm flex flex-col overflow-hidden">
           {/* Chat Header */}
-          <div className="p-3.5 bg-slate-900 text-white flex items-center justify-between">
+          <div className="p-3.5 bg-gradient-to-r from-[#0B0F19] via-[#1C0A22] to-[#0A1429] text-white flex items-center justify-between border-b border-rose-900/30">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center text-white">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-rose-500 to-emerald-500 flex items-center justify-center text-white shadow-xs">
                 <Smartphone className="w-4 h-4" />
               </div>
               <div>
                 <p className="text-xs font-bold leading-none">SIGAP WhatsApp Bot Survei</p>
-                <p className="text-[10px] text-emerald-400 font-mono mt-0.5">Layanan Terverifikasi Kemensos</p>
+                <p className="text-[10px] text-amber-300 font-mono mt-0.5">Layanan Terverifikasi Kemensos</p>
               </div>
             </div>
-            <span className="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded font-mono">
+            <span className="text-[10px] bg-rose-950/80 text-rose-300 border border-rose-800/60 px-2 py-0.5 rounded-full font-mono font-semibold">
               Live
             </span>
           </div>
 
           {/* Chat Messages */}
-          <div className="flex-1 p-4 bg-slate-50 overflow-y-auto space-y-3 min-h-[260px] max-h-[320px]">
+          <div className="flex-1 p-4 bg-slate-50/60 overflow-y-auto space-y-3 min-h-[260px] max-h-[320px]">
             {messages.map((m) => (
               <div
                 key={m.id}
@@ -315,18 +315,18 @@ export const MonevView: React.FC<MonevViewProps> = () => {
                 <div
                   className={`p-3 rounded-2xl max-w-[85%] text-xs shadow-xs ${
                     m.sender === 'user'
-                      ? 'bg-blue-600 text-white rounded-br-none'
-                      : 'bg-white text-slate-800 border border-slate-200 rounded-bl-none'
+                      ? 'bg-gradient-to-r from-rose-600 to-blue-600 text-white rounded-br-none'
+                      : 'bg-white text-slate-800 border border-rose-100 rounded-bl-none'
                   }`}
                 >
                   <p className="leading-relaxed">{m.text}</p>
                   <div
                     className={`text-[9px] mt-1 text-right flex items-center justify-end gap-1 ${
-                      m.sender === 'user' ? 'text-blue-200' : 'text-slate-400'
+                      m.sender === 'user' ? 'text-rose-100' : 'text-slate-400'
                     }`}
                   >
                     <span>{m.time}</span>
-                    {m.sender === 'user' && <CheckCheck className="w-3 h-3 text-blue-200" />}
+                    {m.sender === 'user' && <CheckCheck className="w-3 h-3 text-rose-100" />}
                   </div>
                 </div>
               </div>
@@ -336,18 +336,18 @@ export const MonevView: React.FC<MonevViewProps> = () => {
           {/* Chat Input */}
           <form
             onSubmit={handleSendResponse}
-            className="p-3 bg-white border-t border-slate-200 flex items-center gap-2"
+            className="p-3 bg-white border-t border-rose-100 flex items-center gap-2"
           >
             <input
               type="text"
               value={inputFeedback}
               onChange={(e) => setInputFeedback(e.target.value)}
               placeholder="Ketik balasan survei / skor 1-5..."
-              className="flex-1 p-2 text-xs bg-slate-100 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-800"
+              className="flex-1 p-2 text-xs bg-slate-50 border border-rose-200/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 text-slate-800 shadow-2xs"
             />
             <button
               type="submit"
-              className="p-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-xs transition-colors"
+              className="p-2 rounded-xl bg-gradient-to-r from-rose-600 to-blue-600 hover:from-rose-500 hover:to-blue-500 text-white shadow-xs transition-colors cursor-pointer"
             >
               <Send className="w-4 h-4" />
             </button>

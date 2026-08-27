@@ -53,71 +53,71 @@ export const PersetujuanView: React.FC<PersetujuanViewProps> = ({
 
       {/* 3 Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+        <div className="bg-gradient-to-br from-white via-blue-50/50 to-rose-50/20 p-4 rounded-xl border border-blue-200/80 shadow-xs flex items-center justify-between">
           <div>
-            <span className="text-xs font-medium text-slate-500">Menunggu Otorisasi</span>
+            <span className="text-xs font-semibold text-slate-600">Menunggu Otorisasi</span>
             <div className="text-2xl font-bold font-mono text-blue-600 mt-1">
               {pendingList.length} Usulan
             </div>
           </div>
-          <div className="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-lg bg-blue-100/70 text-blue-700 flex items-center justify-center shadow-xs">
             <Clock className="w-5 h-5" />
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+        <div className="bg-gradient-to-br from-white via-rose-50/50 to-amber-50/20 p-4 rounded-xl border border-rose-200/80 shadow-xs flex items-center justify-between">
           <div>
-            <span className="text-xs font-medium text-slate-500">Usulan Risiko Tinggi</span>
+            <span className="text-xs font-semibold text-slate-600">Usulan Risiko Tinggi</span>
             <div className="text-2xl font-bold font-mono text-rose-600 mt-1">
               {highRiskCount} Usulan
             </div>
           </div>
-          <div className="w-10 h-10 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-lg bg-rose-100/70 text-rose-700 flex items-center justify-center shadow-xs">
             <ShieldAlert className="w-5 h-5" />
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+        <div className="bg-gradient-to-br from-white via-emerald-50/50 to-blue-50/20 p-4 rounded-xl border border-emerald-200/80 shadow-xs flex items-center justify-between">
           <div>
-            <span className="text-xs font-medium text-slate-500">Disetujui Hari Ini</span>
+            <span className="text-xs font-semibold text-slate-600">Disetujui Hari Ini</span>
             <div className="text-2xl font-bold font-mono text-emerald-600 mt-1">
               {approvedCount} Protokol
             </div>
           </div>
-          <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-lg bg-emerald-100/70 text-emerald-700 flex items-center justify-center shadow-xs">
             <CheckCircle2 className="w-5 h-5" />
           </div>
         </div>
       </div>
 
       {/* Proposals Table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <div className="p-4 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3">
+      <div className="bg-gradient-to-br from-white via-slate-50/70 to-rose-50/20 rounded-xl border border-rose-200/60 shadow-sm overflow-hidden">
+        <div className="p-4 border-b border-rose-100/80 flex flex-wrap items-center justify-between gap-3 bg-gradient-to-r from-white via-rose-50/20 to-amber-50/10">
           <span className="text-xs font-bold text-slate-800 uppercase tracking-wide">
             Daftar Berkas Usulan Darurat Masuk
           </span>
 
-          <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg">
+          <div className="flex items-center gap-1 bg-slate-100/90 p-1 rounded-lg border border-slate-200">
             <button
               onClick={() => setActiveTab('all')}
-              className={`text-[11px] font-semibold px-2.5 py-1 rounded transition-all ${
-                activeTab === 'all' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-500'
+              className={`text-[11px] font-semibold px-2.5 py-1 rounded transition-all cursor-pointer ${
+                activeTab === 'all' ? 'bg-gradient-to-r from-rose-600 to-blue-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               Semua
             </button>
             <button
               onClick={() => setActiveTab('menunggu')}
-              className={`text-[11px] font-semibold px-2.5 py-1 rounded transition-all ${
-                activeTab === 'menunggu' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-500'
+              className={`text-[11px] font-semibold px-2.5 py-1 rounded transition-all cursor-pointer ${
+                activeTab === 'menunggu' ? 'bg-rose-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               Menunggu ({pendingList.length})
             </button>
             <button
               onClick={() => setActiveTab('selesai')}
-              className={`text-[11px] font-semibold px-2.5 py-1 rounded transition-all ${
-                activeTab === 'selesai' ? 'bg-slate-800 text-white shadow-xs' : 'text-slate-500'
+              className={`text-[11px] font-semibold px-2.5 py-1 rounded transition-all cursor-pointer ${
+                activeTab === 'selesai' ? 'bg-slate-800 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               Riwayat Selesai

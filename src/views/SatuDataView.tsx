@@ -176,11 +176,11 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
       {/* 4 Pipeline / Funnel KPI Cards (Hover Expand + Click Detail + Number Count Animation) */}
       <div>
         <div className="flex items-center justify-between mb-2">
-          <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-            <Layers className="w-3.5 h-3.5 text-indigo-600" />
-            <span>Tahapan Pipa Pemrosesan Data (Klik untuk melihat SOP & Detail Validasi)</span>
+          <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+            <Layers className="w-3.5 h-3.5 text-rose-600" />
+            <span>Tahapan Pipa Pemrosesan Data (Klik untuk melihat SOP &amp; Detail Validasi)</span>
           </div>
-          <span className="text-[10px] text-indigo-600 font-semibold bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-100">
+          <span className="text-[10px] text-rose-700 font-semibold bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200">
             Interaktif 4 Tahap
           </span>
         </div>
@@ -190,10 +190,11 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
           <div
             id="stage-card-1"
             onClick={() => handleOpenStage(1)}
-            className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden cursor-pointer transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 hover:shadow-xl hover:border-blue-400 hover:ring-2 hover:ring-blue-400/30 group"
+            className="bg-gradient-to-br from-white via-blue-50/40 to-rose-50/20 p-4 rounded-xl border border-blue-200/80 shadow-xs relative overflow-hidden cursor-pointer transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 hover:shadow-xl hover:border-blue-400 hover:ring-2 hover:ring-blue-400/30 group"
           >
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 to-indigo-600"></div>
             <div className="flex items-center justify-between">
-              <div className="text-[10px] font-bold text-slate-400 uppercase group-hover:text-blue-600 transition-colors">
+              <div className="text-[10px] font-bold text-blue-600 uppercase group-hover:text-blue-700 transition-colors">
                 Tahap 1
               </div>
               <span className="text-[10px] font-semibold text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-0.5">
@@ -211,7 +212,7 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
               <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
               <span>Total terdata masuk</span>
             </div>
-            <div className="absolute top-3 right-3 text-slate-200 group-hover:text-blue-100 font-mono text-3xl font-extrabold select-none transition-colors">
+            <div className="absolute top-3 right-3 text-slate-200/60 group-hover:text-blue-200/60 font-mono text-3xl font-extrabold select-none transition-colors">
               01
             </div>
           </div>
@@ -220,10 +221,11 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
           <div
             id="stage-card-2"
             onClick={() => handleOpenStage(2)}
-            className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden cursor-pointer transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 hover:shadow-xl hover:border-indigo-400 hover:ring-2 hover:ring-indigo-400/30 group"
+            className="bg-gradient-to-br from-white via-indigo-50/40 to-rose-50/20 p-4 rounded-xl border border-indigo-200/80 shadow-xs relative overflow-hidden cursor-pointer transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 hover:shadow-xl hover:border-indigo-400 hover:ring-2 hover:ring-indigo-400/30 group"
           >
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-600 to-rose-600"></div>
             <div className="flex items-center justify-between">
-              <div className="text-[10px] font-bold text-indigo-500 uppercase group-hover:text-indigo-700 transition-colors">
+              <div className="text-[10px] font-bold text-indigo-600 uppercase group-hover:text-indigo-700 transition-colors">
                 Tahap 2
               </div>
               <span className="text-[10px] font-semibold text-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-0.5">
@@ -232,7 +234,7 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
               </span>
             </div>
             <div className="text-xs font-bold text-slate-800 mt-0.5 group-hover:text-indigo-950">
-              Pencocokan & Deduplikasi
+              Pencocokan &amp; Deduplikasi
             </div>
             <div className="text-2xl font-extrabold font-mono text-indigo-600 mt-2 flex items-baseline gap-1">
               <AnimatedCounter value={89.2} duration={1200} decimals={1} suffix="%" />
@@ -241,7 +243,7 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
               <span>14.053 KK klir NIK</span>
             </div>
-            <div className="absolute top-3 right-3 text-slate-200 group-hover:text-indigo-100 font-mono text-3xl font-extrabold select-none transition-colors">
+            <div className="absolute top-3 right-3 text-slate-200/60 group-hover:text-indigo-200/60 font-mono text-3xl font-extrabold select-none transition-colors">
               02
             </div>
           </div>
@@ -250,10 +252,11 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
           <div
             id="stage-card-3"
             onClick={() => handleOpenStage(3)}
-            className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden cursor-pointer transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 hover:shadow-xl hover:border-amber-400 hover:ring-2 hover:ring-amber-400/30 group"
+            className="bg-gradient-to-br from-white via-amber-50/40 to-rose-50/20 p-4 rounded-xl border border-amber-200/80 shadow-xs relative overflow-hidden cursor-pointer transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 hover:shadow-xl hover:border-amber-400 hover:ring-2 hover:ring-amber-400/30 group"
           >
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 to-rose-500"></div>
             <div className="flex items-center justify-between">
-              <div className="text-[10px] font-bold text-amber-500 uppercase group-hover:text-amber-700 transition-colors">
+              <div className="text-[10px] font-bold text-amber-600 uppercase group-hover:text-amber-700 transition-colors">
                 Tahap 3
               </div>
               <span className="text-[10px] font-semibold text-amber-600 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-0.5">
@@ -271,7 +274,7 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
               <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
               <span>Siap penyaluran bantuan</span>
             </div>
-            <div className="absolute top-3 right-3 text-slate-200 group-hover:text-amber-100 font-mono text-3xl font-extrabold select-none transition-colors">
+            <div className="absolute top-3 right-3 text-slate-200/60 group-hover:text-amber-200/60 font-mono text-3xl font-extrabold select-none transition-colors">
               03
             </div>
           </div>
@@ -280,28 +283,29 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
           <div
             id="stage-card-4"
             onClick={() => handleOpenStage(4)}
-            className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden cursor-pointer transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 hover:shadow-xl hover:border-emerald-400 hover:ring-2 hover:ring-emerald-400/30 group"
+            className="bg-gradient-to-br from-white via-rose-50/40 to-amber-50/20 p-4 rounded-xl border border-rose-200/80 shadow-xs relative overflow-hidden cursor-pointer transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 hover:shadow-xl hover:border-rose-400 hover:ring-2 hover:ring-rose-400/30 group"
           >
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rose-600 via-amber-500 to-emerald-600"></div>
             <div className="flex items-center justify-between">
-              <div className="text-[10px] font-bold text-emerald-500 uppercase group-hover:text-emerald-700 transition-colors">
+              <div className="text-[10px] font-bold text-rose-600 uppercase group-hover:text-rose-700 transition-colors">
                 Tahap 4
               </div>
-              <span className="text-[10px] font-semibold text-emerald-600 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-0.5">
+              <span className="text-[10px] font-semibold text-rose-600 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-0.5">
                 <span>Detail</span>
                 <ChevronRight className="w-3 h-3" />
               </span>
             </div>
-            <div className="text-xs font-bold text-slate-800 mt-0.5 group-hover:text-emerald-950">
-              Audit & Rekonsiliasi
+            <div className="text-xs font-bold text-slate-800 mt-0.5 group-hover:text-rose-950">
+              Audit &amp; Rekonsiliasi
             </div>
-            <div className="text-2xl font-extrabold font-mono text-emerald-600 mt-2 flex items-baseline gap-1">
+            <div className="text-2xl font-extrabold font-mono text-rose-600 mt-2 flex items-baseline gap-1">
               <AnimatedCounter value={100} duration={1200} suffix="%" />
             </div>
             <div className="mt-1 text-[11px] text-emerald-600 flex items-center gap-1">
               <CheckCircle2 className="w-3 h-3" />
               <span>Kepatuhan ISO/BPK</span>
             </div>
-            <div className="absolute top-3 right-3 text-slate-200 group-hover:text-emerald-100 font-mono text-3xl font-extrabold select-none transition-colors">
+            <div className="absolute top-3 right-3 text-slate-200/60 group-hover:text-rose-200/60 font-mono text-3xl font-extrabold select-none transition-colors">
               04
             </div>
           </div>
@@ -309,20 +313,20 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
       </div>
 
       {/* Main Table & Instant Search Section */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+      <div className="bg-gradient-to-br from-white via-slate-50/70 to-rose-50/20 rounded-xl border border-rose-200/60 shadow-sm overflow-hidden">
         {/* Table Filters & Toolbar */}
-        <div className="p-4 border-b border-slate-200 space-y-3">
+        <div className="p-4 border-b border-rose-100/80 space-y-3 bg-gradient-to-r from-white via-rose-50/20 to-amber-50/10">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-center gap-3 flex-1 max-w-lg">
               <div className="relative w-full">
-                <Search className="w-4 h-4 text-indigo-600 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Search className="w-4 h-4 text-rose-600 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   id="search-satu-data"
                   type="text"
                   placeholder="Cari wilayah, desa, NIK (16 digit), atau nama kepala keluarga..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-9 pr-8 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-slate-800 transition-all font-medium"
+                  className="w-full pl-9 pr-8 py-2 text-xs bg-white border border-rose-200/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white text-slate-800 transition-all font-medium shadow-2xs"
                 />
                 {searchTerm && (
                   <button
@@ -336,11 +340,11 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
             </div>
 
             <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl">
+              <div className="flex items-center gap-1 bg-slate-100/90 p-1 rounded-xl border border-slate-200">
                 <button
                   onClick={() => setStatusFilter('all')}
                   className={`text-[11px] font-semibold px-2.5 py-1 rounded-lg transition-all ${
-                    statusFilter === 'all' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-500 hover:text-slate-800'
+                    statusFilter === 'all' ? 'bg-gradient-to-r from-rose-600 to-blue-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
                   Semua Status
@@ -375,13 +379,13 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
 
           {/* Instant Citizen / NIK Search Match Ribbon */}
           {directBeneficiaryMatches.length > 0 && (
-            <div className="p-3 bg-indigo-50/80 border border-indigo-200 rounded-xl space-y-2 animate-in fade-in">
-              <div className="flex items-center justify-between text-xs text-indigo-900 font-bold">
+            <div className="p-3 bg-gradient-to-r from-rose-50 via-amber-50/50 to-blue-50 border border-rose-200 rounded-xl space-y-2 animate-in fade-in">
+              <div className="flex items-center justify-between text-xs text-rose-950 font-bold">
                 <span className="flex items-center gap-1.5">
-                  <UserCheck className="w-4 h-4 text-indigo-600" />
+                  <UserCheck className="w-4 h-4 text-rose-600" />
                   <span>Hasil Instan Pencarian NIK / Warga ({directBeneficiaryMatches.length} Ditemukan)</span>
                 </span>
-                <span className="text-[10px] text-indigo-600 font-mono">
+                <span className="text-[10px] text-rose-600 font-mono">
                   Kata Kunci: &quot;{searchTerm}&quot;
                 </span>
               </div>
@@ -390,11 +394,11 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
                 {directBeneficiaryMatches.map(({ item, household }) => (
                   <div
                     key={household.nik}
-                    className="p-2.5 bg-white rounded-lg border border-indigo-100 shadow-xs flex items-center justify-between gap-2"
+                    className="p-2.5 bg-white rounded-lg border border-rose-200/70 shadow-xs flex items-center justify-between gap-2"
                   >
                     <div>
                       <div className="font-bold text-xs text-slate-900">{household.headName}</div>
-                      <div className="text-[10px] font-mono text-indigo-600 font-semibold">
+                      <div className="text-[10px] font-mono text-rose-600 font-semibold">
                         NIK: {household.nik}
                       </div>
                       <div className="text-[10px] text-slate-500">
@@ -403,7 +407,7 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
                     </div>
                     <button
                       onClick={() => handleOpenProfile(item, household.nik)}
-                      className="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-bold rounded-md shadow-xs transition-colors shrink-0"
+                      className="px-2.5 py-1 bg-gradient-to-r from-rose-600 to-blue-600 hover:from-rose-500 hover:to-blue-500 text-white text-[10px] font-bold rounded-md shadow-xs transition-colors shrink-0 cursor-pointer"
                     >
                       Buka Profil
                     </button>

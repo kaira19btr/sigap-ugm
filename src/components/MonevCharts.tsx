@@ -222,35 +222,35 @@ export const MonevCharts: React.FC = () => {
   });
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden transition-all duration-300">
+    <div className="bg-gradient-to-br from-white via-slate-50/70 to-rose-50/20 rounded-2xl border border-rose-200/60 shadow-sm overflow-hidden transition-all duration-300">
       {/* Top Banner Navigation Bar with Glassmorphic Gradient */}
-      <div className="p-4 sm:p-5 bg-gradient-to-r from-slate-900 via-slate-950 to-slate-900 border-b border-slate-800 text-white flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-4 sm:p-5 bg-gradient-to-r from-[#0B0F19] via-[#1C0A22] to-[#0A1429] border-b border-rose-900/30 text-white flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+            <span className="p-1.5 rounded-lg bg-rose-500/20 text-rose-300 border border-rose-500/30">
               <Sparkles className="w-4 h-4" />
             </span>
             <h2 className="text-base sm:text-lg font-extrabold tracking-tight text-white flex items-center gap-2">
-              Visualisasi Analitik Dampak & Efektivitas
+              Visualisasi Analitik Dampak &amp; Efektivitas
             </h2>
-            <span className="hidden sm:inline-flex text-[10px] font-mono bg-emerald-950 border border-emerald-500/40 text-emerald-300 px-2 py-0.5 rounded-full font-semibold">
+            <span className="hidden sm:inline-flex text-[10px] font-mono bg-rose-950/80 border border-rose-500/40 text-amber-300 px-2 py-0.5 rounded-full font-semibold">
               Live Realtime Telemetry
             </span>
           </div>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-300 mt-1">
             Diagram dinamis pelacakan pemangkasan birokrasi, penyerapan anggaran darurat, dan audit kualitas layanan
           </p>
         </div>
 
         {/* Tab Switcher */}
-        <div className="flex items-center gap-1.5 bg-slate-900/90 p-1 rounded-xl border border-slate-800 overflow-x-auto select-none">
+        <div className="flex items-center gap-1.5 bg-slate-950/80 p-1 rounded-xl border border-rose-900/40 overflow-x-auto select-none">
           <button
             type="button"
             id="tab-chart-timeline"
             onClick={() => setActiveTab('timeline')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
               activeTab === 'timeline'
-                ? 'bg-emerald-600 text-white shadow-md shadow-emerald-900/40 scale-[1.02]'
+                ? 'bg-gradient-to-r from-rose-600 to-amber-600 text-white shadow-md shadow-rose-900/40 scale-[1.02]'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
             }`}
           >
@@ -262,9 +262,9 @@ export const MonevCharts: React.FC = () => {
             type="button"
             id="tab-chart-budget"
             onClick={() => setActiveTab('budget')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
               activeTab === 'budget'
-                ? 'bg-blue-600 text-white shadow-md shadow-blue-900/40 scale-[1.02]'
+                ? 'bg-gradient-to-r from-blue-600 to-rose-600 text-white shadow-md shadow-blue-900/40 scale-[1.02]'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
             }`}
           >
@@ -276,9 +276,9 @@ export const MonevCharts: React.FC = () => {
             type="button"
             id="tab-chart-radar"
             onClick={() => setActiveTab('radar')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
               activeTab === 'radar'
-                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-900/40 scale-[1.02]'
+                ? 'bg-gradient-to-r from-rose-600 to-blue-600 text-white shadow-md shadow-rose-900/40 scale-[1.02]'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
             }`}
           >
@@ -290,9 +290,9 @@ export const MonevCharts: React.FC = () => {
             type="button"
             id="tab-chart-satisfaction"
             onClick={() => setActiveTab('satisfaction')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
               activeTab === 'satisfaction'
-                ? 'bg-amber-600 text-white shadow-md shadow-amber-900/40 scale-[1.02]'
+                ? 'bg-gradient-to-r from-amber-500 to-rose-500 text-white shadow-md shadow-amber-900/40 scale-[1.02]'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
             }`}
           >

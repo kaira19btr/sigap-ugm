@@ -129,15 +129,15 @@ export const PengaduanView: React.FC<PengaduanViewProps> = ({
           }}
           className={`p-4 rounded-xl border transition-all duration-300 transform cursor-pointer group hover:scale-[1.03] hover:-translate-y-1 hover:shadow-lg ${
             statusFilter === 'Baru'
-              ? 'bg-rose-50/80 border-rose-300 ring-2 ring-rose-400/40 shadow-md'
-              : 'bg-white border-slate-200 hover:border-rose-300 shadow-sm'
+              ? 'bg-gradient-to-br from-rose-100/90 via-rose-50 to-amber-50/40 border-rose-400 ring-2 ring-rose-400/40 shadow-md'
+              : 'bg-gradient-to-br from-white via-rose-50/50 to-amber-50/20 border-rose-200/80 hover:border-rose-300 shadow-xs'
           }`}
           title="Klik untuk menyaring laporan baru"
         >
           <div className="flex items-center justify-between">
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="text-xs font-semibold text-slate-600 group-hover:text-rose-700 transition-colors">
+                <span className="text-xs font-semibold text-slate-700 group-hover:text-rose-700 transition-colors">
                   Laporan Pengaduan Baru
                 </span>
                 <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
@@ -145,12 +145,12 @@ export const PengaduanView: React.FC<PengaduanViewProps> = ({
               <div className="text-2xl font-black font-mono text-rose-600 mt-1">
                 {newCount} <span className="text-xs font-medium font-sans text-slate-500">Laporan</span>
               </div>
-              <p className="text-[10px] text-slate-400 group-hover:text-rose-600 transition-colors mt-0.5 flex items-center gap-1">
+              <p className="text-[10px] text-slate-500 group-hover:text-rose-600 transition-colors mt-0.5 flex items-center gap-1">
                 <span>Perlu verifikasi faktual lapangan</span>
                 <ChevronRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
               </p>
             </div>
-            <div className="w-11 h-11 rounded-xl bg-rose-50 text-rose-600 border border-rose-100 flex items-center justify-center group-hover:bg-rose-600 group-hover:text-white transition-all shadow-xs">
+            <div className="w-11 h-11 rounded-xl bg-rose-100/70 text-rose-600 border border-rose-200/60 flex items-center justify-center group-hover:bg-rose-600 group-hover:text-white transition-all shadow-xs">
               <AlertCircle className="w-5 h-5" />
             </div>
           </div>
@@ -165,27 +165,27 @@ export const PengaduanView: React.FC<PengaduanViewProps> = ({
           }}
           className={`p-4 rounded-xl border transition-all duration-300 transform cursor-pointer group hover:scale-[1.03] hover:-translate-y-1 hover:shadow-lg ${
             statusFilter === 'Diproses'
-              ? 'bg-amber-50/80 border-amber-300 ring-2 ring-amber-400/40 shadow-md'
-              : 'bg-white border-slate-200 hover:border-amber-300 shadow-sm'
+              ? 'bg-gradient-to-br from-amber-100/90 via-amber-50 to-rose-50/40 border-amber-400 ring-2 ring-amber-400/40 shadow-md'
+              : 'bg-gradient-to-br from-white via-amber-50/50 to-rose-50/20 border-amber-200/80 hover:border-amber-300 shadow-xs'
           }`}
           title="Klik untuk menyaring laporan yang sedang diproses"
         >
           <div className="flex items-center justify-between">
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="text-xs font-semibold text-slate-600 group-hover:text-amber-800 transition-colors">
+                <span className="text-xs font-semibold text-slate-700 group-hover:text-amber-800 transition-colors">
                   Sedang Ditindaklanjuti
                 </span>
               </div>
               <div className="text-2xl font-black font-mono text-amber-600 mt-1">
                 {inProgressCount} <span className="text-xs font-medium font-sans text-slate-500">Laporan</span>
               </div>
-              <p className="text-[10px] text-slate-400 group-hover:text-amber-700 transition-colors mt-0.5 flex items-center gap-1">
+              <p className="text-[10px] text-slate-500 group-hover:text-amber-700 transition-colors mt-0.5 flex items-center gap-1">
                 <span>Investigasi Posko &amp; Tagana</span>
                 <ChevronRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
               </p>
             </div>
-            <div className="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center group-hover:bg-amber-500 group-hover:text-white transition-all shadow-xs">
+            <div className="w-11 h-11 rounded-xl bg-amber-100/70 text-amber-600 border border-amber-200/60 flex items-center justify-center group-hover:bg-amber-500 group-hover:text-white transition-all shadow-xs">
               <Clock className="w-5 h-5" />
             </div>
           </div>
@@ -200,27 +200,27 @@ export const PengaduanView: React.FC<PengaduanViewProps> = ({
           }}
           className={`p-4 rounded-xl border transition-all duration-300 transform cursor-pointer group hover:scale-[1.03] hover:-translate-y-1 hover:shadow-lg ${
             statusFilter === 'Selesai'
-              ? 'bg-emerald-50/80 border-emerald-300 ring-2 ring-emerald-400/40 shadow-md'
-              : 'bg-white border-slate-200 hover:border-emerald-300 shadow-sm'
+              ? 'bg-gradient-to-br from-emerald-100/90 via-emerald-50 to-blue-50/40 border-emerald-400 ring-2 ring-emerald-400/40 shadow-md'
+              : 'bg-gradient-to-br from-white via-emerald-50/50 to-blue-50/20 border-emerald-200/80 hover:border-emerald-300 shadow-xs'
           }`}
           title="Klik untuk menyaring laporan yang telah selesai"
         >
           <div className="flex items-center justify-between">
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="text-xs font-semibold text-slate-600 group-hover:text-emerald-800 transition-colors">
+                <span className="text-xs font-semibold text-slate-700 group-hover:text-emerald-800 transition-colors">
                   Terselesaikan (Klir)
                 </span>
               </div>
               <div className="text-2xl font-black font-mono text-emerald-600 mt-1">
                 {resolvedCount} <span className="text-xs font-medium font-sans text-slate-500">Laporan</span>
               </div>
-              <p className="text-[10px] text-slate-400 group-hover:text-emerald-700 transition-colors mt-0.5 flex items-center gap-1">
+              <p className="text-[10px] text-slate-500 group-hover:text-emerald-700 transition-colors mt-0.5 flex items-center gap-1">
                 <span>Berita acara &amp; bantuan tersalur</span>
                 <ChevronRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
               </p>
             </div>
-            <div className="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-xs">
+            <div className="w-11 h-11 rounded-xl bg-emerald-100/70 text-emerald-600 border border-emerald-200/60 flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-xs">
               <CheckCircle2 className="w-5 h-5" />
             </div>
           </div>
@@ -229,15 +229,15 @@ export const PengaduanView: React.FC<PengaduanViewProps> = ({
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Create / Simulator Form */}
-        <div className="lg:col-span-4 bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-4">
-          <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+        <div className="lg:col-span-4 bg-gradient-to-br from-white via-slate-50/80 to-rose-50/20 rounded-xl border border-rose-200/60 shadow-sm p-5 space-y-4">
+          <div className="flex items-center justify-between pb-2 border-b border-rose-100">
             <div className="flex items-center gap-2">
               <MessageSquareWarning className="w-4 h-4 text-rose-600" />
               <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wide">
                 Kirim Aduan Lapangan (Simulasi WBS)
               </h3>
             </div>
-            <span className="text-[10px] font-semibold text-purple-700 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-full">
+            <span className="text-[10px] font-semibold text-rose-700 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-full">
               Kanal WBS &amp; AI
             </span>
           </div>
@@ -257,7 +257,7 @@ export const PengaduanView: React.FC<PengaduanViewProps> = ({
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full p-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-rose-500 text-slate-800 font-medium"
+                className="w-full p-2 text-xs bg-white border border-rose-200/80 rounded-lg focus:ring-2 focus:ring-rose-500 text-slate-800 font-medium shadow-2xs"
               >
                 <option value="Bantuan Tidak Tepat Sasaran">Bantuan Tidak Tepat Sasaran</option>
                 <option value="Pungutan Liar / Pemotongan Bantuan">Pungutan Liar / Pemotongan Bantuan</option>
@@ -277,7 +277,7 @@ export const PengaduanView: React.FC<PengaduanViewProps> = ({
                 value={village}
                 onChange={(e) => setVillage(e.target.value)}
                 placeholder="Contoh: Ds. Sukamaju, Kec. Cugenang"
-                className="w-full p-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-rose-500 text-slate-800"
+                className="w-full p-2 text-xs bg-white border border-rose-200/80 rounded-lg focus:ring-2 focus:ring-rose-500 text-slate-800 shadow-2xs"
               />
             </div>
 
@@ -289,7 +289,7 @@ export const PengaduanView: React.FC<PengaduanViewProps> = ({
                 type="text"
                 value={senderPhone}
                 onChange={(e) => setSenderPhone(e.target.value)}
-                className="w-full p-2 text-xs font-mono bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-rose-500 text-slate-800"
+                className="w-full p-2 text-xs font-mono bg-white border border-rose-200/80 rounded-lg focus:ring-2 focus:ring-rose-500 text-slate-800 shadow-2xs"
               />
             </div>
 
@@ -303,14 +303,14 @@ export const PengaduanView: React.FC<PengaduanViewProps> = ({
                 value={summary}
                 onChange={(e) => setSummary(e.target.value)}
                 placeholder="Jelaskan kendala, lokasi RT/RW, dan nama oknum bila ada pemotongan bantuan..."
-                className="w-full p-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-rose-500 text-slate-800"
+                className="w-full p-2 text-xs bg-white border border-rose-200/80 rounded-lg focus:ring-2 focus:ring-rose-500 text-slate-800 shadow-2xs"
               />
             </div>
 
             <button
               id="btn-submit-grievance"
               type="submit"
-              className="w-full py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs rounded-xl shadow-md shadow-purple-600/20 flex items-center justify-center gap-2 transition-colors cursor-pointer"
+              className="w-full py-2.5 bg-gradient-to-r from-rose-600 to-blue-600 hover:from-rose-500 hover:to-blue-500 text-white font-bold text-xs rounded-xl shadow-md shadow-rose-600/20 flex items-center justify-center gap-2 transition-colors cursor-pointer"
             >
               <Send className="w-3.5 h-3.5" />
               <span>Kirim Laporan Pengaduan ke Sistem</span>
@@ -319,9 +319,9 @@ export const PengaduanView: React.FC<PengaduanViewProps> = ({
         </div>
 
         {/* Right Column: Live Report Directory with Expandable Hover & Click Modal */}
-        <div className="lg:col-span-8 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+        <div className="lg:col-span-8 bg-gradient-to-br from-white via-slate-50/70 to-rose-50/20 rounded-xl border border-rose-200/60 shadow-sm overflow-hidden flex flex-col">
           {/* Controls Bar: Search, Status Filter & View Toggle */}
-          <div className="p-4 border-b border-slate-200 space-y-3 bg-slate-50/50">
+          <div className="p-4 border-b border-rose-100/80 space-y-3 bg-gradient-to-r from-white via-rose-50/20 to-amber-50/10">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
               <div>
                 <span className="text-xs font-bold text-slate-800 uppercase tracking-wide block">
@@ -332,16 +332,16 @@ export const PengaduanView: React.FC<PengaduanViewProps> = ({
                 </p>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-[11px] font-mono font-semibold text-slate-600 bg-white border border-slate-200 px-2.5 py-1 rounded-lg">
+                <span className="text-[11px] font-mono font-semibold text-rose-700 bg-rose-50 border border-rose-200/60 px-2.5 py-1 rounded-lg">
                   {filteredGrievances.length} Laporan Ditampilkan
                 </span>
-                <div className="flex items-center bg-white border border-slate-200 rounded-lg p-0.5">
+                <div className="flex items-center bg-white border border-rose-200/80 rounded-lg p-0.5 shadow-2xs">
                   <button
                     type="button"
                     onClick={() => setViewMode('cards')}
-                    className={`p-1.5 rounded transition-colors ${
+                    className={`p-1.5 rounded transition-colors cursor-pointer ${
                       viewMode === 'cards'
-                        ? 'bg-purple-100 text-purple-700 font-bold'
+                        ? 'bg-rose-100 text-rose-700 font-bold'
                         : 'text-slate-400 hover:text-slate-700'
                     }`}
                     title="Tampilan Kartu Interaktif"
@@ -351,9 +351,9 @@ export const PengaduanView: React.FC<PengaduanViewProps> = ({
                   <button
                     type="button"
                     onClick={() => setViewMode('table')}
-                    className={`p-1.5 rounded transition-colors ${
+                    className={`p-1.5 rounded transition-colors cursor-pointer ${
                       viewMode === 'table'
-                        ? 'bg-purple-100 text-purple-700 font-bold'
+                        ? 'bg-rose-100 text-rose-700 font-bold'
                         : 'text-slate-400 hover:text-slate-700'
                     }`}
                     title="Tampilan Tabel"
@@ -366,13 +366,13 @@ export const PengaduanView: React.FC<PengaduanViewProps> = ({
 
             <div className="flex flex-col sm:flex-row items-center gap-2 pt-1">
               <div className="relative flex-1 w-full">
-                <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Search className="w-3.5 h-3.5 text-rose-500 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   value={searchKeyword}
                   onChange={(e) => setSearchKeyword(e.target.value)}
                   placeholder="Cari ID laporan, kategori, nomor telepon, desa..."
-                  className="w-full pl-9 pr-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-slate-800"
+                  className="w-full pl-9 pr-3 py-1.5 text-xs bg-white border border-rose-200/80 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 text-slate-800 shadow-2xs"
                 />
               </div>
 
@@ -386,9 +386,9 @@ export const PengaduanView: React.FC<PengaduanViewProps> = ({
                       soundEffects.playClick();
                       setStatusFilter(st);
                     }}
-                    className={`px-2.5 py-1 rounded-md transition-colors shrink-0 ${
+                    className={`px-2.5 py-1 rounded-md transition-colors shrink-0 cursor-pointer ${
                       statusFilter === st
-                        ? 'bg-purple-600 text-white font-bold shadow-2xs'
+                        ? 'bg-gradient-to-r from-rose-600 to-blue-600 text-white font-bold shadow-2xs'
                         : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
                     }`}
                   >
@@ -418,7 +418,7 @@ export const PengaduanView: React.FC<PengaduanViewProps> = ({
                   <div
                     key={g.id}
                     onClick={() => handleOpenDetail(g)}
-                    className="p-4 rounded-xl bg-white border border-slate-200 hover:border-purple-300 shadow-2xs hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02] hover:-translate-y-1 cursor-pointer flex flex-col justify-between group relative overflow-hidden"
+                    className="p-4 rounded-xl bg-gradient-to-br from-white via-slate-50/60 to-rose-50/20 border border-rose-200/70 hover:border-rose-400 shadow-2xs hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02] hover:-translate-y-1 cursor-pointer flex flex-col justify-between group relative overflow-hidden"
                   >
                     {/* Top status indicator strip */}
                     <div
@@ -435,7 +435,7 @@ export const PengaduanView: React.FC<PengaduanViewProps> = ({
                       {/* Card Header */}
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-1.5">
-                          <span className="font-mono font-bold text-xs text-slate-900 group-hover:text-purple-700 transition-colors">
+                          <span className="font-mono font-bold text-xs text-slate-900 group-hover:text-rose-700 transition-colors">
                             {g.id}
                           </span>
                           <span className="text-[10px] text-slate-400">• {g.timestamp}</span>
