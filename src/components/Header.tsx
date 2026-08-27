@@ -80,15 +80,30 @@ export const Header: React.FC<HeaderProps> = ({
 
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+  const notifContainerRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown when clicking outside
+  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
       if (
         searchContainerRef.current &&
-        !searchContainerRef.current.contains(event.target as Node)
+        !searchContainerRef.current.contains(target)
       ) {
         setIsSearchOpen(false);
+      }
+      if (
+        userMenuRef.current &&
+        !userMenuRef.current.contains(target)
+      ) {
+        setShowUserMenu(false);
+      }
+      if (
+        notifContainerRef.current &&
+        !notifContainerRef.current.contains(target)
+      ) {
+        setShowNotifications(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -861,14 +876,15 @@ export const Header: React.FC<HeaderProps> = ({
         </button>
 
         {/* Notification Bell with Dropdown */}
-        <div className="relative">
+        <div ref={notifContainerRef} className="relative">
           <button
             id="btn-header-notifications"
             onClick={() => {
+              soundEffects.playClick();
               setShowNotifications(!showNotifications);
               setShowUserMenu(false);
             }}
-            className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 relative transition-colors border border-rose-950/60 bg-slate-900/50"
+            className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 relative transition-colors border border-rose-950/60 bg-slate-900/50 cursor-pointer"
           >
             <Bell className="w-4 h-4" />
             <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-rose-500 rounded-full ring-2 ring-[#1A0B22] shadow-[0_0_6px_#f43f5e]"></span>
@@ -927,7 +943,7 @@ export const Header: React.FC<HeaderProps> = ({
               <div className="px-4 pt-2 border-t border-slate-100 text-center">
                 <button
                   onClick={() => setShowNotifications(false)}
-                  className="text-[11px] font-semibold text-blue-600 hover:text-blue-700"
+                  className="text-[11px] font-semibold text-blue-600 hover:text-blue-700 cursor-pointer"
                 >
                   Tutup Notifikasi
                 </button>
@@ -937,14 +953,15 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* User Quick Profile Dropdown */}
-        <div className="relative">
+        <div ref={userMenuRef} className="relative">
           <button
             id="btn-header-profile"
             onClick={() => {
+              soundEffects.playClick();
               setShowUserMenu(!showUserMenu);
               setShowNotifications(false);
             }}
-            className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-800 transition-colors border border-slate-700/60 text-slate-200"
+            className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-800 transition-colors border border-slate-700/60 text-slate-200 cursor-pointer"
           >
             <Avatar
               name={userProfile.name}
@@ -960,7 +977,7 @@ export const Header: React.FC<HeaderProps> = ({
                 {userProfile.role}
               </span>
             </div>
-            <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+            <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${showUserMenu ? 'rotate-180' : ''}`} />
           </button>
 
           {showUserMenu && (
@@ -981,7 +998,7 @@ export const Header: React.FC<HeaderProps> = ({
                     setShowUserMenu(false);
                     onSelectModule('privasi');
                   }}
-                  className="w-full px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 flex items-center gap-2 text-left"
+                  className="w-full px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 flex items-center gap-2 text-left cursor-pointer"
                 >
                   <ShieldCheck className="w-4 h-4 text-slate-500" />
                   <span>Keamanan &amp; Privasi Data</span>
@@ -991,7 +1008,7 @@ export const Header: React.FC<HeaderProps> = ({
                     setShowUserMenu(false);
                     onSelectModule('manajemen_pengguna');
                   }}
-                  className="w-full px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 flex items-center gap-2 text-left"
+                  className="w-full px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 flex items-center gap-2 text-left cursor-pointer"
                 >
                   <Layers className="w-4 h-4 text-slate-500" />
                   <span>Kelola Akun Dinas</span>
@@ -1003,7 +1020,7 @@ export const Header: React.FC<HeaderProps> = ({
                     setShowUserMenu(false);
                     onLogout();
                   }}
-                  className="w-full px-4 py-2 text-xs text-rose-600 hover:bg-rose-50 flex items-center gap-2 text-left font-medium"
+                  className="w-full px-4 py-2 text-xs text-rose-600 hover:bg-rose-50 flex items-center gap-2 text-left font-medium cursor-pointer"
                 >
                   <LogOut className="w-4 h-4 text-rose-500" />
                   <span>Keluar dari Akun</span>

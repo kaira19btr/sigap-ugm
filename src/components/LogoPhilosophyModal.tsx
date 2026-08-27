@@ -95,13 +95,15 @@ export const LogoPhilosophyModal: React.FC<LogoPhilosophyModalProps> = ({
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
           {/* Logo Showcase & Intro */}
           <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-center gap-5">
-            <div className="w-20 h-20 shrink-0 flex items-center justify-center p-2 rounded-2xl bg-slate-900 shadow-inner">
+            <div className="w-20 h-20 shrink-0 flex items-center justify-center p-2 rounded-2xl bg-slate-900 shadow-inner relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-tr from-rose-500/20 via-transparent to-blue-500/20 animate-sigap-aura"></div>
               <svg
                 width="64"
                 height="64"
                 viewBox="0 0 100 100"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                className="animate-sigap-float drop-shadow-lg relative z-10"
               >
                 <defs>
                   <linearGradient id="modalShieldGrad" x1="10" y1="10" x2="90" y2="90" gradientUnits="userSpaceOnUse">
@@ -120,9 +122,12 @@ export const LogoPhilosophyModal: React.FC<LogoPhilosophyModalProps> = ({
                   </linearGradient>
                 </defs>
                 <path d="M50 6C65 6 86 12 90 26C90 56 68 84 50 94C32 84 10 56 10 26C14 12 35 6 50 6Z" fill="url(#modalShieldGrad)" />
-                <path d="M50 32C42 22 28 24 22 36C18 45 22 58 32 66C38 71 44 75 50 78C46 71 34 60 30 52C26 44 30 36 38 34C43 32 48 35 50 38Z" fill="url(#modalHandsGrad)" fillOpacity="0.9" />
-                <path d="M50 32C58 22 72 24 78 36C82 45 78 58 68 66C62 71 56 75 50 78C54 71 66 60 70 52C74 44 70 36 62 34C57 32 52 35 50 38Z" fill="url(#modalHandsGrad)" fillOpacity="0.9" />
-                <path d="M54 18L40 45H53L46 72L63 41H50L56 22L54 18Z" fill="url(#modalPulseGrad)" />
+                <g className="animate-sigap-wings">
+                  <path d="M50 32C42 22 28 24 22 36C18 45 22 58 32 66C38 71 44 75 50 78C46 71 34 60 30 52C26 44 30 36 38 34C43 32 48 35 50 38Z" fill="url(#modalHandsGrad)" fillOpacity="0.9" />
+                  <path d="M50 32C58 22 72 24 78 36C82 45 78 58 68 66C62 71 56 75 50 78C54 71 66 60 70 52C74 44 70 36 62 34C57 32 52 35 50 38Z" fill="url(#modalHandsGrad)" fillOpacity="0.9" />
+                </g>
+                <path d="M54 18L40 45H53L46 72L63 41H50L56 22L54 18Z" fill="url(#modalPulseGrad)" className="animate-sigap-lightning" />
+                <circle cx="50" cy="46" r="7" className="animate-sigap-core-ping" fill="none" stroke="#FDE047" strokeWidth="1.5" />
                 <circle cx="50" cy="46" r="3.5" fill="#FFFFFF" />
                 <circle cx="50" cy="46" r="6" stroke="#FFFFFF" strokeWidth="1.2" strokeDasharray="2 2" strokeOpacity="0.75" />
               </svg>

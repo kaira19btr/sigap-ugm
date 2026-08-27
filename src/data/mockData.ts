@@ -21,8 +21,8 @@ export const CURRENT_PROFILES: Record<string, UserProfile> = {
     name: 'Budi Santoso, S.STP',
     role: 'Admin Daerah',
     roleType: 'admin_daerah',
-    agency: 'Dinsos Prov. Jawa Barat',
-    region: 'Jawa Barat',
+    agency: 'Dinas Sosial Daerah',
+    region: 'Wilayah Daerah',
   },
   petugas_lapangan: {
     name: 'Ahmad Ridwan',
@@ -766,8 +766,8 @@ export const INITIAL_USERS: SystemUser[] = [
     id: 'usr-01',
     name: 'Budi Santoso',
     role: 'Admin Daerah',
-    agency: 'Dinsos Prov. Jabar',
-    region: 'Jawa Barat',
+    agency: 'Dinas Sosial Daerah',
+    region: 'Wilayah Daerah',
     isActive: true,
   },
   {

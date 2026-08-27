@@ -29,7 +29,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
   onBackToLanding,
 }) => {
   const [activeTab, setActiveTab] = useState<'daerah' | 'pusat'>('daerah');
-  const [email, setEmail] = useState('budi.santoso@dinsos.jabarprov.go.id');
+  const [email, setEmail] = useState('budi.santoso@dinsos.daerah.go.id');
   const [password, setPassword] = useState('••••••••••••');
   const [rememberMe, setRememberMe] = useState(true);
   const [isAuthenticating, setIsAuthenticating] = useState(false);
@@ -52,7 +52,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
     if (tab === 'pusat') {
       setEmail('dr.budi.setiawan@kemensos.go.id');
     } else {
-      setEmail('budi.santoso@dinsos.jabarprov.go.id');
+      setEmail('budi.santoso@dinsos.daerah.go.id');
     }
   };
 
@@ -364,7 +364,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                 className="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-850 border border-blue-950/60 hover:border-blue-500/50 text-[10px] font-medium text-slate-300 hover:text-white text-center transition-all disabled:opacity-50 hover:scale-105 active:scale-95 shadow-xs"
               >
                 <div className="font-bold text-sky-400">Daerah</div>
-                <div>Dinsos Jabar</div>
+                <div>Dinas Daerah</div>
               </button>
               <button
                 type="button"

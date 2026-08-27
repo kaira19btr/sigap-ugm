@@ -42,7 +42,7 @@ export const AuditLogModal: React.FC<AuditLogModalProps> = ({ isOpen, onClose })
       user: 'Budi Santoso (Admin Daerah)',
       action: 'Penyelesaian Konflik NIK',
       target: 'Garut Kota (Rekonsiliasi DTKS)',
-      ip: '10.18.44.12 (Dinsos Jabar)',
+      ip: '10.18.44.12 (Dinas Daerah)',
       hash: 'SHA256:77cd10...ee81',
     },
     {

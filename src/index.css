@@ -29,7 +29,123 @@
   background: #94a3b8;
 }
 
-/* SIGAP Logo Authentication & Pulse Animations */
+/* SIGAP Logo Authentication & 3D Motion Animations */
+@keyframes sigapFloat3D {
+  0%, 100% {
+    transform: perspective(600px) translateY(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+  }
+  25% {
+    transform: perspective(600px) translateY(-3px) rotateX(6deg) rotateY(-8deg) rotateZ(-1.5deg);
+  }
+  50% {
+    transform: perspective(600px) translateY(-5px) rotateX(0deg) rotateY(0deg) rotateZ(1deg);
+  }
+  75% {
+    transform: perspective(600px) translateY(-2px) rotateX(-6deg) rotateY(8deg) rotateZ(0.5deg);
+  }
+}
+
+@keyframes sigapLightningPulse {
+  0%, 100% {
+    opacity: 0.95;
+    filter: drop-shadow(0 0 3px #F59E0B);
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 8px #FDE047) drop-shadow(0 0 14px #EA580C);
+  }
+}
+
+@keyframes sigapCorePing {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.6);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+@keyframes sigapAmbientAura {
+  0% {
+    transform: rotate(0deg) scale(0.96);
+    opacity: 0.6;
+  }
+  50% {
+    transform: rotate(180deg) scale(1.1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: rotate(360deg) scale(0.96);
+    opacity: 0.6;
+  }
+}
+
+@keyframes sigapWingsBreathe {
+  0%, 100% {
+    transform: scale(1);
+    transform-origin: 50px 50px;
+  }
+  50% {
+    transform: scale(1.03);
+    transform-origin: 50px 50px;
+  }
+}
+
+@keyframes sigapOrbitParticle {
+  0% {
+    transform: rotate(0deg) translateX(24px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(24px) rotate(-360deg);
+  }
+}
+
+@keyframes sigapTextSheen {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-sigap-float {
+  animation: sigapFloat3D 4.5s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+
+.animate-sigap-lightning {
+  animation: sigapLightningPulse 2.2s ease-in-out infinite;
+  transform-origin: 50px 45px;
+}
+
+.animate-sigap-wings {
+  animation: sigapWingsBreathe 3.5s ease-in-out infinite;
+}
+
+.animate-sigap-core-ping {
+  animation: sigapCorePing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  transform-origin: 50px 46px;
+}
+
+.animate-sigap-aura {
+  animation: sigapAmbientAura 8s linear infinite;
+}
+
+.animate-sigap-text-sheen {
+  background-size: 200% auto;
+  animation: sigapTextSheen 5s ease-in-out infinite;
+}
+
 @keyframes sigapPulseGlow {
   0% {
     transform: scale(1);

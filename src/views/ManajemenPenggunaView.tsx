@@ -26,8 +26,8 @@ export const ManajemenPenggunaView: React.FC<ManajemenPenggunaViewProps> = ({
 }) => {
   const [name, setName] = useState('');
   const [role, setRole] = useState('Admin Daerah');
-  const [agency, setAgency] = useState('Dinsos Prov. Jawa Barat');
-  const [region, setRegion] = useState('Jawa Barat');
+  const [agency, setAgency] = useState('Dinas Sosial Daerah');
+  const [region, setRegion] = useState('Wilayah Daerah');
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {

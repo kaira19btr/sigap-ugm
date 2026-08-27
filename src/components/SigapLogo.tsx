@@ -72,8 +72,16 @@ export const SigapLogo: React.FC<SigapLogoProps> = ({
         } : undefined}
         title={interactive ? 'Klik untuk melihat filosofi makna logo SIGAP' : undefined}
       >
-        {/* Custom Symbolic Vector Emblem */}
-        <div className={`relative shrink-0 ${cfg.container} flex items-center justify-center transition-transform duration-300 ${interactive && !isAuthenticating ? 'group-hover:scale-105' : ''}`}>
+        {/* Custom Symbolic Vector Emblem with 3D Float Animation */}
+        <div className={`relative shrink-0 ${cfg.container} flex items-center justify-center transition-all duration-300 animate-sigap-float ${interactive && !isAuthenticating ? 'group-hover:scale-110 group-hover:[filter:drop-shadow(0_8px_20px_rgba(225,29,72,0.6))]' : ''}`}>
+          {/* Ambient idle orbital aura ring */}
+          <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-rose-500/20 via-amber-500/10 to-sky-500/20 blur-xs animate-sigap-aura pointer-events-none -z-10"></div>
+          
+          {/* Subtle orbiting photon spark in idle state */}
+          <div className="absolute -inset-1.5 rounded-full border border-dashed border-rose-400/20 animate-sigap-orbit pointer-events-none">
+            <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-amber-400/80 shadow-[0_0_4px_#f59e0b]"></div>
+          </div>
+
           {/* Authentication Dynamic Pulse Waves & Orbit Rings */}
           {isAuthenticating && (
             <>
@@ -145,27 +153,39 @@ export const SigapLogo: React.FC<SigapLogoProps> = ({
             />
 
             {/* Caring Hands / Embracing Wings (Tangan Merangkul & Perlindungan Sosial) */}
-            {/* Left Wing / Caring Hand */}
-            <path
-              d="M50 32C42 22 28 24 22 36C18 45 22 58 32 66C38 71 44 75 50 78C46 71 34 60 30 52C26 44 30 36 38 34C43 32 48 35 50 38Z"
-              fill="url(#sigapHandsGrad)"
-              fillOpacity={isAuthenticating ? "1" : "0.9"}
-            />
-            {/* Right Wing / Caring Hand */}
-            <path
-              d="M50 32C58 22 72 24 78 36C82 45 78 58 68 66C62 71 56 75 50 78C54 71 66 60 70 52C74 44 70 36 62 34C57 32 52 35 50 38Z"
-              fill="url(#sigapHandsGrad)"
-              fillOpacity={isAuthenticating ? "1" : "0.9"}
-            />
+            <g className="animate-sigap-wings">
+              {/* Left Wing / Caring Hand */}
+              <path
+                d="M50 32C42 22 28 24 22 36C18 45 22 58 32 66C38 71 44 75 50 78C46 71 34 60 30 52C26 44 30 36 38 34C43 32 48 35 50 38Z"
+                fill="url(#sigapHandsGrad)"
+                fillOpacity={isAuthenticating ? "1" : "0.9"}
+              />
+              {/* Right Wing / Caring Hand */}
+              <path
+                d="M50 32C58 22 72 24 78 36C82 45 78 58 68 66C62 71 56 75 50 78C54 71 66 60 70 52C74 44 70 36 62 34C57 32 52 35 50 38Z"
+                fill="url(#sigapHandsGrad)"
+                fillOpacity={isAuthenticating ? "1" : "0.9"}
+              />
+            </g>
 
             {/* Dynamic Lightning Bolt / Adaptive Response Wave (Gerak Cepat & Peringatan Dini) */}
             <path
               d="M54 18L40 45H53L46 72L63 41H50L56 22L54 18Z"
               fill="url(#sigapPulseGrad)"
               filter="url(#sigapGlow)"
+              className="animate-sigap-lightning"
             />
 
-            {/* Central Unified Data Hub Core (Titik Satu Data Terpadu DTKS-Regsosek) */}
+            {/* Central Unified Data Hub Core with Live Radar Ping */}
+            <circle
+              cx="50"
+              cy="46"
+              r="7"
+              className="animate-sigap-core-ping"
+              fill="none"
+              stroke="#FDE047"
+              strokeWidth="1.5"
+            />
             <circle cx="50" cy="46" r={isAuthenticating ? "4.5" : "3.5"} fill="#FFFFFF" />
             <circle cx="50" cy="46" r={isAuthenticating ? "8" : "6"} stroke="#FFFFFF" strokeWidth="1.2" strokeDasharray="2 2" strokeOpacity={isAuthenticating ? "1" : "0.75"} />
           </svg>
@@ -183,10 +203,10 @@ export const SigapLogo: React.FC<SigapLogoProps> = ({
           <div className="leading-tight select-none">
             <div className="flex items-center gap-2">
               <span
-                className={`${cfg.title} tracking-wider font-black transition-all duration-300 ${
+                className={`${cfg.title} tracking-wider font-black transition-all duration-300 animate-sigap-text-sheen ${
                   isDark
-                    ? 'bg-gradient-to-r from-rose-400 via-amber-300 to-amber-200 bg-clip-text text-transparent drop-shadow-[0_2px_12px_rgba(225,29,72,0.45)] group-hover:from-rose-300 group-hover:via-amber-200 group-hover:to-sky-300'
-                    : 'bg-gradient-to-r from-rose-600 via-rose-700 to-blue-900 bg-clip-text text-transparent drop-shadow-xs group-hover:from-rose-500 group-hover:via-rose-600 group-hover:to-blue-700'
+                    ? 'bg-gradient-to-r from-rose-400 via-amber-300 via-rose-300 to-amber-200 bg-clip-text text-transparent drop-shadow-[0_2px_12px_rgba(225,29,72,0.45)] group-hover:from-rose-300 group-hover:via-amber-200 group-hover:to-sky-300'
+                    : 'bg-gradient-to-r from-rose-600 via-amber-600 via-rose-700 to-blue-900 bg-clip-text text-transparent drop-shadow-xs group-hover:from-rose-500 group-hover:via-rose-600 group-hover:to-blue-700'
                 }`}
               >
                 SIGAP
