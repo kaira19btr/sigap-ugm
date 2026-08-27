@@ -139,7 +139,7 @@ export const STAGES_DATA: Record<number, StageInfo> = {
     validationChecklist: [
       { title: 'Log Audit Timestamp & Operator Hashing', desc: 'Setiap aksi verifikasi tercatat dengan hash kriptografi SHA-256.', passed: true },
       { title: 'Rekonsiliasi Sukses Transaksi Bank 100%', desc: 'Pencocokan laporan sukses debet bank penyalur dengan penerimaan di tangan warga.', passed: true },
-      { title: 'Tindak Lanjut Saluran Pengaduan', desc: 'Integrasi dengan modul pengaduan masyarakat untuk koreksi data jika ada anomali.', passed: true },
+      { title: 'Tindak Lanjut Saluran Whistleblowing', desc: 'Integrasi dengan modul WBS untuk koreksi data dan investigasi anomali.', passed: true },
       { title: 'Ekspor Dokumen Laporan Siap Audit BPK', desc: 'Format laporan terstandarisasi siap unduh dalam bentuk tabular dan analitik visual.', passed: true },
     ],
     processFlow: [

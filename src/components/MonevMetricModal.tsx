@@ -342,7 +342,7 @@ export const MonevMetricModal: React.FC<MonevMetricModalProps> = ({
                   <div className="p-3 bg-white rounded-xl border border-slate-200 space-y-1.5">
                     <div className="flex items-center gap-1.5 font-bold text-slate-900">
                       <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                      <span>4. Kanal Sanggah & Pengaduan Warga</span>
+                      <span>4. Kanal Whistleblowing &amp; Sanggah Warga</span>
                     </div>
                     <p className="text-slate-600">
                       Masyarakat dapat melaporkan ketidaktepatan sasaran secara terbuka via SMS/WhatsApp yang ditindaklanjuti dalam 24 jam.

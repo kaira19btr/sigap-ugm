@@ -100,11 +100,16 @@ export const LoginView: React.FC<LoginViewProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col justify-center items-center px-4 py-12 relative overflow-hidden">
-      {/* Background Subtle Gradient & Dynamic Burst on Auth */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(59,130,246,0.15),rgba(255,255,255,0))]"></div>
+    <div className="min-h-screen bg-gradient-to-br from-[#080C16] via-[#1C0A22] to-[#0A1429] text-slate-100 flex flex-col justify-center items-center px-4 py-12 relative overflow-hidden">
+      {/* Dynamic atmospheric gradient orbs matching SIGAP logo */}
+      <div className="absolute -top-28 -left-28 w-[420px] h-[420px] bg-rose-600/15 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[380px] h-[380px] bg-amber-500/10 rounded-full blur-[90px] pointer-events-none" />
+      <div className="absolute -bottom-28 -right-28 w-[450px] h-[450px] bg-sky-600/15 rounded-full blur-[110px] pointer-events-none" />
+      
+      {/* Background radial highlight & Dynamic Burst on Auth */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(225,29,72,0.12),rgba(255,255,255,0))]"></div>
       {isAuthenticating && (
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_25%,rgba(225,29,72,0.2),rgba(245,158,11,0.1),transparent_70%)] animate-pulse pointer-events-none transition-all duration-700"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_25%,rgba(225,29,72,0.25),rgba(245,158,11,0.18),transparent_70%)] animate-pulse pointer-events-none transition-all duration-700"></div>
       )}
 
       {/* Top action controls: return & sound toggle */}
@@ -116,9 +121,9 @@ export const LoginView: React.FC<LoginViewProps> = ({
             soundEffects.playClick();
             onBackToLanding();
           }}
-          className="pointer-events-auto flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700 hover:border-slate-600 transition-all disabled:opacity-50 hover:scale-105 active:scale-95"
+          className="pointer-events-auto flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-white bg-slate-900/80 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-rose-950/60 hover:border-rose-700/60 transition-all disabled:opacity-50 hover:scale-105 active:scale-95 shadow-md"
         >
-          <ChevronLeft className="w-4 h-4" />
+          <ChevronLeft className="w-4 h-4 text-rose-400" />
           <span>Kembali ke Beranda</span>
         </button>
 
@@ -127,10 +132,10 @@ export const LoginView: React.FC<LoginViewProps> = ({
           type="button"
           onClick={toggleSound}
           title={isMuted ? 'Aktifkan Efek Suara' : 'Bisukan Efek Suara'}
-          className={`pointer-events-auto flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border transition-all hover:scale-105 active:scale-95 shadow-sm ${
+          className={`pointer-events-auto flex items-center gap-1.5 text-xs font-semibold px-3.5 py-1.5 rounded-xl border transition-all hover:scale-105 active:scale-95 shadow-md backdrop-blur-md ${
             isMuted
-              ? 'bg-slate-800/80 text-slate-400 border-slate-700 hover:text-slate-200'
-              : 'bg-emerald-950/70 text-emerald-300 border-emerald-500/40 hover:bg-emerald-900/80 shadow-emerald-500/10'
+              ? 'bg-slate-900/80 text-slate-400 border-slate-800 hover:text-slate-200'
+              : 'bg-emerald-950/80 text-emerald-300 border-emerald-500/40 hover:bg-emerald-900/80 shadow-emerald-500/10'
           }`}
         >
           {isMuted ? (
@@ -187,7 +192,12 @@ export const LoginView: React.FC<LoginViewProps> = ({
                 Memproses Masuk...
               </span>
             ) : (
-              'Masuk ke Portal SIGAP'
+              <>
+                Masuk ke Portal{' '}
+                <span className="bg-gradient-to-r from-rose-400 via-amber-300 to-amber-200 bg-clip-text text-transparent font-black tracking-wider">
+                  SIGAP
+                </span>
+              </>
             )}
           </h1>
           <p className="text-xs text-rose-300 font-medium mt-1">
@@ -199,11 +209,14 @@ export const LoginView: React.FC<LoginViewProps> = ({
         </div>
 
         {/* Login Card */}
-        <div className={`bg-slate-950 border rounded-2xl p-6 sm:p-8 shadow-2xl shadow-black/50 transition-all duration-300 ${
-          isAuthenticating ? 'border-amber-500/40 ring-1 ring-amber-500/30' : 'border-slate-800'
+        <div className={`bg-slate-950/80 backdrop-blur-xl border rounded-2xl p-6 sm:p-8 shadow-2xl shadow-black/80 transition-all duration-300 relative overflow-hidden ${
+          isAuthenticating ? 'border-amber-500/50 ring-2 ring-amber-500/30' : 'border-rose-950/50'
         }`}>
+          {/* Top Decorative Card Gradient Bar */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rose-500 via-amber-400 to-sky-400" />
+
           {/* Tab Selector */}
-          <div className="grid grid-cols-2 p-1 bg-slate-900 rounded-xl mb-6 border border-slate-800">
+          <div className="grid grid-cols-2 p-1 bg-slate-900/90 rounded-xl mb-6 border border-rose-950/40">
             <button
               id="tab-login-daerah"
               type="button"
@@ -211,7 +224,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
               onClick={() => handleTabChange('daerah')}
               className={`flex items-center justify-center gap-2 py-2 text-xs font-bold rounded-lg transition-all ${
                 activeTab === 'daerah'
-                  ? 'bg-blue-600 text-white shadow-md'
+                  ? 'bg-gradient-to-r from-rose-600 to-blue-600 text-white shadow-md font-bold'
                   : 'text-slate-400 hover:text-slate-200'
               } disabled:opacity-60`}
             >
@@ -225,7 +238,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
               onClick={() => handleTabChange('pusat')}
               className={`flex items-center justify-center gap-2 py-2 text-xs font-bold rounded-lg transition-all ${
                 activeTab === 'pusat'
-                  ? 'bg-blue-600 text-white shadow-md'
+                  ? 'bg-gradient-to-r from-rose-600 to-blue-600 text-white shadow-md font-bold'
                   : 'text-slate-400 hover:text-slate-200'
               } disabled:opacity-60`}
             >
@@ -240,7 +253,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                 Alamat Email Kedinasan / NIP
               </label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Mail className="w-4 h-4 text-rose-300/60 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   id="input-login-email"
                   type="email"
@@ -248,7 +261,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                   disabled={isAuthenticating}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-60"
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-900/90 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-rose-500/40 focus:border-rose-500 transition-all disabled:opacity-60 shadow-inner"
                   placeholder="nama@instansi.go.id"
                 />
               </div>
@@ -259,7 +272,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                 Kata Sandi
               </label>
               <div className="relative">
-                <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Lock className="w-4 h-4 text-rose-300/60 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   id="input-login-password"
                   type="password"
@@ -267,7 +280,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                   disabled={isAuthenticating}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-60"
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-900/90 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-rose-500/40 focus:border-rose-500 transition-all disabled:opacity-60 shadow-inner"
                   placeholder="••••••••••••"
                 />
               </div>
@@ -283,14 +296,14 @@ export const LoginView: React.FC<LoginViewProps> = ({
                     soundEffects.playClick();
                     setRememberMe(e.target.checked);
                   }}
-                  className="w-4 h-4 rounded bg-slate-900 border-slate-700 text-blue-600 focus:ring-blue-500 disabled:opacity-60"
+                  className="w-4 h-4 rounded bg-slate-900 border-slate-700 text-rose-600 focus:ring-rose-500 disabled:opacity-60"
                 />
                 <span className="text-slate-400">Ingat sesi saya</span>
               </label>
               <button
                 type="button"
                 disabled={isAuthenticating}
-                className="text-blue-400 hover:text-blue-300 transition-colors disabled:opacity-60"
+                className="text-rose-400 hover:text-rose-300 transition-colors disabled:opacity-60"
                 onClick={() => {
                   soundEffects.playClick();
                   alert('Fitur pemulihan kata sandi dapat dihubungi melalui Helpdesk Pusdatin Kemensos.');
@@ -307,7 +320,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
               className={`w-full py-3 text-white font-bold text-xs rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 mt-2 relative overflow-hidden ${
                 isAuthenticating
                   ? 'bg-gradient-to-r from-rose-600 via-amber-600 to-blue-600 shadow-rose-600/30'
-                  : 'bg-blue-600 hover:bg-blue-500 shadow-blue-600/30 hover:scale-[1.01] active:scale-[0.99]'
+                  : 'bg-gradient-to-r from-rose-600 via-rose-500 to-blue-600 hover:from-rose-500 hover:to-blue-500 shadow-lg shadow-rose-950/50 hover:scale-[1.01] active:scale-[0.99] border border-rose-400/20'
               }`}
             >
               {isAuthenticating && (
@@ -328,34 +341,36 @@ export const LoginView: React.FC<LoginViewProps> = ({
           </form>
 
           {/* Quick 1-Click Simulation Profiles */}
-          <div className="mt-6 pt-5 border-t border-slate-800">
-            <p className="text-[11px] font-semibold text-slate-400 mb-2.5 uppercase tracking-wider text-center">
-              Akses Cepat Demo Pengguna
+          <div className="mt-6 pt-5 border-t border-rose-950/40">
+            <p className="text-[11px] font-semibold text-rose-300/80 mb-2.5 uppercase tracking-wider text-center flex items-center justify-center gap-1.5">
+              <span className="w-1 h-1 rounded-full bg-rose-500" />
+              <span>Akses Cepat Demo Pengguna</span>
+              <span className="w-1 h-1 rounded-full bg-sky-500" />
             </p>
             <div className="grid grid-cols-3 gap-2">
               <button
                 type="button"
                 disabled={isAuthenticating}
                 onClick={() => triggerLoginSequence('admin_pusat')}
-                className="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-blue-500/50 text-[10px] font-medium text-slate-300 hover:text-white text-center transition-all disabled:opacity-50 hover:scale-105 active:scale-95"
+                className="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-850 border border-rose-950/60 hover:border-rose-500/50 text-[10px] font-medium text-slate-300 hover:text-white text-center transition-all disabled:opacity-50 hover:scale-105 active:scale-95 shadow-xs"
               >
-                <div className="font-bold text-blue-400">Pusat</div>
+                <div className="font-bold text-rose-400">Pusat</div>
                 <div>Kemensos RI</div>
               </button>
               <button
                 type="button"
                 disabled={isAuthenticating}
                 onClick={() => triggerLoginSequence('admin_daerah')}
-                className="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-indigo-500/50 text-[10px] font-medium text-slate-300 hover:text-white text-center transition-all disabled:opacity-50 hover:scale-105 active:scale-95"
+                className="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-850 border border-blue-950/60 hover:border-blue-500/50 text-[10px] font-medium text-slate-300 hover:text-white text-center transition-all disabled:opacity-50 hover:scale-105 active:scale-95 shadow-xs"
               >
-                <div className="font-bold text-indigo-400">Daerah</div>
+                <div className="font-bold text-sky-400">Daerah</div>
                 <div>Dinsos Jabar</div>
               </button>
               <button
                 type="button"
                 disabled={isAuthenticating}
                 onClick={() => triggerLoginSequence('petugas_lapangan')}
-                className="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/50 text-[10px] font-medium text-slate-300 hover:text-white text-center transition-all disabled:opacity-50 hover:scale-105 active:scale-95"
+                className="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-850 border border-emerald-950/60 hover:border-emerald-500/50 text-[10px] font-medium text-slate-300 hover:text-white text-center transition-all disabled:opacity-50 hover:scale-105 active:scale-95 shadow-xs"
               >
                 <div className="font-bold text-emerald-400">Lapangan</div>
                 <div>Tagana URC</div>

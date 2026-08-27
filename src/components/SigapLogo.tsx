@@ -181,27 +181,36 @@ export const SigapLogo: React.FC<SigapLogoProps> = ({
         {/* Text Details */}
         {showText && (
           <div className="leading-tight select-none">
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-2">
               <span
-                className={`${cfg.title} tracking-tight font-extrabold ${
-                  isDark ? 'text-white' : 'text-slate-900'
+                className={`${cfg.title} tracking-wider font-black transition-all duration-300 ${
+                  isDark
+                    ? 'bg-gradient-to-r from-rose-400 via-amber-300 to-amber-200 bg-clip-text text-transparent drop-shadow-[0_2px_12px_rgba(225,29,72,0.45)] group-hover:from-rose-300 group-hover:via-amber-200 group-hover:to-sky-300'
+                    : 'bg-gradient-to-r from-rose-600 via-rose-700 to-blue-900 bg-clip-text text-transparent drop-shadow-xs group-hover:from-rose-500 group-hover:via-rose-600 group-hover:to-blue-700'
                 }`}
               >
                 SIGAP
               </span>
               {showBadge && (
-                <span className="text-[9px] uppercase font-mono font-bold tracking-wider px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-400 border border-rose-500/30">
+                <span
+                  className={`text-[9px] uppercase font-mono font-bold tracking-wider px-2 py-0.5 rounded-full border transition-all duration-300 ${
+                    isDark
+                      ? 'bg-gradient-to-r from-rose-500/20 to-amber-500/20 text-amber-300 border-amber-400/40 shadow-xs shadow-rose-500/20 group-hover:border-amber-300/70'
+                      : 'bg-gradient-to-r from-rose-50 to-blue-50 text-rose-700 border-rose-200 shadow-2xs group-hover:border-rose-300'
+                  }`}
+                >
                   Sosial Adaptif
                 </span>
               )}
             </div>
             {showSubtitle && (
               <p
-                className={`${cfg.subtitle} font-medium ${
-                  isDark ? 'text-slate-400' : 'text-slate-500'
+                className={`${cfg.subtitle} font-semibold flex items-center gap-1.5 mt-0.5 transition-colors ${
+                  isDark ? 'text-slate-300 group-hover:text-slate-200' : 'text-slate-600 group-hover:text-slate-800'
                 }`}
               >
-                Perlindungan Sosial Adaptif
+                <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${isDark ? 'bg-rose-400 shadow-[0_0_6px_#fb7185]' : 'bg-rose-600'}`} />
+                <span>Perlindungan Sosial Adaptif</span>
               </p>
             )}
           </div>

@@ -6,15 +6,25 @@
 class SoundSynthesizer {
   private ctx: AudioContext | null = null;
   private isMuted: boolean = false;
+  private isGlobalListenerAttached: boolean = false;
+  private lastSoundTime: number = 0;
 
   constructor() {
-    // Lazy initialize on first user gesture to comply with browser autoplay policies
+    // Check saved audio preference
+    if (typeof window !== 'undefined') {
+      const savedMute = localStorage.getItem('sigap_sound_muted');
+      if (savedMute !== null) {
+        this.isMuted = savedMute === 'true';
+      }
+    }
   }
 
   private getContext(): AudioContext | null {
     if (typeof window === 'undefined') return null;
     if (!this.ctx) {
-      const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      const AudioCtx =
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
       if (AudioCtx) {
         this.ctx = new AudioCtx();
       }
@@ -27,6 +37,12 @@ class SoundSynthesizer {
 
   public toggleMute(): boolean {
     this.isMuted = !this.isMuted;
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('sigap_sound_muted', String(this.isMuted));
+    }
+    if (!this.isMuted) {
+      this.playClick();
+    }
     return this.isMuted;
   }
 
@@ -36,39 +52,50 @@ class SoundSynthesizer {
 
   public setMuted(muted: boolean) {
     this.isMuted = muted;
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('sigap_sound_muted', String(muted));
+    }
   }
 
   /**
-   * Crisp UI Click - tactile haptic click
+   * Crisp UI Click - tactile, pleasant haptic click sound
    */
-  public playClick() {
+  public playClick(pitch: number = 1.0) {
     if (this.isMuted) return;
     const ctx = this.getContext();
     if (!ctx) return;
 
+    // Debounce very rapid multi-click events (< 25ms) to prevent audio clutter
+    const nowMs = performance.now();
+    if (nowMs - this.lastSoundTime < 25) return;
+    this.lastSoundTime = nowMs;
+
     try {
+      const now = ctx.currentTime;
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
 
       osc.type = 'sine';
-      osc.frequency.setValueAtTime(800, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(200, ctx.currentTime + 0.04);
+      // Pleasant high-frequency tactile tap (850Hz dropping to 240Hz)
+      const baseFreq = 820 * pitch;
+      osc.frequency.setValueAtTime(baseFreq, now);
+      osc.frequency.exponentialRampToValueAtTime(Math.max(120, baseFreq * 0.28), now + 0.038);
 
-      gain.gain.setValueAtTime(0.18, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+      gain.gain.setValueAtTime(0.14, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.038);
 
       osc.connect(gain);
       gain.connect(ctx.destination);
 
-      osc.start();
-      osc.stop(ctx.currentTime + 0.04);
+      osc.start(now);
+      osc.stop(now + 0.04);
     } catch {
       // Audio safety fallback
     }
   }
 
   /**
-   * Tab switch / toggle sound
+   * Soft Pop for tabs, toggles, or secondary interactive elements
    */
   public playTabSwitch() {
     if (this.isMuted) return;
@@ -81,19 +108,49 @@ class SoundSynthesizer {
       const gain = ctx.createGain();
 
       osc.type = 'triangle';
-      osc.frequency.setValueAtTime(520, now);
-      osc.frequency.exponentialRampToValueAtTime(780, now + 0.08);
+      osc.frequency.setValueAtTime(540, now);
+      osc.frequency.exponentialRampToValueAtTime(840, now + 0.07);
 
       gain.gain.setValueAtTime(0.12, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.07);
 
       osc.connect(gain);
       gain.connect(ctx.destination);
 
-      osc.start();
-      osc.stop(now + 0.08);
+      osc.start(now);
+      osc.stop(now + 0.075);
     } catch {
-      // ignore
+      // Audio safety fallback
+    }
+  }
+
+  /**
+   * Dialog / Modal open sound
+   */
+  public playModalOpen() {
+    if (this.isMuted) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(420, now);
+      osc.frequency.exponentialRampToValueAtTime(680, now + 0.12);
+
+      gain.gain.setValueAtTime(0.1, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.125);
+    } catch {
+      // Audio safety fallback
     }
   }
 
@@ -120,7 +177,6 @@ class SoundSynthesizer {
       sweepGain.gain.linearRampToValueAtTime(0.15, now + 0.3);
       sweepGain.gain.exponentialRampToValueAtTime(0.001, now + 0.65);
 
-      // Low pass filter to make it cinematic and warm
       const filter = ctx.createBiquadFilter();
       filter.type = 'lowpass';
       filter.frequency.setValueAtTime(400, now);
@@ -133,7 +189,7 @@ class SoundSynthesizer {
       sweepOsc.start(now);
       sweepOsc.stop(now + 0.65);
 
-      // Sparkle chime layer at mid-flight
+      // Sparkle chime layer
       const chimeOsc = ctx.createOscillator();
       const chimeGain = ctx.createGain();
 
@@ -156,7 +212,7 @@ class SoundSynthesizer {
   }
 
   /**
-   * Success Fanfare Chime - Ascending major chords when authentication finishes
+   * Success Fanfare Chime
    */
   public playSuccessChime() {
     if (this.isMuted) return;
@@ -165,8 +221,7 @@ class SoundSynthesizer {
 
     try {
       const now = ctx.currentTime;
-      // C5, E5, G5, C6 notes in Hz
-      const notes = [523.25, 659.25, 783.99, 1046.50];
+      const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
 
       notes.forEach((freq, index) => {
         const noteTime = now + index * 0.08;
@@ -218,6 +273,52 @@ class SoundSynthesizer {
     } catch {
       // Audio safety fallback
     }
+  }
+
+  /**
+   * Global Click Listener:
+   * Listens to every click in the window and plays a crisp tactile sound automatically!
+   */
+  public initGlobalClickListener() {
+    if (typeof window === 'undefined' || this.isGlobalListenerAttached) return;
+    this.isGlobalListenerAttached = true;
+
+    // Use capture phase so all clicks (even stopping propagation) get the audio feedback
+    window.addEventListener(
+      'click',
+      (e: MouseEvent) => {
+        // Resume AudioContext if suspended
+        this.getContext();
+
+        if (this.isMuted) return;
+
+        const target = e.target as HTMLElement | null;
+        if (!target) {
+          this.playClick();
+          return;
+        }
+
+        // Determine if target or parent is a special element to vary pitch slightly
+        const isButton = target.closest('button, [role="button"], .btn');
+        const isInput = target.closest('input, select, textarea');
+        const isLink = target.closest('a');
+        const isTab = target.closest('[role="tab"], .tab');
+
+        if (isTab) {
+          this.playTabSwitch();
+        } else if (isButton) {
+          this.playClick(1.05); // slightly crisper
+        } else if (isInput) {
+          this.playClick(0.95);
+        } else if (isLink) {
+          this.playClick(1.0);
+        } else {
+          // General click on card, row, icon, canvas, map or background
+          this.playClick(1.0);
+        }
+      },
+      { capture: true, passive: true }
+    );
   }
 }
 

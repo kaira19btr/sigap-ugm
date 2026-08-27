@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { SigapLogo } from '../components/SigapLogo';
 import { TechnicalArchitectureModal } from '../components/TechnicalArchitectureModal';
+import { soundEffects } from '../utils/soundEffects';
 import {
   Shield,
   Radio,
@@ -22,6 +23,8 @@ import {
   Building2,
   Clock,
   TrendingUp,
+  Volume2,
+  VolumeX,
 } from 'lucide-react';
 
 interface LandingViewProps {
@@ -34,6 +37,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
   onEnterDashboard,
 }) => {
   const [isArchitectureModalOpen, setIsArchitectureModalOpen] = useState(false);
+  const [isSoundMuted, setIsSoundMuted] = useState(soundEffects.getMuted());
 
   return (
     <div id="landing-page-container" className="min-h-screen bg-white text-slate-900 flex flex-col selection:bg-blue-100">
@@ -53,11 +57,28 @@ export const LandingView: React.FC<LandingViewProps> = ({
               className="text-slate-600 hover:text-blue-600 transition-colors flex items-center gap-1.5"
             >
               <Workflow className="w-3.5 h-3.5 text-blue-600" />
-              <span>Arsitektur SPBE</span>
+              <span>Arsitektur Sistem</span>
             </button>
           </div>
 
           <div className="flex items-center gap-3">
+            {/* Sound FX Toggle Button */}
+            <button
+              id="btn-landing-sound-toggle"
+              onClick={() => {
+                const nextMuted = soundEffects.toggleMute();
+                setIsSoundMuted(nextMuted);
+              }}
+              className={`p-2 rounded-lg transition-colors border ${
+                isSoundMuted
+                  ? 'text-slate-400 hover:text-slate-700 bg-slate-50 border-slate-200'
+                  : 'text-blue-600 hover:text-blue-700 bg-blue-50/70 border-blue-200'
+              }`}
+              title={isSoundMuted ? 'Efek Suara: Bisu (Klik untuk aktifkan)' : 'Efek Suara: Aktif (Klik untuk matikan)'}
+            >
+              {isSoundMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+            </button>
+
             <button
               id="btn-landing-login"
               onClick={onLoginClick}
@@ -340,7 +361,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
               </div>
               <div className="text-[10px] font-bold uppercase tracking-wider text-indigo-600 mb-1">Tahap 02 • Validasi Target</div>
               <h3 className="text-lg font-bold text-slate-900 mb-2">
-                Satu Data &amp; Penilaian Risiko (Targeting)
+                Satu Data Terpadu (Targeting)
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed">
                 Interoperabilitas DTKS, Regsosek, dan data geospasial kebencanaan untuk validasi kelayakan otomatis tanpa tumpang tindih penerima manfaat.
@@ -359,10 +380,10 @@ export const LandingView: React.FC<LandingViewProps> = ({
               </div>
               <div className="text-[10px] font-bold uppercase tracking-wider text-amber-600 mb-1">Tahap 03 • Respons Kilat</div>
               <h3 className="text-lg font-bold text-slate-900 mb-2">
-                Aktivasi &amp; Penyaluran Kilat (Activation)
+                Penilaian Risiko &amp; Aktivasi Kilat (Activation)
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Mekanisme aktivasi protokol darurat standar 7 indikator yang memangkas birokrasi verifikasi, menyalurkan bantuan adaptif dalam rata-rata 4.2 hari nasional.
+                Kalkulasi 7 parameter analitis risiko krisis, safeguard confidence score, dan otorisasi bantuan adaptif dalam rata-rata 4.2 hari nasional.
               </p>
             </div>
             <div className="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-semibold text-amber-600">
@@ -419,18 +440,18 @@ export const LandingView: React.FC<LandingViewProps> = ({
             <div className="bg-white p-6 rounded-xl border border-slate-200 relative">
               <div className="text-3xl font-mono font-extrabold text-indigo-600 mb-3">02</div>
               <div className="text-[10px] font-mono font-bold text-slate-400 uppercase mb-1">Tahap 2 • Targeting</div>
-              <h4 className="font-bold text-slate-900 mb-1">Satu Data &amp; Penilaian Risiko</h4>
+              <h4 className="font-bold text-slate-900 mb-1">Satu Data Terpadu</h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Pencocokan data DTKS &amp; Regsosek serta evaluasi 7 parameter analitis (Skala 105 Poin) secara objektif.
+                Pencocokan dan deduplikasi data DTKS, Regsosek, dan kependudukan untuk registrasi target sasaran yang bersih.
               </p>
             </div>
 
             <div className="bg-white p-6 rounded-xl border border-slate-200 relative">
               <div className="text-3xl font-mono font-extrabold text-amber-600 mb-3">03</div>
               <div className="text-[10px] font-mono font-bold text-slate-400 uppercase mb-1">Tahap 3 • Activation</div>
-              <h4 className="font-bold text-slate-900 mb-1">Aktivasi &amp; Penyaluran Kilat</h4>
+              <h4 className="font-bold text-slate-900 mb-1">Penilaian Risiko &amp; Aktivasi Kilat</h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Otorisasi protokol darurat dan penyaluran bantuan adaptif langsung via Himbara dan PT Pos Kilat.
+                Evaluasi 7 parameter risiko objektif (Skala 105 Poin) dan penyaluran bantuan adaptif langsung via Himbara/PT Pos.
               </p>
             </div>
 
@@ -439,7 +460,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
               <div className="text-[10px] font-mono font-bold text-slate-400 uppercase mb-1">Tahap 4 • Feedback</div>
               <h4 className="font-bold text-slate-900 mb-1">Monitoring &amp; Evaluasi Berkelanjutan</h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Pelacakan penyaluran real-time, bot pengaduan warga, dan survei kepuasan via WhatsApp &amp; SMS.
+                Pelacakan penyaluran real-time, kanal whistleblowing &amp; aspirasi warga, dan survei kepuasan 360°.
               </p>
             </div>
           </div>
@@ -498,7 +519,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
               Satu Data DTKS
             </button>
             <button onClick={() => setIsArchitectureModalOpen(true)} className="hover:text-white transition-colors">
-              Arsitektur SPBE
+              Arsitektur Sistem
             </button>
             <button onClick={onLoginClick} className="hover:text-white transition-colors">
               Portal Dinas Sosial

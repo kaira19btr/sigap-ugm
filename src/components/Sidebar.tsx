@@ -70,7 +70,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     {
       id: 'satu_data',
       moduleNumber: '02',
-      label: 'Satu Data & Penilaian Risiko',
+      label: 'Satu Data Terpadu',
       stageName: 'Targeting',
       icon: Database,
       allowedRoles: ['admin_pusat', 'admin_daerah', 'petugas_lapangan'],
@@ -78,7 +78,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     {
       id: 'risk_assessment',
       moduleNumber: '03',
-      label: 'Aktivasi & Penyaluran Kilat',
+      label: 'Penilaian Risiko & Aktivasi Kilat',
       stageName: 'Activation',
       icon: SlidersHorizontal,
       allowedRoles: ['admin_pusat', 'admin_daerah'],
@@ -102,7 +102,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     {
       id: 'pengaduan',
       moduleNumber: '06',
-      label: 'Bot Pengaduan & Aspirasi',
+      label: 'Whistleblowing & Aspirasi',
       icon: MessageSquareWarning,
       badgeCount: newGrievancesCount > 0 ? newGrievancesCount : undefined,
       allowedRoles: ['admin_pusat', 'admin_daerah', 'petugas_lapangan'],
@@ -135,10 +135,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
     <aside
       id="sidebar-navigation"
       aria-label="Navigasi Utama"
-      className="w-72 bg-[#0F172A] text-slate-200 flex flex-col h-screen shrink-0 border-r border-slate-800 select-none"
+      className="w-72 bg-gradient-to-b from-[#0B0F19] via-[#1A0B22] to-[#0A1325] text-slate-200 flex flex-col h-screen shrink-0 border-r border-rose-950/40 select-none relative overflow-hidden shadow-2xl"
     >
+      {/* Ambient background glow accents matching SIGAP logo */}
+      <div className="absolute top-0 left-0 w-64 h-64 bg-rose-600/10 rounded-full blur-3xl pointer-events-none -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute bottom-1/3 right-0 w-48 h-48 bg-amber-500/5 rounded-full blur-2xl pointer-events-none translate-x-1/3" />
+      <div className="absolute bottom-0 left-0 w-56 h-56 bg-blue-600/10 rounded-full blur-3xl pointer-events-none -translate-x-1/3 translate-y-1/3" />
+
       {/* Brand Header */}
-      <div className="p-5 border-b border-slate-800 flex items-center justify-between">
+      <div className="p-5 border-b border-rose-900/20 bg-black/20 backdrop-blur-xs flex items-center justify-between relative z-10">
         <button
           id="btn-brand-landing"
           onClick={onGoToLanding}
@@ -149,9 +154,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Navigation List */}
-      <div className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-        <div className="px-3 pb-2 text-[10px] font-bold uppercase tracking-wider text-slate-400">
-          Modul Operasional
+      <div className="flex-1 overflow-y-auto px-3 py-4 space-y-1 relative z-10 custom-scrollbar">
+        <div className="px-3 pb-2 text-[10px] font-bold uppercase tracking-wider text-rose-300/70 flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+          <span>Modul Operasional</span>
         </div>
 
         {navItems.map((item) => {
@@ -165,33 +171,33 @@ export const Sidebar: React.FC<SidebarProps> = ({
               id={`nav-module-${item.id}`}
               disabled={!isAllowed}
               onClick={() => onSelectModule(item.id)}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-xs font-medium transition-all text-left group relative ${
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all text-left group relative ${
                 isActive
-                  ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20 font-semibold'
+                  ? 'bg-gradient-to-r from-rose-600 via-rose-500 to-blue-600 text-white shadow-lg shadow-rose-950/50 font-semibold border border-rose-400/30'
                   : isAllowed
-                  ? 'text-slate-300 hover:bg-slate-800/80 hover:text-white'
+                  ? 'text-slate-300 hover:bg-white/[0.07] hover:text-white'
                   : 'text-slate-600 cursor-not-allowed opacity-40'
               }`}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <div
-                  className={`w-7 h-7 rounded-md flex items-center justify-center shrink-0 transition-colors ${
+                  className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
                     isActive
-                      ? 'bg-white/20 text-white'
-                      : 'bg-slate-800 text-slate-400 group-hover:text-slate-200'
+                      ? 'bg-white/20 text-white shadow-xs'
+                      : 'bg-slate-800/80 text-slate-400 group-hover:text-rose-300 group-hover:bg-rose-950/40 border border-slate-700/50 group-hover:border-rose-800/50'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
                 </div>
                 <div className="truncate">
                   <div className="flex items-center gap-1.5">
-                    <span className="text-[10px] font-mono opacity-60 font-semibold">
+                    <span className={`text-[10px] font-mono font-semibold ${isActive ? 'text-rose-100' : 'opacity-60 text-slate-400'}`}>
                       {item.moduleNumber}
                     </span>
                     <span className="truncate">{item.label}</span>
                   </div>
                   {item.stageName && (
-                    <div className="text-[9px] font-mono text-blue-300/80 font-medium tracking-wide">
+                    <div className={`text-[9px] font-mono font-medium tracking-wide ${isActive ? 'text-amber-200' : 'text-rose-300/60'}`}>
                       Tahap {item.moduleNumber} • {item.stageName}
                     </div>
                   )}
@@ -203,19 +209,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   <span
                     className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
                       isActive
-                        ? 'bg-white text-blue-700'
-                        : 'bg-rose-500/90 text-white animate-pulse'
+                        ? 'bg-white text-rose-700 shadow-xs'
+                        : 'bg-gradient-to-r from-rose-500 to-amber-500 text-white shadow-xs animate-pulse'
                     }`}
                   >
                     {item.badgeCount}
                   </span>
                 )}
                 {!isAllowed && (
-                  <span className="text-[9px] text-slate-400 bg-slate-800 px-1 py-0.5 rounded">
+                  <span className="text-[9px] text-slate-400 bg-slate-900/90 px-1 py-0.5 rounded border border-slate-800">
                     Khusus Pusat
                   </span>
                 )}
-                {isActive && <ChevronRight className="w-3.5 h-3.5 text-white/70" />}
+                {isActive && <ChevronRight className="w-3.5 h-3.5 text-white/90" />}
               </div>
             </button>
           );
@@ -223,21 +229,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Role Switcher & User Profile Bar */}
-      <div className="p-3 border-t border-slate-800/80 bg-slate-900/60 space-y-3">
+      <div className="p-3 border-t border-rose-950/40 bg-black/30 backdrop-blur-xs space-y-3 relative z-10">
         {/* Role Selector */}
         <div className="space-y-1.5">
-          <label className="text-[10px] uppercase font-bold tracking-wider text-slate-400 flex items-center justify-between px-1">
+          <label className="text-[10px] uppercase font-bold tracking-wider text-rose-300/80 flex items-center justify-between px-1">
             <span>Simulasi Peran Aktif</span>
-            <UserCheck className="w-3 h-3 text-blue-400" />
+            <UserCheck className="w-3 h-3 text-amber-400" />
           </label>
-          <div className="grid grid-cols-3 gap-1 bg-slate-950/80 p-1 rounded-lg border border-slate-800">
+          <div className="grid grid-cols-3 gap-1 bg-slate-950/80 p-1 rounded-xl border border-rose-950/50 shadow-inner">
             <button
               id="btn-role-pusat"
               onClick={() => onChangeRole('admin_pusat')}
-              className={`text-[10px] font-semibold py-1 rounded transition-all text-center ${
+              className={`text-[10px] font-semibold py-1.5 rounded-lg transition-all text-center ${
                 currentRole === 'admin_pusat'
-                  ? 'bg-blue-600 text-white shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-gradient-to-r from-rose-600 to-blue-600 text-white shadow-sm font-bold'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
               }`}
             >
               Pusat
@@ -245,10 +251,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <button
               id="btn-role-daerah"
               onClick={() => onChangeRole('admin_daerah')}
-              className={`text-[10px] font-semibold py-1 rounded transition-all text-center ${
+              className={`text-[10px] font-semibold py-1.5 rounded-lg transition-all text-center ${
                 currentRole === 'admin_daerah'
-                  ? 'bg-blue-600 text-white shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-gradient-to-r from-rose-600 to-blue-600 text-white shadow-sm font-bold'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
               }`}
             >
               Daerah
@@ -256,10 +262,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <button
               id="btn-role-lapangan"
               onClick={() => onChangeRole('petugas_lapangan')}
-              className={`text-[10px] font-semibold py-1 rounded transition-all text-center ${
+              className={`text-[10px] font-semibold py-1.5 rounded-lg transition-all text-center ${
                 currentRole === 'petugas_lapangan'
-                  ? 'bg-blue-600 text-white shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-gradient-to-r from-rose-600 to-blue-600 text-white shadow-sm font-bold'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
               }`}
             >
               Lapangan
@@ -268,24 +274,24 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* User Card */}
-        <div className="flex items-center justify-between p-2 rounded-lg bg-slate-800/60 border border-slate-700/50">
+        <div className="flex items-center justify-between p-2 rounded-xl bg-slate-900/60 border border-rose-900/30">
           <div className="flex items-center gap-2.5 min-w-0">
             <Avatar
               name={userProfile.name}
               roleType={userProfile.roleType}
               size="md"
-              className="ring-2 ring-blue-500/30"
+              className="ring-2 ring-rose-500/40"
             />
             <div className="min-w-0">
               <p className="text-xs font-semibold text-white truncate">{userProfile.name}</p>
-              <p className="text-[10px] text-slate-400 truncate">{userProfile.agency}</p>
+              <p className="text-[10px] text-rose-200/60 truncate">{userProfile.agency}</p>
             </div>
           </div>
           <button
             id="btn-logout-sidebar"
             onClick={onLogout}
             title="Keluar / Ganti Akun"
-            className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-slate-700/50 rounded-md transition-colors shrink-0"
+            className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-rose-950/40 rounded-lg transition-colors shrink-0"
           >
             <LogOut className="w-4 h-4" />
           </button>

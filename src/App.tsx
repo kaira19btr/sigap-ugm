@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   AppModule,
   UserRole,
@@ -21,6 +21,7 @@ import {
   INITIAL_USERS,
   INITIAL_CONSENTS,
 } from './data/mockData';
+import { soundEffects } from './utils/soundEffects';
 
 // Component imports
 import { Sidebar } from './components/Sidebar';
@@ -68,6 +69,11 @@ export default function App() {
 
   // Profile data for active role
   const activeProfile = CURRENT_PROFILES[currentRole] || CURRENT_PROFILES.admin_pusat;
+
+  // Initialize global click sound effect
+  useEffect(() => {
+    soundEffects.initGlobalClickListener();
+  }, []);
 
   // Handlers for Early Warning & Emergency
   const handleOpenEmergencyAction = (region: RegionRiskData) => {
@@ -251,6 +257,12 @@ export default function App() {
           onGoToLanding={() => setViewMode('landing')}
           onLogout={() => setViewMode('login')}
           onOpenAuditLog={() => setAuditLogModalOpen(true)}
+          regions={regions}
+          satuData={satuData}
+          fieldQueue={fieldQueue}
+          grievances={grievances}
+          proposals={proposals}
+          onSelectRegion={setSelectedRegion}
         />
 
         {/* Scrollable View Content */}
