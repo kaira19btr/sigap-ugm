@@ -44,31 +44,35 @@ export const RealEarlyWarningMap: React.FC<RealEarlyWarningMapProps> = ({
   const markersRef = useRef<{ [id: string]: L.Marker }>({});
   const circlesRef = useRef<{ [id: string]: L.Circle }>({});
   const tileLayerRef = useRef<L.TileLayer | null>(null);
+  const overlayLayerRef = useRef<L.TileLayer | null>(null);
 
   const [activeLayer, setActiveLayer] = useState<MapLayerType>('dark');
   const [showRadius, setShowRadius] = useState<boolean>(true);
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
   const [isLegendExpanded, setIsLegendExpanded] = useState<boolean>(false);
 
-  // Basemap URLs
-  const tileUrls: Record<MapLayerType, { url: string; attribution: string; subdomains?: string[] }> = {
+  // Basemap URLs (100% Free & Open, Zero API-Key Required)
+  const tileUrls: Record<
+    MapLayerType,
+    { url: string; overlayUrl?: string; attribution: string; subdomains?: string[] }
+  > = {
     dark: {
-      url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-      attribution: '&copy; <a href="https://carto.com/">CARTO</a>, &copy; <a href="https://openstreetmap.org">OSM</a>',
-      subdomains: ['a', 'b', 'c', 'd'],
+      url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+      overlayUrl: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}',
+      attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
     },
     street: {
-      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
+      attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, TomTom',
     },
     satellite: {
       url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-      attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+      overlayUrl: 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+      attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, GIS Community',
     },
     terrain: {
-      url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
-      attribution: 'Map data: &copy; <a href="https://openstreetmap.org">OSM</a>, SRTM | Map style: &copy; OpenTopoMap',
-      subdomains: ['a', 'b', 'c'],
+      url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
+      attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, TomTom',
     },
   };
 
@@ -135,13 +139,37 @@ export const RealEarlyWarningMap: React.FC<RealEarlyWarningMapProps> = ({
 
     mapInstanceRef.current = map;
 
-    // Add Tile Layer
-    const layerCfg = tileUrls[activeLayer];
-    const tileLayer = L.tileLayer(layerCfg.url, {
-      attribution: layerCfg.attribution,
-      subdomains: layerCfg.subdomains || ['a', 'b', 'c'],
-    }).addTo(map);
-    tileLayerRef.current = tileLayer;
+    // Helper to setup basemap and overlay
+    const applyTileLayers = (layerKey: MapLayerType) => {
+      if (tileLayerRef.current) {
+        map.removeLayer(tileLayerRef.current);
+        tileLayerRef.current = null;
+      }
+      if (overlayLayerRef.current) {
+        map.removeLayer(overlayLayerRef.current);
+        overlayLayerRef.current = null;
+      }
+
+      const layerCfg = tileUrls[layerKey];
+      const baseLayer = L.tileLayer(layerCfg.url, {
+        attribution: layerCfg.attribution,
+        subdomains: layerCfg.subdomains || ['a', 'b', 'c'],
+        maxZoom: 18,
+      }).addTo(map);
+      tileLayerRef.current = baseLayer;
+
+      if (layerCfg.overlayUrl) {
+        const overlayLayer = L.tileLayer(layerCfg.overlayUrl, {
+          subdomains: layerCfg.subdomains || ['a', 'b', 'c'],
+          maxZoom: 18,
+          pane: 'overlayPane',
+        }).addTo(map);
+        overlayLayerRef.current = overlayLayer;
+      }
+    };
+
+    // Add initial layers
+    applyTileLayers(activeLayer);
 
     // Add Zoom Controls bottom right
     L.control.zoom({ position: 'bottomright' }).addTo(map);
@@ -164,14 +192,29 @@ export const RealEarlyWarningMap: React.FC<RealEarlyWarningMapProps> = ({
 
     if (tileLayerRef.current) {
       map.removeLayer(tileLayerRef.current);
+      tileLayerRef.current = null;
+    }
+    if (overlayLayerRef.current) {
+      map.removeLayer(overlayLayerRef.current);
+      overlayLayerRef.current = null;
     }
 
     const layerCfg = tileUrls[activeLayer];
     const newTileLayer = L.tileLayer(layerCfg.url, {
       attribution: layerCfg.attribution,
       subdomains: layerCfg.subdomains || ['a', 'b', 'c'],
+      maxZoom: 18,
     }).addTo(map);
     tileLayerRef.current = newTileLayer;
+
+    if (layerCfg.overlayUrl) {
+      const newOverlayLayer = L.tileLayer(layerCfg.overlayUrl, {
+        subdomains: layerCfg.subdomains || ['a', 'b', 'c'],
+        maxZoom: 18,
+        pane: 'overlayPane',
+      }).addTo(map);
+      overlayLayerRef.current = newOverlayLayer;
+    }
   }, [activeLayer]);
 
   // Update Markers & Danger Impact Radius Circles
