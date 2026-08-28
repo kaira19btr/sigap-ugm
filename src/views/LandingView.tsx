@@ -112,7 +112,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
           </h1>
 
           <p className="mt-6 text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto font-normal leading-relaxed">
-            Platform terpadu untuk respons cepat, penilaian risiko otomatis berbasis 7 indikator analitis (105 Poin), dan tata kelola bantuan sosial adaptif geospasial real-time saat krisis dan bencana.
+            Platform terpadu untuk respons cepat, penilaian risiko otomatis berbasis 8 indikator analitis (120 Poin), dan tata kelola bantuan sosial adaptif geospasial real-time saat krisis dan bencana.
           </p>
 
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
@@ -154,9 +154,9 @@ export const LandingView: React.FC<LandingViewProps> = ({
               <div className="text-[10px] text-slate-400 font-medium">(Desil 1-2 &amp; Regsosek)</div>
             </div>
             <div className="text-center p-3">
-              <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono">105 Poin</div>
-              <div className="text-xs text-slate-600 font-semibold mt-1">Standar Matriks 7 Indikator</div>
-              <div className="text-[10px] text-slate-400 font-medium">(Maks. 15 Poin per Parameter)</div>
+              <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono">120 Poin</div>
+              <div className="text-xs text-slate-600 font-semibold mt-1">Standar Matriks 8 Indikator</div>
+              <div className="text-[10px] text-slate-400 font-medium">(Maks. 15 Poin per Indikator)</div>
             </div>
             <div className="text-center p-3">
               <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono">Offline-First</div>
@@ -451,7 +451,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
               <div className="text-[10px] font-mono font-bold text-slate-400 uppercase mb-1">Tahap 3 • Activation</div>
               <h4 className="font-bold text-slate-900 mb-1">Penilaian Risiko &amp; Aktivasi Kilat</h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Evaluasi 7 parameter risiko objektif (Skala 105 Poin) dan penyaluran bantuan adaptif langsung via Himbara/PT Pos.
+                Evaluasi 8 indikator risiko objektif (Skala 120 Poin) dan penyaluran bantuan adaptif langsung via Himbara/PT Pos.
               </p>
             </div>
 

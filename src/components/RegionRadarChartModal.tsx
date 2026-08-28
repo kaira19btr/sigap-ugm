@@ -38,64 +38,82 @@ export const RegionRadarChartModal: React.FC<RegionRadarChartModalProps> = ({
 }) => {
   if (!isOpen || !region) return null;
 
-  const { sevenIndicators } = region;
+  const eightInd = region.eightIndicators || {
+    shockIntensity: region.sevenIndicators?.shockIntensity || 12,
+    shockType: region.sevenIndicators?.infraDamage || 11,
+    vulnerableRatio: region.sevenIndicators?.vulnerableRatio || 13,
+    vulnerableDemographics: region.sevenIndicators?.dependencyRatio || 12,
+    fiscalCapacity: region.sevenIndicators?.fiscalDeficit || 12,
+    paymentAccess: region.sevenIndicators?.supplyChainDistruption || 11,
+    dataReadiness: Math.round(((region.sevenIndicators?.shockIntensity || 10) + (region.sevenIndicators?.fiscalDeficit || 10)) / 2),
+    disbursementHistory: region.sevenIndicators?.crisisDuration || 11,
+  };
+
   const totalScore =
-    sevenIndicators.shockIntensity +
-    sevenIndicators.infraDamage +
-    sevenIndicators.vulnerableRatio +
-    sevenIndicators.dependencyRatio +
-    sevenIndicators.fiscalDeficit +
-    sevenIndicators.supplyChainDistruption +
-    sevenIndicators.crisisDuration;
+    eightInd.shockIntensity +
+    eightInd.shockType +
+    eightInd.vulnerableRatio +
+    eightInd.vulnerableDemographics +
+    eightInd.fiscalCapacity +
+    eightInd.paymentAccess +
+    eightInd.dataReadiness +
+    eightInd.disbursementHistory;
 
   const radarData = [
     {
       indicator: 'Intensitas Shock',
-      fullName: '1. Intensitas Shock/Bencana Fisik (BMKG/PVMBG)',
-      value: sevenIndicators.shockIntensity,
+      fullName: '1. Intensitas Guncangan (Aspek Shock)',
+      value: eightInd.shockIntensity,
       nationalAvg: 6.5,
       fullMark: 15,
     },
     {
-      indicator: 'Kerusakan Fisik',
-      fullName: '2. Kerusakan Infrastruktur & Aksesibilitas Posko',
-      value: sevenIndicators.infraDamage,
-      nationalAvg: 5.8,
-      fullMark: 15,
-    },
-    {
-      indicator: 'RT Rentan (DTKS)',
-      fullName: '3. Proporsi Rumah Tangga Rentan (DTKS Desil 1-2 & Regsosek)',
-      value: sevenIndicators.vulnerableRatio,
-      nationalAvg: 7.2,
-      fullMark: 15,
-    },
-    {
-      indicator: 'Beban Ketergantungan',
-      fullName: '4. Rasio Beban Ketergantungan (Lansia, Balita, Disabilitas)',
-      value: sevenIndicators.dependencyRatio,
+      indicator: 'Jenis Guncangan',
+      fullName: '2. Jenis Guncangan (Tunggal / Ganda / Multipel)',
+      value: eightInd.shockType,
       nationalAvg: 6.0,
       fullMark: 15,
     },
     {
+      indicator: 'RT Rentan',
+      fullName: '3. Proporsi Rumah Tangga Rentan / Near-Poor',
+      value: eightInd.vulnerableRatio,
+      nationalAvg: 7.2,
+      fullMark: 15,
+    },
+    {
+      indicator: 'Disabilitas/Lansia',
+      fullName: '4. Keberadaan Disabilitas / Lansia / Anak',
+      value: eightInd.vulnerableDemographics,
+      nationalAvg: 6.8,
+      fullMark: 15,
+    },
+    {
       indicator: 'Kapasitas Fiskal',
-      fullName: '5. Keterbatasan Kapasitas Fiskal & Logistik Daerah',
-      value: sevenIndicators.fiscalDeficit,
+      fullName: '5. Kapasitas Fiskal Daerah (Kapasitas Lokal)',
+      value: eightInd.fiscalCapacity,
       nationalAvg: 5.5,
       fullMark: 15,
     },
     {
-      indicator: 'Rantai Pasok',
-      fullName: '6. Gangguan Rantai Pasok Pangan Pokok & Pasar Lokal',
-      value: sevenIndicators.supplyChainDistruption,
-      nationalAvg: 6.1,
+      indicator: 'Kanal Bayar',
+      fullName: '6. Akses Kanal Pembayaran (Bank / Pos / Digital)',
+      value: eightInd.paymentAccess,
+      nationalAvg: 6.2,
       fullMark: 15,
     },
     {
-      indicator: 'Durasi Krisis',
-      fullName: '7. Proyeksi Durasi Krisis & Risiko Bencana Susulan',
-      value: sevenIndicators.crisisDuration,
+      indicator: 'Kualitas Data',
+      fullName: '7. Kelengkapan / Keterkinian Data Wilayah',
+      value: eightInd.dataReadiness,
       nationalAvg: 5.9,
+      fullMark: 15,
+    },
+    {
+      indicator: 'Riwayat Salur',
+      fullName: '8. Riwayat Penyaluran Bantuan Sebelumnya',
+      value: eightInd.disbursementHistory,
+      nationalAvg: 5.7,
       fullMark: 15,
     },
   ];
@@ -138,7 +156,7 @@ export const RegionRadarChartModal: React.FC<RegionRadarChartModalProps> = ({
                 </span>
               </div>
               <h2 className="text-xl font-extrabold tracking-tight mt-1 text-white">
-                Analisis Matriks 7 Indikator Risiko • {region.name}
+                Analisis Matriks 8 Indikator Risiko • {region.name}
               </h2>
               <p className="text-xs text-slate-400 mt-0.5">
                 {region.regency}, {region.province} • {region.crisisType}
@@ -161,10 +179,10 @@ export const RegionRadarChartModal: React.FC<RegionRadarChartModalProps> = ({
             <div className="lg:col-span-7 bg-slate-50 p-4 rounded-xl border border-slate-200">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-bold text-slate-800 uppercase tracking-wide">
-                  Grafik Radar 7 Dimensi Kerentanan (Skala 1-15 per Aksis)
+                  Grafik Radar 8 Dimensi Kerentanan (Skala 1-15 per Aksis)
                 </span>
                 <span className="text-[10px] font-mono text-slate-500">
-                  Skor: <strong className="text-slate-900">{totalScore}</strong> / 105 Poin
+                  Skor: <strong className="text-slate-900">{totalScore}</strong> / 120 Poin
                 </span>
               </div>
 
@@ -209,11 +227,11 @@ export const RegionRadarChartModal: React.FC<RegionRadarChartModalProps> = ({
                       isDarurat ? 'bg-rose-500' : isSiaga ? 'bg-amber-500' : 'bg-emerald-500'
                     }`}
                   ></span>
-                  <span>{region.name} ({totalScore}/105 Poin)</span>
+                  <span>{region.name} ({totalScore}/120 Poin)</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="w-3 h-3 rounded-full bg-slate-400"></span>
-                  <span>Benchmark Rata-rata Nasional (43.1/105 Poin)</span>
+                  <span>Benchmark Rata-rata Nasional (49.8/120 Poin)</span>
                 </div>
               </div>
             </div>
@@ -222,7 +240,7 @@ export const RegionRadarChartModal: React.FC<RegionRadarChartModalProps> = ({
             <div className="lg:col-span-5 space-y-3">
               <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-xs space-y-3">
                 <span className="text-xs font-bold text-slate-800 uppercase tracking-wide block border-b border-slate-100 pb-2">
-                  Rincian Nilai 7 Parameter (Bobot 1-15)
+                  Rincian Nilai 8 Indikator (Bobot 1-15)
                 </span>
 
                 <div className="space-y-2 text-xs">

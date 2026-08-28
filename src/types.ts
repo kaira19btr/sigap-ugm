@@ -38,7 +38,7 @@ export interface RegionRiskData {
   affectedPopulation: number;
   slaTargetDays: number; // e.g. 3.5 days for darurat, 6 days for siaga, 14 days for normal
   sensorData: { day: string; inflation: number; drought: number; alertLevel: number }[];
-  sevenIndicators: {
+  sevenIndicators?: {
     shockIntensity: number; // 1-15
     infraDamage: number; // 1-15
     vulnerableRatio: number; // 1-15
@@ -46,6 +46,16 @@ export interface RegionRiskData {
     fiscalDeficit: number; // 1-15
     supplyChainDistruption: number; // 1-15
     crisisDuration: number; // 1-15
+  };
+  eightIndicators?: {
+    shockIntensity: number; // 1-15
+    shockType: number; // 1-15
+    vulnerableRatio: number; // 1-15
+    vulnerableDemographics: number; // 1-15
+    fiscalCapacity: number; // 1-15
+    paymentAccess: number; // 1-15
+    dataReadiness: number; // 1-15
+    disbursementHistory: number; // 1-15
   };
 }
 
@@ -88,6 +98,10 @@ export interface ActivationProposal {
   riskScore: number;
   proposer: string;
   status: 'Menunggu' | 'Disetujui' | 'Ditolak';
+  decisionType?: string;
+  approver?: string;
+  approvedAt?: string;
+  confidenceScore?: string;
 }
 
 export interface SystemUser {

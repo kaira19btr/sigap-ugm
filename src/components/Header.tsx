@@ -176,7 +176,7 @@ export const Header: React.FC<HeaderProps> = ({
       moduleNumber: '03',
       title: 'Penilaian Risiko & Aktivasi Kilat',
       sub: 'Simulasi Indeks Risiko & Confidence Score',
-      keywords: ['risiko', 'simulasi', 'aktivasi', 'confidence', 'human in the loop', 'kalkulasi', 'skor 105', 'bantuan'],
+      keywords: ['risiko', 'simulasi', 'aktivasi', 'confidence', 'human in the loop', 'kalkulasi', 'skor 120', 'bantuan'],
       icon: SlidersHorizontal,
       color: 'text-amber-600 bg-amber-50',
     },
@@ -622,7 +622,7 @@ export const Header: React.FC<HeaderProps> = ({
                               </span>
                             </div>
                             <p className="text-[11px] text-slate-500 truncate mt-0.5">
-                              {prop.disasterType} • Pengusul: {prop.proposer} • Skor Risiko: <strong className="text-slate-700">{prop.riskScore}/105</strong>
+                              {prop.disasterType} • Pengusul: {prop.proposer} • Skor Risiko: <strong className="text-slate-700">{prop.riskScore}/120</strong>
                             </p>
                           </div>
                           <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-600 transition-colors" />

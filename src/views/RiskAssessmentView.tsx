@@ -29,15 +29,16 @@ interface RiskAssessmentViewProps {
 export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
   onForwardToApproval,
 }) => {
-  // 7 Standardized Risk Parameters (1-15 each, Max 105)
+  // 8 Standardized Risk Indicators (1-15 each, Max 120)
   const [params, setParams] = useState({
-    shockIntensity: 14, // 1. Intensitas Shock / Bencana Fisik
-    infraDamage: 13, // 2. Kerusakan Infrastruktur & Akses Jalan
-    vulnerableRatio: 14, // 3. Proporsi Rumah Tangga Rentan (Desil 1-2)
-    dependencyRatio: 12, // 4. Rasio Beban Ketergantungan (Lansia, Balita, Disabilitas)
-    fiscalDeficit: 11, // 5. Keterbatasan Kapasitas Fiskal & Logistik Daerah
-    supplyChainDistruption: 13, // 6. Gangguan Rantai Pasok Pangan Pokok
-    crisisDuration: 12, // 7. Proyeksi Durasi Krisis & Risiko Susulan
+    shockIntensity: 10, // 1. Intensitas Guncangan (Aspek Shock)
+    shockType: 10, // 2. Jenis Guncangan (Aspek Shock)
+    vulnerableRatio: 10, // 3. Proporsi Rumah Tangga Rentan/Near-Poor (Kerentanan Rumah Tangga)
+    vulnerableDemographics: 10, // 4. Keberadaan Disabilitas/Lansia/Anak (Kerentanan Rumah Tangga)
+    fiscalCapacity: 10, // 5. Kapasitas Fiskal Daerah (Kapasitas Lokal)
+    paymentAccess: 10, // 6. Akses Kanal Pembayaran (Kapasitas Lokal)
+    dataReadiness: 10, // 7. Kelengkapan/Keterkinian Data Wilayah (Kualitas Data & Kepatuhan)
+    disbursementHistory: 5, // 8. Riwayat Penyaluran Sebelumnya (Kualitas Data & Kepatuhan)
   });
 
   // Dynamic Data Quality & Completeness Parameters (%)
@@ -69,15 +70,15 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
     )
   );
 
-  // Compute total score for 7 parameters
+  // Compute total score for 8 indicators (Max 120 Poin)
   const totalScore = (Object.values(params) as number[]).reduce((acc: number, val: number) => acc + val, 0);
-  const maxScore = 105;
+  const maxScore = 120;
   const percentage = Math.round((totalScore / maxScore) * 100);
 
-  // Standardized Risk Classification:
-  // 0 - 35: Risiko Rendah / Normal (Protokol Level 1)
-  // 36 - 70: Siaga Sedang (Protokol Level 2)
-  // 71 - 105: Darurat Tinggi (Protokol Level 3)
+  // Standardized Risk Classification (Skala 120 Poin):
+  // Level 1 Normal/Rendah: 0–40 poin (0–33%)
+  // Level 2 Siaga/Menengah: 41–80 poin (34–67%)
+  // Level 3 Darurat/Tinggi: 81–120 poin (68–100%)
   let riskLevel = 'Risiko Rendah (Normal)';
   let riskColor = 'text-emerald-700 bg-emerald-50 border-emerald-300';
   let badgeColor = 'bg-emerald-500';
@@ -85,14 +86,14 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
   let budgetRecommendation = 'Rp 1.5 Miliar';
   let targetSLADays = 14;
 
-  if (totalScore >= 71) {
+  if (totalScore >= 81) {
     riskLevel = 'DARURAT TINGGI (PROTOKOL LEVEL 3)';
     riskColor = 'text-rose-700 bg-rose-50 border-rose-300';
     badgeColor = 'bg-rose-600';
     protocolAction = 'Protokol Level 3: Aktivasi Bantuan Adaptif Nasional Penuh (BLT Adaptif Kilat + Cadangan Beras Pemerintah)';
     budgetRecommendation = 'Rp 18.5 Miliar';
     targetSLADays = 3.5;
-  } else if (totalScore >= 36) {
+  } else if (totalScore >= 41) {
     riskLevel = 'SIAGA TINGKAT II (PROTOKOL LEVEL 2)';
     riskColor = 'text-amber-800 bg-amber-50 border-amber-300';
     badgeColor = 'bg-amber-500';
@@ -104,7 +105,48 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
   // Human-in-the-loop condition: triggered when confidence score drops below 70%
   const isHumanInTheLoopRequired = dynamicConfidenceScore < 70;
 
-  // Preset Scenario Handlers
+  // Preset Risk Scenario Handlers (Consistent 120-point scale)
+  const applyRiskPreset = (level: 'rendah' | 'menengah' | 'tinggi') => {
+    if (level === 'rendah') {
+      // Skenario Rendah: semua indikator di level "5" → total 40/120 (33%)
+      setParams({
+        shockIntensity: 5,
+        shockType: 5,
+        vulnerableRatio: 5,
+        vulnerableDemographics: 5,
+        fiscalCapacity: 5,
+        paymentAccess: 5,
+        dataReadiness: 5,
+        disbursementHistory: 5,
+      });
+    } else if (level === 'menengah') {
+      // Skenario Menengah: campuran level → total 75/120 (63%)
+      setParams({
+        shockIntensity: 11,
+        shockType: 10,
+        vulnerableRatio: 12,
+        vulnerableDemographics: 9,
+        fiscalCapacity: 10,
+        paymentAccess: 8,
+        dataReadiness: 8,
+        disbursementHistory: 7,
+      });
+    } else if (level === 'tinggi') {
+      // Skenario Tinggi: semua indikator di level "15" → total 120/120 (100%)
+      setParams({
+        shockIntensity: 15,
+        shockType: 15,
+        vulnerableRatio: 15,
+        vulnerableDemographics: 15,
+        fiscalCapacity: 15,
+        paymentAccess: 15,
+        dataReadiness: 15,
+        disbursementHistory: 15,
+      });
+    }
+  };
+
+  // Preset Scenario Handlers for Data Quality
   const applyPresetScenario = (scenario: 'ideal' | 'partial' | 'isolated') => {
     if (scenario === 'ideal') {
       setDataQuality({
@@ -132,13 +174,14 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
 
   const handleReset = () => {
     setParams({
-      shockIntensity: 8,
-      infraDamage: 7,
-      vulnerableRatio: 8,
-      dependencyRatio: 7,
-      fiscalDeficit: 7,
-      supplyChainDistruption: 7,
-      crisisDuration: 8,
+      shockIntensity: 11,
+      shockType: 10,
+      vulnerableRatio: 12,
+      vulnerableDemographics: 9,
+      fiscalCapacity: 10,
+      paymentAccess: 8,
+      dataReadiness: 8,
+      disbursementHistory: 7,
     });
     setDataQuality({
       fieldCompleteness: 90,
@@ -155,24 +198,30 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
     }
 
     setIsSubmitted(true);
+    const now = new Date();
+    const formattedTimestamp = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    const levelLabel = totalScore >= 81 ? 'Aktivasi Level 3' : totalScore >= 41 ? 'Aktivasi Level 2' : 'Aktivasi Level 1';
+
     setTimeout(() => {
       onForwardToApproval({
         id: `ACT-${new Date().getFullYear()}-${Math.floor(100 + Math.random() * 900)}`,
-        submittedAt: 'Hari ini, Baru saja',
+        submittedAt: formattedTimestamp,
         region: regionTarget,
         disasterType: disasterType,
         riskScore: totalScore,
         confidenceScore: `${dynamicConfidenceScore}%`,
+        decisionType: levelLabel,
+        approver: 'Dirjen Linjamsos Kemensos',
         proposer: isHumanInTheLoopRequired
           ? `Verifikasi Lapangan Petugas Tagana (Human-in-the-loop: ${dynamicConfidenceScore}%)`
-          : `Sistem Otomatis SIGAP AI Engine (Confidence: ${dynamicConfidenceScore}%)`,
+          : `Dinas Sosial & Tim SIGAP (${regionTarget})`,
         status: 'Menunggu',
       });
       setIsSubmitted(false);
       alert(
         isHumanInTheLoopRequired
-          ? `Berkas usulan darurat dikirimkan dengan catatan: WAJIB VERIFIKASI LAPANGAN (Data Confidence: ${dynamicConfidenceScore}%). Berkas telah masuk ke Modul 07 Antrean Persetujuan!`
-          : `Simulasi berhasil diotorisasi otomatis (Confidence: ${dynamicConfidenceScore}%) dan diteruskan ke Modul 07: Antrean Persetujuan!`
+          ? `Berkas usulan darurat (${levelLabel}) dikirimkan dengan catatan: WAJIB VERIFIKASI LAPANGAN (Data Confidence: ${dynamicConfidenceScore}%). Berkas telah masuk ke Log Audit & Antrean Persetujuan!`
+          : `Simulasi (${levelLabel}) berhasil diajukan dan otomatis tercatat pada Log Audit Modul 04 & Antrean Persetujuan Modul 07!`
       );
     }, 800);
   };
@@ -232,7 +281,7 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
             Penilaian Risiko &amp; Aktivasi Kilat
           </h1>
           <p className="text-xs text-slate-500 mt-0.5">
-            Kalkulasi dinamis indeks risiko standar 7 parameter (Skala 105 Poin) dengan safeguard Confidence Score &amp; Human-in-the-Loop
+            Kalkulasi dinamis indeks risiko standar 8 indikator (Skala 120 Poin) dengan safeguard Confidence Score &amp; Human-in-the-Loop
           </p>
         </div>
 
@@ -279,21 +328,55 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
         <Info className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
         <div className="leading-relaxed">
           <span className="font-bold text-blue-900">Catatan Akademik Standar Skor: </span>
-          Sistem penilaian risiko resmi menggunakan matriks <strong>7 indikator terstandardisasi × bobot 15 = 105 poin</strong> dengan ambang batas aktivasi: <em>Level 1 Normal (0-35)</em>, <em>Level 2 Siaga (36-70)</em>, dan <em>Level 3 Darurat (71-105)</em>. Confidence Score dihitung dinamis dari keterpaduan data sensor dan asesmen lapangan dengan ambang toleransi minimum <strong>70%</strong>.
+          Sistem penilaian risiko resmi menggunakan matriks <strong>8 indikator terstandardisasi × bobot 15 = 120 poin</strong> dengan ambang batas aktivasi: <em>Level 1 Normal (0-40)</em>, <em>Level 2 Siaga (41-80)</em>, dan <em>Level 3 Darurat (81-120)</em>. Confidence Score dihitung dinamis dari keterpaduan data sensor dan asesmen lapangan dengan ambang toleransi minimum <strong>70%</strong>.
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left Column: 7 Sliders & Dynamic Confidence Score Engine */}
+        {/* Left Column: 8 Sliders & Dynamic Confidence Score Engine */}
         <div className="lg:col-span-7 bg-gradient-to-br from-white via-slate-50/80 to-rose-50/20 rounded-xl border border-rose-200/60 shadow-sm p-5 space-y-5">
           <div className="flex items-center justify-between border-b border-rose-100 pb-3">
             <div className="flex items-center gap-2">
               <SlidersHorizontal className="w-4 h-4 text-rose-600" />
               <span className="text-xs font-bold text-slate-800 uppercase tracking-wide">
-                Konfigurasi 7 Parameter Risiko Utama
+                Konfigurasi 8 Indikator Risiko Utama
               </span>
             </div>
-            <span className="text-[11px] font-mono text-rose-700 font-bold bg-rose-50 px-2 py-0.5 rounded border border-rose-200/60">Skala 1 - 15 per Indikator (Maks 105)</span>
+            <span className="text-[11px] font-mono text-rose-700 font-bold bg-rose-50 px-2 py-0.5 rounded border border-rose-200/60">Skala 1 - 15 per Indikator (Maks 120)</span>
+          </div>
+
+          {/* Quick Risk Scenario Presets */}
+          <div className="p-3 bg-white rounded-xl border border-rose-200/70 shadow-2xs space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                <Zap className="w-3.5 h-3.5 text-amber-500" />
+                Preset Skenario Simulasi (Skala 120 Poin):
+              </span>
+              <span className="text-[10px] text-slate-400 font-mono">Pilih untuk uji cepat level</span>
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              <button
+                type="button"
+                onClick={() => applyRiskPreset('rendah')}
+                className="px-2.5 py-1.5 rounded-lg text-[11px] font-bold bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-800 transition-all text-center cursor-pointer shadow-2xs"
+              >
+                🟢 Rendah (40/120 • 33%)
+              </button>
+              <button
+                type="button"
+                onClick={() => applyRiskPreset('menengah')}
+                className="px-2.5 py-1.5 rounded-lg text-[11px] font-bold bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 transition-all text-center cursor-pointer shadow-2xs"
+              >
+                🟡 Menengah (75/120 • 63%)
+              </button>
+              <button
+                type="button"
+                onClick={() => applyRiskPreset('tinggi')}
+                className="px-2.5 py-1.5 rounded-lg text-[11px] font-bold bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-800 transition-all text-center cursor-pointer shadow-2xs"
+              >
+                🔴 Tinggi (120/120 • 100%)
+              </button>
+            </div>
           </div>
 
           {/* Region & Disaster target selection */}
@@ -331,13 +414,21 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
             </div>
           </div>
 
-          {/* 7 Standardized Sliders List */}
+          {/* 8 Standardized Sliders List */}
           <div className="space-y-4">
-            {/* 1 */}
-            <div>
+            {/* 1. Intensitas Guncangan (Aspek Shock) */}
+            <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-2xs">
               <div className="flex items-center justify-between text-xs mb-1">
-                <span className="font-semibold text-slate-700">1. Intensitas Shock / Bencana Fisik (BMKG/PVMBG)</span>
-                <span className="font-bold font-mono text-rose-600">{params.shockIntensity} / 15</span>
+                <div>
+                  <span className="font-bold text-slate-800">1. Intensitas Guncangan</span>
+                  <span className="text-[10px] text-slate-500 ml-1.5">(Aspek Shock)</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700">
+                    {params.shockIntensity <= 6 ? 'Ringan' : params.shockIntensity <= 11 ? 'Sedang' : 'Berat'}
+                  </span>
+                  <span className="font-bold font-mono text-rose-600 text-xs">{params.shockIntensity} / 15</span>
+                </div>
               </div>
               <input
                 type="range"
@@ -347,29 +438,55 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
                 onChange={(e) => setParams({ ...params, shockIntensity: Number(e.target.value) })}
                 className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-rose-600"
               />
+              <div className="flex justify-between text-[10px] text-slate-400 mt-1 font-mono">
+                <span>Ringan (5)</span>
+                <span>Sedang (10)</span>
+                <span>Berat (15)</span>
+              </div>
             </div>
 
-            {/* 2 */}
-            <div>
+            {/* 2. Jenis Guncangan (Aspek Shock) */}
+            <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-2xs">
               <div className="flex items-center justify-between text-xs mb-1">
-                <span className="font-semibold text-slate-700">2. Kerusakan Infrastruktur &amp; Aksesibilitas Posko</span>
-                <span className="font-bold font-mono text-rose-600">{params.infraDamage} / 15</span>
+                <div>
+                  <span className="font-bold text-slate-800">2. Jenis Guncangan</span>
+                  <span className="text-[10px] text-slate-500 ml-1.5">(ekonomi / ketenagakerjaan / pangan / bencana)</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700">
+                    {params.shockType <= 6 ? 'Tunggal' : params.shockType <= 11 ? 'Ganda' : 'Multipel'}
+                  </span>
+                  <span className="font-bold font-mono text-rose-600 text-xs">{params.shockType} / 15</span>
+                </div>
               </div>
               <input
                 type="range"
                 min="1"
                 max="15"
-                value={params.infraDamage}
-                onChange={(e) => setParams({ ...params, infraDamage: Number(e.target.value) })}
+                value={params.shockType}
+                onChange={(e) => setParams({ ...params, shockType: Number(e.target.value) })}
                 className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-rose-600"
               />
+              <div className="flex justify-between text-[10px] text-slate-400 mt-1 font-mono">
+                <span>Tunggal (5)</span>
+                <span>Ganda (10)</span>
+                <span>Multipel (15)</span>
+              </div>
             </div>
 
-            {/* 3 */}
-            <div>
+            {/* 3. Proporsi Rumah Tangga Rentan/Near-Poor (Kerentanan Rumah Tangga) */}
+            <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-2xs">
               <div className="flex items-center justify-between text-xs mb-1">
-                <span className="font-semibold text-slate-700">3. Proporsi Rumah Tangga Rentan (DTKS Desil 1-2 &amp; Regsosek)</span>
-                <span className="font-bold font-mono text-rose-600">{params.vulnerableRatio} / 15</span>
+                <div>
+                  <span className="font-bold text-slate-800">3. Proporsi Rumah Tangga Rentan / Near-Poor</span>
+                  <span className="text-[10px] text-slate-500 ml-1.5">(Kerentanan Rumah Tangga)</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700">
+                    {params.vulnerableRatio <= 6 ? '<15%' : params.vulnerableRatio <= 11 ? '15–35%' : '>35%'}
+                  </span>
+                  <span className="font-bold font-mono text-rose-600 text-xs">{params.vulnerableRatio} / 15</span>
+                </div>
               </div>
               <input
                 type="range"
@@ -379,70 +496,156 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
                 onChange={(e) => setParams({ ...params, vulnerableRatio: Number(e.target.value) })}
                 className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-rose-600"
               />
+              <div className="flex justify-between text-[10px] text-slate-400 mt-1 font-mono">
+                <span>&lt;15% (5)</span>
+                <span>15–35% (10)</span>
+                <span>&gt;35% (15)</span>
+              </div>
             </div>
 
-            {/* 4 */}
-            <div>
+            {/* 4. Keberadaan Disabilitas/Lansia/Anak dalam RT Terdampak (Kerentanan Rumah Tangga) */}
+            <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-2xs">
               <div className="flex items-center justify-between text-xs mb-1">
-                <span className="font-semibold text-slate-700">4. Rasio Beban Ketergantungan (Lansia, Balita, Disabilitas)</span>
-                <span className="font-bold font-mono text-rose-600">{params.dependencyRatio} / 15</span>
+                <div>
+                  <span className="font-bold text-slate-800">4. Keberadaan Disabilitas / Lansia / Anak</span>
+                  <span className="text-[10px] text-slate-500 ml-1.5">(Kerentanan Rumah Tangga)</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700">
+                    {params.vulnerableDemographics <= 6 ? 'Rendah' : params.vulnerableDemographics <= 11 ? 'Sedang' : 'Tinggi'}
+                  </span>
+                  <span className="font-bold font-mono text-rose-600 text-xs">{params.vulnerableDemographics} / 15</span>
+                </div>
               </div>
               <input
                 type="range"
                 min="1"
                 max="15"
-                value={params.dependencyRatio}
-                onChange={(e) => setParams({ ...params, dependencyRatio: Number(e.target.value) })}
+                value={params.vulnerableDemographics}
+                onChange={(e) => setParams({ ...params, vulnerableDemographics: Number(e.target.value) })}
                 className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-rose-600"
               />
+              <div className="flex justify-between text-[10px] text-slate-400 mt-1 font-mono">
+                <span>Rendah (5)</span>
+                <span>Sedang (10)</span>
+                <span>Tinggi (15)</span>
+              </div>
             </div>
 
-            {/* 5 */}
-            <div>
+            {/* 5. Kapasitas Fiskal Daerah (Kapasitas Lokal) */}
+            <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-2xs">
               <div className="flex items-center justify-between text-xs mb-1">
-                <span className="font-semibold text-slate-700">5. Keterbatasan Kapasitas Fiskal &amp; Logistik Daerah</span>
-                <span className="font-bold font-mono text-rose-600">{params.fiscalDeficit} / 15</span>
+                <div>
+                  <span className="font-bold text-slate-800">5. Kapasitas Fiskal Daerah</span>
+                  <span className="text-[10px] text-slate-500 ml-1.5">(Kapasitas Lokal)</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700">
+                    {params.fiscalCapacity <= 6 ? 'Cukup' : params.fiscalCapacity <= 11 ? 'Terbatas' : 'Sangat Terbatas'}
+                  </span>
+                  <span className="font-bold font-mono text-rose-600 text-xs">{params.fiscalCapacity} / 15</span>
+                </div>
               </div>
               <input
                 type="range"
                 min="1"
                 max="15"
-                value={params.fiscalDeficit}
-                onChange={(e) => setParams({ ...params, fiscalDeficit: Number(e.target.value) })}
+                value={params.fiscalCapacity}
+                onChange={(e) => setParams({ ...params, fiscalCapacity: Number(e.target.value) })}
                 className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-rose-600"
               />
+              <div className="flex justify-between text-[10px] text-slate-400 mt-1 font-mono">
+                <span>Cukup (5)</span>
+                <span>Terbatas (10)</span>
+                <span>Sangat Terbatas (15)</span>
+              </div>
             </div>
 
-            {/* 6 */}
-            <div>
+            {/* 6. Akses Kanal Pembayaran — bank/pos/digital (Kapasitas Lokal) */}
+            <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-2xs">
               <div className="flex items-center justify-between text-xs mb-1">
-                <span className="font-semibold text-slate-700">6. Gangguan Rantai Pasok Pangan Pokok &amp; Pasar Lokal</span>
-                <span className="font-bold font-mono text-rose-600">{params.supplyChainDistruption} / 15</span>
+                <div>
+                  <span className="font-bold text-slate-800">6. Akses Kanal Pembayaran</span>
+                  <span className="text-[10px] text-slate-500 ml-1.5">(bank / pos / digital — Kapasitas Lokal)</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700">
+                    {params.paymentAccess <= 6 ? 'Baik' : params.paymentAccess <= 11 ? 'Terbatas' : 'Sulit'}
+                  </span>
+                  <span className="font-bold font-mono text-rose-600 text-xs">{params.paymentAccess} / 15</span>
+                </div>
               </div>
               <input
                 type="range"
                 min="1"
                 max="15"
-                value={params.supplyChainDistruption}
-                onChange={(e) => setParams({ ...params, supplyChainDistruption: Number(e.target.value) })}
+                value={params.paymentAccess}
+                onChange={(e) => setParams({ ...params, paymentAccess: Number(e.target.value) })}
                 className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-rose-600"
               />
+              <div className="flex justify-between text-[10px] text-slate-400 mt-1 font-mono">
+                <span>Baik (5)</span>
+                <span>Terbatas (10)</span>
+                <span>Sulit (15)</span>
+              </div>
             </div>
 
-            {/* 7 */}
-            <div>
+            {/* 7. Kelengkapan/Keterkinian Data Wilayah (Kualitas Data & Kepatuhan) */}
+            <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-2xs">
               <div className="flex items-center justify-between text-xs mb-1">
-                <span className="font-semibold text-slate-700">7. Proyeksi Durasi Krisis &amp; Risiko Bencana Susulan</span>
-                <span className="font-bold font-mono text-rose-600">{params.crisisDuration} / 15</span>
+                <div>
+                  <span className="font-bold text-slate-800">7. Kelengkapan / Keterkinian Data Wilayah</span>
+                  <span className="text-[10px] text-slate-500 ml-1.5">(Kualitas Data &amp; Kepatuhan)</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700">
+                    {params.dataReadiness <= 6 ? 'Baik' : params.dataReadiness <= 11 ? 'Sedang' : 'Rendah'}
+                  </span>
+                  <span className="font-bold font-mono text-rose-600 text-xs">{params.dataReadiness} / 15</span>
+                </div>
               </div>
               <input
                 type="range"
                 min="1"
                 max="15"
-                value={params.crisisDuration}
-                onChange={(e) => setParams({ ...params, crisisDuration: Number(e.target.value) })}
+                value={params.dataReadiness}
+                onChange={(e) => setParams({ ...params, dataReadiness: Number(e.target.value) })}
                 className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-rose-600"
               />
+              <div className="flex justify-between text-[10px] text-slate-400 mt-1 font-mono">
+                <span>Baik (5)</span>
+                <span>Sedang (10)</span>
+                <span>Rendah (15)</span>
+              </div>
+            </div>
+
+            {/* 8. Riwayat Penyaluran Sebelumnya (Kualitas Data & Kepatuhan) */}
+            <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-2xs">
+              <div className="flex items-center justify-between text-xs mb-1">
+                <div>
+                  <span className="font-bold text-slate-800">8. Riwayat Penyaluran Sebelumnya</span>
+                  <span className="text-[10px] text-slate-500 ml-1.5">(Kualitas Data &amp; Kepatuhan)</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700">
+                    {params.disbursementHistory <= 6 ? 'Tanpa Masalah' : params.disbursementHistory <= 11 ? 'Masalah Ringan' : 'Masalah Berat'}
+                  </span>
+                  <span className="font-bold font-mono text-rose-600 text-xs">{params.disbursementHistory} / 15</span>
+                </div>
+              </div>
+              <input
+                type="range"
+                min="1"
+                max="15"
+                value={params.disbursementHistory}
+                onChange={(e) => setParams({ ...params, disbursementHistory: Number(e.target.value) })}
+                className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-rose-600"
+              />
+              <div className="flex justify-between text-[10px] text-slate-400 mt-1 font-mono">
+                <span>Tanpa Masalah (5)</span>
+                <span>Masalah Ringan (10)</span>
+                <span>Masalah Berat (15)</span>
+              </div>
             </div>
           </div>
 
@@ -584,7 +787,7 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
           <div className="bg-gradient-to-br from-white via-rose-50/40 to-amber-50/20 rounded-xl border border-rose-200/70 shadow-sm p-5 space-y-4">
             <div className="text-center pb-2 border-b border-rose-100">
               <span className="text-[10px] font-bold uppercase tracking-wider text-rose-700">
-                Skor Indeks Risiko Gabungan (7 Indikator)
+                Skor Indeks Risiko Gabungan (8 Indikator)
               </span>
               <div className="flex items-baseline justify-center gap-2 mt-1">
                 <span className="text-5xl font-extrabold font-mono text-slate-900 tracking-tight">

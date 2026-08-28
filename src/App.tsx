@@ -291,7 +291,7 @@ export default function App() {
               />
             )}
 
-            {currentModule === 'monev' && <MonevView />}
+            {currentModule === 'monev' && <MonevView proposals={proposals} />}
 
             {currentModule === 'input_lapangan' && (
               <InputLapanganView

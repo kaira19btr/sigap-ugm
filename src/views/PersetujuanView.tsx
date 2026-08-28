@@ -150,14 +150,14 @@ export const PersetujuanView: React.FC<PersetujuanViewProps> = ({
                   <td className="py-3.5 px-4">
                     <span
                       className={`inline-block font-mono font-bold px-2 py-0.5 rounded text-xs ${
-                        p.riskScore >= 80
+                        p.riskScore >= 81
                           ? 'bg-rose-100 text-rose-700'
-                          : p.riskScore >= 60
+                          : p.riskScore >= 41
                           ? 'bg-amber-100 text-amber-800'
                           : 'bg-emerald-100 text-emerald-800'
                       }`}
                     >
-                      {p.riskScore} / 105
+                      {p.riskScore} / 120
                     </span>
                   </td>
                   <td className="py-3.5 px-4 text-slate-600">{p.proposer}</td>

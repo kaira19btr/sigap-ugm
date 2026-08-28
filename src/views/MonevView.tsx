@@ -20,10 +20,14 @@ import {
 import { AnimatedCounter } from '../components/AnimatedCounter';
 import { MonevMetricModal, MonevMetricType } from '../components/MonevMetricModal';
 import { MonevCharts } from '../components/MonevCharts';
+import { InterAgencyCoordinationPanel } from '../components/InterAgencyCoordinationPanel';
+import { ActivationProposal } from '../types';
 
-interface MonevViewProps {}
+interface MonevViewProps {
+  proposals?: ActivationProposal[];
+}
 
-export const MonevView: React.FC<MonevViewProps> = () => {
+export const MonevView: React.FC<MonevViewProps> = ({ proposals = [] }) => {
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -221,6 +225,9 @@ export const MonevView: React.FC<MonevViewProps> = () => {
 
       {/* Stunning Interactive Analytics Diagrams (Recharts Multi-Tab Studio) */}
       <MonevCharts />
+
+      {/* Panel Baru: Koordinasi & Akuntabilitas Lintas K/L (Pencegahan Tumpang Tindih Program) */}
+      <InterAgencyCoordinationPanel proposals={proposals} />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Comparison & Efficiency Analytics */}
