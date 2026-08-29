@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { UserRole, UserProfile, RegionRiskData } from '../types';
 import {
   SlidersHorizontal,
   AlertTriangle,
@@ -25,41 +26,256 @@ import {
   Check,
   XCircle,
   Layers,
+  Building2,
+  Truck,
+  MapPin,
 } from 'lucide-react';
 
 interface RiskAssessmentViewProps {
   onForwardToApproval: (proposalData: any) => void;
+  currentRole?: UserRole;
+  activeProfile?: UserProfile;
+  regions?: RegionRiskData[];
 }
+
+// Regional Presets for Automatic Indicator Population
+const REGION_ASSESSMENT_PRESETS: {
+  [key: string]: {
+    disasterType: string;
+    params: {
+      shockIntensity: number;
+      shockType: number;
+      vulnerableRatio: number;
+      vulnerableDemographics: number;
+      fiscalCapacity: number;
+      paymentAccess: number;
+      dataReadiness: number;
+      disbursementHistory: number;
+    };
+    dataQuality: {
+      fieldCompleteness: number;
+      sensorTelemetry: number;
+      identityMatchRate: number;
+    };
+  };
+} = {
+  'Kab. Cianjur, Jawa Barat': {
+    disasterType: 'Gempa Bumi Tektonik Sesar Cugenang M 5.6',
+    params: {
+      shockIntensity: 14,
+      shockType: 14,
+      vulnerableRatio: 13,
+      vulnerableDemographics: 12,
+      fiscalCapacity: 11,
+      paymentAccess: 12,
+      dataReadiness: 12,
+      disbursementHistory: 11,
+    },
+    dataQuality: {
+      fieldCompleteness: 94,
+      sensorTelemetry: 92,
+      identityMatchRate: 96,
+    },
+  },
+  'Cugenang (Episentrum Patahan), Kab. Cianjur': {
+    disasterType: 'Episentrum Gempa Sesar Cugenang (4.200 Rumah Rusak Berat)',
+    params: {
+      shockIntensity: 15,
+      shockType: 15,
+      vulnerableRatio: 14,
+      vulnerableDemographics: 13,
+      fiscalCapacity: 12,
+      paymentAccess: 13,
+      dataReadiness: 13,
+      disbursementHistory: 12,
+    },
+    dataQuality: {
+      fieldCompleteness: 96,
+      sensorTelemetry: 95,
+      identityMatchRate: 98,
+    },
+  },
+  'Nagrak (Zona Rentan), Kab. Cianjur': {
+    disasterType: 'Kerusakan Rumah Warga & Disrupsi Logistik Desa Nagrak',
+    params: {
+      shockIntensity: 13,
+      shockType: 13,
+      vulnerableRatio: 12,
+      vulnerableDemographics: 11,
+      fiscalCapacity: 10,
+      paymentAccess: 11,
+      dataReadiness: 11,
+      disbursementHistory: 10,
+    },
+    dataQuality: {
+      fieldCompleteness: 90,
+      sensorTelemetry: 88,
+      identityMatchRate: 93,
+    },
+  },
+  'Pacet - Cipanas, Kab. Cianjur': {
+    disasterType: 'Potensi Longsor Susulan Lereng Gunung Gede-Pangrango',
+    params: {
+      shockIntensity: 9,
+      shockType: 8,
+      vulnerableRatio: 9,
+      vulnerableDemographics: 8,
+      fiscalCapacity: 8,
+      paymentAccess: 9,
+      dataReadiness: 9,
+      disbursementHistory: 8,
+    },
+    dataQuality: {
+      fieldCompleteness: 85,
+      sensorTelemetry: 82,
+      identityMatchRate: 90,
+    },
+  },
+  'Kab. Sumba Timur, NTT': {
+    disasterType: 'Kekeringan Ekstrem & Defisit Curah Hujan El-Nino',
+    params: {
+      shockIntensity: 13,
+      shockType: 12,
+      vulnerableRatio: 14,
+      vulnerableDemographics: 11,
+      fiscalCapacity: 14,
+      paymentAccess: 13,
+      dataReadiness: 10,
+      disbursementHistory: 9,
+    },
+    dataQuality: {
+      fieldCompleteness: 82,
+      sensorTelemetry: 86,
+      identityMatchRate: 88,
+    },
+  },
+  'Kab. Flores Timur, NTT': {
+    disasterType: 'Erupsi Gunung Lewotobi Laki-Laki & Hujan Abu Vulkanik',
+    params: {
+      shockIntensity: 15,
+      shockType: 14,
+      vulnerableRatio: 13,
+      vulnerableDemographics: 12,
+      fiscalCapacity: 13,
+      paymentAccess: 14,
+      dataReadiness: 11,
+      disbursementHistory: 10,
+    },
+    dataQuality: {
+      fieldCompleteness: 89,
+      sensorTelemetry: 93,
+      identityMatchRate: 91,
+    },
+  },
+  'Kab. Tanah Datar, Sumbar': {
+    disasterType: 'Banjir Bandang Lahar Dingin Gunung Marapi',
+    params: {
+      shockIntensity: 14,
+      shockType: 13,
+      vulnerableRatio: 12,
+      vulnerableDemographics: 11,
+      fiscalCapacity: 11,
+      paymentAccess: 11,
+      dataReadiness: 12,
+      disbursementHistory: 11,
+    },
+    dataQuality: {
+      fieldCompleteness: 91,
+      sensorTelemetry: 90,
+      identityMatchRate: 95,
+    },
+  },
+  'Kab. Demak, Jawa Tengah': {
+    disasterType: 'Banjir Tanggul Jebol Sungai Wulan & Genangan Rob',
+    params: {
+      shockIntensity: 13,
+      shockType: 12,
+      vulnerableRatio: 11,
+      vulnerableDemographics: 10,
+      fiscalCapacity: 9,
+      paymentAccess: 10,
+      dataReadiness: 13,
+      disbursementHistory: 12,
+    },
+    dataQuality: {
+      fieldCompleteness: 95,
+      sensorTelemetry: 92,
+      identityMatchRate: 97,
+    },
+  },
+  'Kota Semarang, Jawa Tengah': {
+    disasterType: 'Genangan Banjir Rob & Cuaca Ekstrem Pesisir',
+    params: {
+      shockIntensity: 8,
+      shockType: 7,
+      vulnerableRatio: 8,
+      vulnerableDemographics: 7,
+      fiscalCapacity: 6,
+      paymentAccess: 6,
+      dataReadiness: 14,
+      disbursementHistory: 13,
+    },
+    dataQuality: {
+      fieldCompleteness: 97,
+      sensorTelemetry: 96,
+      identityMatchRate: 98,
+    },
+  },
+};
 
 export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
   onForwardToApproval,
+  currentRole = 'admin_pusat',
+  activeProfile,
+  regions = [],
 }) => {
+  const isDaerah = currentRole === 'admin_daerah';
+  const defaultRegion = isDaerah ? 'Cugenang (Episentrum Patahan), Kab. Cianjur' : 'Kab. Cianjur, Jawa Barat';
+
   // 8 Standardized Risk Indicators (1-15 each, Max 120)
   const [params, setParams] = useState({
-    shockIntensity: 10, // 1. Intensitas Guncangan (Aspek Shock)
-    shockType: 10, // 2. Jenis Guncangan (Aspek Shock)
-    vulnerableRatio: 10, // 3. Proporsi Rumah Tangga Rentan/Near-Poor (Kerentanan Rumah Tangga)
-    vulnerableDemographics: 10, // 4. Keberadaan Disabilitas/Lansia/Anak (Kerentanan Rumah Tangga)
-    fiscalCapacity: 10, // 5. Kapasitas Fiskal Daerah (Kapasitas Lokal)
-    paymentAccess: 10, // 6. Akses Kanal Pembayaran (Kapasitas Lokal)
-    dataReadiness: 10, // 7. Kelengkapan/Keterkinian Data Wilayah (Kualitas Data & Kepatuhan)
-    disbursementHistory: 5, // 8. Riwayat Penyaluran Sebelumnya (Kualitas Data & Kepatuhan)
+    shockIntensity: 14, // 1. Intensitas Guncangan (Aspek Shock)
+    shockType: 14, // 2. Jenis Guncangan (Aspek Shock)
+    vulnerableRatio: 13, // 3. Proporsi Rumah Tangga Rentan/Near-Poor (Kerentanan Rumah Tangga)
+    vulnerableDemographics: 12, // 4. Keberadaan Disabilitas/Lansia/Anak (Kerentanan Rumah Tangga)
+    fiscalCapacity: 11, // 5. Kapasitas Fiskal Daerah (Kapasitas Lokal)
+    paymentAccess: 12, // 6. Akses Kanal Pembayaran (Kapasitas Lokal)
+    dataReadiness: 12, // 7. Kelengkapan/Keterkinian Data Wilayah (Kualitas Data & Kepatuhan)
+    disbursementHistory: 11, // 8. Riwayat Penyaluran Sebelumnya (Kualitas Data & Kepatuhan)
   });
 
   // Dynamic Data Quality & Completeness Parameters (%)
   const [dataQuality, setDataQuality] = useState({
-    fieldCompleteness: 90, // Kelengkapan Sampling & Asesmen Lapangan Tagana/BPBD (10-100%)
-    sensorTelemetry: 88, // Ketersediaan Telemetri Sensor Real-Time BMKG/PVMBG (10-100%)
-    identityMatchRate: 94, // Tingkat Kepadanan NIK & Validasi DTSEN (10-100%)
+    fieldCompleteness: 94, // Kelengkapan Sampling & Asesmen Lapangan Tagana/BPBD (10-100%)
+    sensorTelemetry: 92, // Ketersediaan Telemetri Sensor Real-Time BMKG/PVMBG (10-100%)
+    identityMatchRate: 96, // Tingkat Kepadanan NIK & Validasi DTSEN (10-100%)
   });
 
   // Human-in-the-loop manual confirmation state
   const [manualVerificationConfirmed, setManualVerificationConfirmed] = useState(false);
 
-  const [regionTarget, setRegionTarget] = useState('Kab. Cianjur, Jawa Barat');
+  const [regionTarget, setRegionTarget] = useState(defaultRegion);
   const [disasterType, setDisasterType] = useState('Gempa Bumi Tektonik Sesar Cugenang M 5.6');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showExportNotification, setShowExportNotification] = useState<string | null>(null);
+
+  // Automatically update parameters when region changes
+  const handleRegionChange = (newRegion: string) => {
+    setRegionTarget(newRegion);
+    const preset = REGION_ASSESSMENT_PRESETS[newRegion];
+    if (preset) {
+      setDisasterType(preset.disasterType);
+      setParams(preset.params);
+      setDataQuality(preset.dataQuality);
+      setManualVerificationConfirmed(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isDaerah) {
+      handleRegionChange('Cugenang (Episentrum Patahan), Kab. Cianjur');
+    }
+  }, [isDaerah]);
 
   // Dynamic Confidence Score Calculation:
   // Weighted: 45% Asesmen Lapangan + 35% Sensor Real-Time + 20% Validasi NIK DTSEN
@@ -387,28 +603,45 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
           {/* Region & Disaster target selection */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 bg-gradient-to-r from-rose-50/40 via-amber-50/30 to-blue-50/30 rounded-xl border border-rose-200/60 shadow-2xs">
             <div>
-              <label className="block text-[11px] font-bold text-slate-700 mb-1">
-                Wilayah Target Simulasi
-              </label>
+              <div className="flex items-center justify-between mb-1">
+                <label className="block text-[11px] font-bold text-slate-700">
+                  Wilayah Target Simulasi
+                </label>
+                {isDaerah && (
+                  <span className="text-[10px] font-bold text-amber-800 bg-amber-100 px-1.5 py-0.2 rounded border border-amber-300">
+                    Fokus Wilayah Cianjur
+                  </span>
+                )}
+              </div>
               <select
                 value={regionTarget}
-                onChange={(e) => setRegionTarget(e.target.value)}
-                className="w-full p-2 text-xs bg-white border border-rose-200/80 rounded-lg text-slate-800 font-semibold focus:ring-2 focus:ring-rose-500 shadow-2xs"
+                onChange={(e) => handleRegionChange(e.target.value)}
+                className="w-full p-2 text-xs bg-white border border-rose-200/80 rounded-lg text-slate-800 font-semibold focus:ring-2 focus:ring-rose-500 shadow-2xs cursor-pointer"
               >
-                <option value="Kab. Cianjur, Jawa Barat">Kab. Cianjur, Jawa Barat</option>
-                <option value="Kab. Sumba Timur, NTT">Kab. Sumba Timur, NTT</option>
-                <option value="Kab. Flores Timur, NTT">Kab. Flores Timur, NTT</option>
-                <option value="Kab. Tanah Datar, Sumbar">Kab. Tanah Datar, Sumbar</option>
-                <option value="Kab. Demak, Jawa Tengah">Kab. Demak, Jawa Tengah</option>
-                <option value="Kota Semarang, Jawa Tengah">Kota Semarang, Jawa Tengah</option>
-                <option value="Kab. Sintang, Kalbar">Kab. Sintang, Kalbar</option>
-                <option value="Kab. Mahakam Ulu, Kaltim">Kab. Mahakam Ulu, Kaltim</option>
-                <option value="Kab. Pangandaran, Jawa Barat">Kab. Pangandaran, Jawa Barat</option>
+                {isDaerah ? (
+                  <>
+                    <option value="Cugenang (Episentrum Patahan), Kab. Cianjur">Cugenang (Episentrum Patahan), Kab. Cianjur</option>
+                    <option value="Nagrak (Zona Rentan), Kab. Cianjur">Nagrak (Zona Rentan), Kab. Cianjur</option>
+                    <option value="Pacet - Cipanas, Kab. Cianjur">Pacet - Cipanas, Kab. Cianjur</option>
+                    <option value="Kab. Cianjur, Jawa Barat">Kab. Cianjur (Keseluruhan Wilayah)</option>
+                  </>
+                ) : (
+                  <>
+                    <option value="Kab. Cianjur, Jawa Barat">Kab. Cianjur, Jawa Barat</option>
+                    <option value="Kab. Sumba Timur, NTT">Kab. Sumba Timur, NTT</option>
+                    <option value="Kab. Flores Timur, NTT">Kab. Flores Timur, NTT</option>
+                    <option value="Kab. Tanah Datar, Sumbar">Kab. Tanah Datar, Sumbar</option>
+                    <option value="Kab. Demak, Jawa Tengah">Kab. Demak, Jawa Tengah</option>
+                    <option value="Kota Semarang, Jawa Tengah">Kota Semarang, Jawa Tengah</option>
+                    <option value="Cugenang (Episentrum Patahan), Kab. Cianjur">Cugenang (Episentrum Patahan), Kab. Cianjur</option>
+                    <option value="Nagrak (Zona Rentan), Kab. Cianjur">Nagrak (Zona Rentan), Kab. Cianjur</option>
+                  </>
+                )}
               </select>
             </div>
             <div>
               <label className="block text-[11px] font-bold text-slate-700 mb-1">
-                Kategori Bahaya / Krisis
+                Kategori Bahaya / Krisis (Otomatis)
               </label>
               <input
                 type="text"

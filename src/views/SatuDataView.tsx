@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { SatuDataItem } from '../types';
+import { SatuDataItem, UserRole, UserProfile, AppModule } from '../types';
 import { AnimatedCounter } from '../components/AnimatedCounter';
 import { StageDetailModal } from '../components/StageDetailModal';
 import { SatuDataProfileModal, getSampleHouseholdsForVillage, BeneficiaryHousehold } from '../components/SatuDataProfileModal';
@@ -30,22 +30,54 @@ import {
   BellRing,
   HelpCircle,
   ShieldAlert,
+  Lock,
+  Building2,
+  Network,
+  ArrowRight,
+  Share2,
+  HeartPulse,
+  Briefcase,
+  Shield,
+  Zap,
+  Users,
+  CheckCheck,
+  Compass,
 } from 'lucide-react';
 
 interface SatuDataViewProps {
   dataList: SatuDataItem[];
   onOpenConflictModal: (item: SatuDataItem) => void;
   onRefreshData: () => void;
+  currentRole?: UserRole;
+  activeProfile?: UserProfile;
+  onNavigate?: (module: AppModule) => void;
 }
 
 export const SatuDataView: React.FC<SatuDataViewProps> = ({
   dataList,
   onOpenConflictModal,
   onRefreshData,
+  currentRole = 'admin_pusat',
+  activeProfile,
+  onNavigate,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'Selesai' | 'Diproses' | 'Konflik Data'>('all');
   const [isSyncing, setIsSyncing] = useState(false);
+
+  // Role-Based Access Control (RBAC) Scoping
+  const isDaerah = currentRole === 'admin_daerah';
+  const targetRegionName = activeProfile?.region || 'Kab. Cianjur';
+
+  const scopedDataList = useMemo(() => {
+    if (isDaerah) {
+      return dataList.filter((item) =>
+        item.regency.toLowerCase().includes('cianjur') ||
+        item.regency.toLowerCase().includes(targetRegionName.toLowerCase())
+      );
+    }
+    return dataList;
+  }, [dataList, isDaerah, targetRegionName]);
 
   // Stage Modal State
   const [selectedStageNumber, setSelectedStageNumber] = useState<number | null>(null);
@@ -54,19 +86,30 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
   // Profile Modal State
   const [selectedProfileItem, setSelectedProfileItem] = useState<SatuDataItem | null>(null);
   const [selectedNikTarget, setSelectedNikTarget] = useState<string | null>(null);
+  const [modalInitialTab, setModalInitialTab] = useState<'beneficiaries' | 'vulnerability' | 'audit' | 'referrals'>('beneficiaries');
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+
+  // Dynamic funnel stats from scoped dataset
+  const totalTargetKk = useMemo(() => scopedDataList.reduce((acc, i) => acc + (i.totalTarget || 0), 0), [scopedDataList]);
+  const totalMatchedKk = useMemo(() => scopedDataList.reduce((acc, i) => acc + (i.matched || 0), 0), [scopedDataList]);
+  const totalDiscrepanciesKk = useMemo(() => scopedDataList.reduce((acc, i) => acc + (i.discrepancies || 0), 0), [scopedDataList]);
+  const matchPercentage = useMemo(() => {
+    if (!totalTargetKk) return 89.2;
+    return Math.round((totalMatchedKk / totalTargetKk) * 1000) / 10;
+  }, [totalTargetKk, totalMatchedKk]);
+  const readyKk = useMemo(() => totalMatchedKk - totalDiscrepanciesKk, [totalMatchedKk, totalDiscrepanciesKk]);
 
   // Build aggregated beneficiary index for fast NIK / Citizen name search
   const allBeneficiaries = useMemo(() => {
     const list: { item: SatuDataItem; household: BeneficiaryHousehold }[] = [];
-    dataList.forEach((item) => {
+    scopedDataList.forEach((item) => {
       const households = getSampleHouseholdsForVillage(item.village);
       households.forEach((h) => {
         list.push({ item, household: h });
       });
     });
     return list;
-  }, [dataList]);
+  }, [scopedDataList]);
 
   // Direct NIK or Person Name Instant Match
   const directBeneficiaryMatches = useMemo(() => {
@@ -82,7 +125,7 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
 
   // Filtered Regions Table
   const filteredData = useMemo(() => {
-    return dataList.filter((item) => {
+    return scopedDataList.filter((item) => {
       const term = searchTerm.toLowerCase();
       const matchesVillage =
         item.village.toLowerCase().includes(term) ||
@@ -100,7 +143,7 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
       const matchesStatus = statusFilter === 'all' || item.status === statusFilter;
       return matchesSearch && matchesStatus;
     });
-  }, [dataList, searchTerm, statusFilter]);
+  }, [scopedDataList, searchTerm, statusFilter]);
 
   const handleSyncTrigger = () => {
     setIsSyncing(true);
@@ -134,11 +177,27 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
     setIsStageModalOpen(true);
   };
 
-  const handleOpenProfile = (item: SatuDataItem, nikTarget?: string) => {
+  const handleOpenProfile = (
+    item: SatuDataItem,
+    nikTarget?: string,
+    targetTab: 'beneficiaries' | 'vulnerability' | 'audit' | 'referrals' = 'beneficiaries'
+  ) => {
     setSelectedProfileItem(item);
     setSelectedNikTarget(nikTarget || null);
+    setModalInitialTab(targetTab);
     setIsProfileModalOpen(true);
   };
+
+  // Sample curated households for the quick referral discovery bar
+  const quickReferralHighlights = useMemo(() => {
+    if (scopedDataList.length === 0) return [];
+    const firstVillage = scopedDataList[0];
+    const households = getSampleHouseholdsForVillage(firstVillage.village);
+    return households.slice(0, 4).map((h) => ({
+      household: h,
+      item: firstVillage,
+    }));
+  }, [scopedDataList]);
 
   return (
     <div id="satu-data-module" className="p-6 space-y-6">
@@ -148,12 +207,20 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-indigo-600">
             <span className="w-2 h-2 rounded-full bg-indigo-600"></span>
             <span>Modul 02 • Satu Data Terpadu (Targeting)</span>
+            {isDaerah && (
+              <span className="ml-2 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-300">
+                <Lock className="w-3 h-3 text-amber-600" />
+                <span>Cakupan Wilayah Kerja: {targetRegionName}</span>
+              </span>
+            )}
           </div>
           <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight mt-1">
-            Satu Data Terpadu Perlindungan Sosial
+            {isDaerah ? `Satu Data Terpadu • ${targetRegionName}` : 'Satu Data Terpadu Perlindungan Sosial'}
           </h1>
           <p className="text-xs text-slate-500 mt-0.5 max-w-3xl leading-relaxed">
-            Menyambungkan DTSEN (basis data tunggal sejak Feb 2025) ke sinyal guncangan real-time, dengan penanganan akurasi klasifikasi desil
+            {isDaerah
+              ? `Menyambungkan profil DTSEN wilayah ${targetRegionName} (${scopedDataList.length} kelurahan/desa) ke sinyal guncangan real-time dengan penanganan akurasi desil berbasis RBAC`
+              : 'Menyambungkan DTSEN (basis data tunggal sejak Feb 2025) ke sinyal guncangan real-time, dengan penanganan akurasi klasifikasi desil'}
           </p>
         </div>
 
@@ -166,7 +233,7 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
             className="px-3.5 py-2 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 rounded-xl border border-slate-200 shadow-xs flex items-center gap-2 transition-all cursor-pointer"
           >
             <RefreshCw className={`w-3.5 h-3.5 text-indigo-600 ${isSyncing ? 'animate-spin' : ''}`} />
-            <span>{isSyncing ? 'Sinkronisasi...' : 'Sinkronkan DTSEN'}</span>
+            <span>{isSyncing ? 'Sinkronisasi...' : isDaerah ? 'Sinkronkan DTSEN Wilayah' : 'Sinkronkan DTSEN'}</span>
           </button>
           <button
             id="btn-download-csv"
@@ -178,6 +245,26 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
           </button>
         </div>
       </div>
+
+      {/* RBAC Notification Banner */}
+      {isDaerah && (
+        <div className="bg-gradient-to-r from-amber-50 via-white to-blue-50/50 border border-amber-200/90 rounded-xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-amber-100 border border-amber-300 text-amber-800 flex items-center justify-center shrink-0">
+              <ShieldCheck className="w-4 h-4 text-amber-700" />
+            </div>
+            <div className="text-xs text-slate-700">
+              <span className="font-bold text-slate-900">Hak Akses Role-Based Access Control (Daerah): </span>
+              <span>
+                Menampilkan data penerima dan kelurahan di yurisdiksi <strong>{targetRegionName}</strong> ({activeProfile?.roleLabel || 'Dinas Sosial Daerah'}). Data wilayah luar dibatasi demi kepatuhan <em>Privacy by Design</em>.
+              </span>
+            </div>
+          </div>
+          <span className="text-[11px] font-mono font-bold bg-amber-200/70 text-amber-900 border border-amber-300 px-2.5 py-1 rounded-lg shrink-0 self-start sm:self-auto">
+            {scopedDataList.length} Desa/Kelurahan
+          </span>
+        </div>
+      )}
 
       {/* 4 Pipeline / Funnel KPI Cards (Hover Expand + Click Detail + Number Count Animation) */}
       <div>
@@ -212,11 +299,11 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
               Registrasi Lapangan
             </div>
             <div className="text-2xl font-extrabold font-mono text-slate-900 mt-2 flex items-baseline gap-1">
-              <AnimatedCounter value={15755} duration={1200} suffix=" KK" />
+              <AnimatedCounter value={totalTargetKk || 15755} duration={1200} suffix=" KK" />
             </div>
             <div className="mt-1 text-[11px] text-slate-500 flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
-              <span>Total profil DTSEN tersambung</span>
+              <span>{isDaerah ? `Profil DTSEN ${targetRegionName}` : 'Total profil DTSEN tersambung'}</span>
             </div>
             <div className="absolute top-3 right-3 text-slate-200/60 group-hover:text-blue-200/60 font-mono text-3xl font-extrabold select-none transition-colors">
               01
@@ -243,11 +330,11 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
               Pencocokan &amp; Deduplikasi
             </div>
             <div className="text-2xl font-extrabold font-mono text-indigo-600 mt-2 flex items-baseline gap-1">
-              <AnimatedCounter value={89.2} duration={1200} decimals={1} suffix="%" />
+              <AnimatedCounter value={matchPercentage} duration={1200} decimals={1} suffix="%" />
             </div>
             <div className="mt-1 text-[11px] text-emerald-600 flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-              <span>14.053 KK klir NIK</span>
+              <span>{totalMatchedKk.toLocaleString('id-ID')} KK klir NIK</span>
             </div>
             <div className="absolute top-3 right-3 text-slate-200/60 group-hover:text-indigo-200/60 font-mono text-3xl font-extrabold select-none transition-colors">
               02
@@ -274,7 +361,7 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
               Integrasi Profil Terbuka
             </div>
             <div className="text-2xl font-extrabold font-mono text-slate-900 mt-2 flex items-baseline gap-1">
-              <AnimatedCounter value={13210} duration={1200} suffix=" KK" />
+              <AnimatedCounter value={readyKk > 0 ? readyKk : 13210} duration={1200} suffix=" KK" />
             </div>
             <div className="mt-1 text-[11px] text-slate-500 flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
@@ -415,6 +502,236 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
         </div>
       </div>
 
+      {/* NEW PROMINENT SECTION: PUSAT REKOMENDASI & RUJUKAN PROGRAM LINTAS K/L */}
+      <div
+        id="hub-rujukan-multi-kl"
+        className="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 rounded-2xl border border-indigo-700/60 p-5.5 text-white shadow-xl relative overflow-hidden"
+      >
+        {/* Ambient background decoration */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-rose-500/10 rounded-full blur-3xl pointer-events-none -ml-20 -mb-20"></div>
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-rose-500"></div>
+
+        {/* Section Header */}
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 pb-5 border-b border-indigo-900/60 relative z-10">
+          <div className="flex items-start gap-3.5">
+            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-extrabold shadow-lg shrink-0 ring-2 ring-indigo-400/30">
+              <Network className="w-6 h-6" />
+            </div>
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <h2 className="text-base font-extrabold tracking-tight text-white flex items-center gap-2">
+                  <span>Pusat Rujukan &amp; Rekomendasi Program Lintas K/L</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider bg-indigo-500/30 text-indigo-300 px-2.5 py-0.5 rounded-full border border-indigo-400/40">
+                    Trigger Engine Layer
+                  </span>
+                </h2>
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-300 bg-emerald-950/80 border border-emerald-500/40 px-2 py-0.5 rounded-full">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                  <span>SPBE Terpadu Aktif</span>
+                </span>
+              </div>
+              <p className="text-xs text-indigo-200/80 mt-1 max-w-3xl leading-relaxed">
+                Basis data Satu Data DTSEN dikomputasi secara otomatis oleh mesin <em>Trigger Engine</em> menjadi tiket rekomendasi rujukan program intervensi spesifik ke 3 Pilar K/L teknis pengampu.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 self-start shrink-0">
+            {scopedDataList.length > 0 && (
+              <button
+                onClick={() => handleOpenProfile(scopedDataList[0], undefined, 'referrals')}
+                className="px-3.5 py-2 text-xs font-bold text-slate-900 bg-white hover:bg-indigo-50 rounded-xl shadow-lg transition-all flex items-center gap-2 cursor-pointer border border-indigo-100 hover:scale-[1.02]"
+              >
+                <Sparkles className="w-4 h-4 text-indigo-600" />
+                <span>Buka Panel Rujukan Lengkap</span>
+                <ChevronRight className="w-3.5 h-3.5 text-indigo-600" />
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* 3 Pillar Summary Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 my-5 relative z-10">
+          {/* Pilar 1: Kemensos / BNPB */}
+          <div className="bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 hover:border-rose-500/60 rounded-xl p-4 transition-all duration-200 group">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold text-xs border border-rose-500/30">
+                  <Shield className="w-3.5 h-3.5" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-mono text-rose-300 uppercase block font-semibold">Pilar 01 • Kemensos / BNPB</span>
+                  <span className="text-xs font-bold text-white group-hover:text-rose-200 transition-colors">SIGAP SHIELD (Proteksi Cepat)</span>
+                </div>
+              </div>
+              <span className="text-[10px] font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded-full">
+                92% Siap
+              </span>
+            </div>
+
+            <div className="mt-3 flex items-baseline justify-between">
+              <div className="text-2xl font-extrabold font-mono text-white">
+                <AnimatedCounter value={3842} duration={1000} suffix=" KK" />
+              </div>
+              <span className="text-[11px] text-slate-300 font-sans">Rujukan BLT &amp; Logistik</span>
+            </div>
+
+            <p className="text-[11px] text-slate-400 mt-2 leading-relaxed line-clamp-2">
+              Top-up bansos darurat, buffer sembako kilat, dan transfer tunai adaptif pasca guncangan.
+            </p>
+
+            <div className="mt-3 pt-2.5 border-t border-slate-700/60 flex items-center justify-between">
+              <span className="text-[10px] text-slate-400">Target Salur: &lt; 48 Jam</span>
+              {scopedDataList.length > 0 && (
+                <button
+                  onClick={() => handleOpenProfile(scopedDataList[0], undefined, 'referrals')}
+                  className="text-[11px] font-bold text-rose-300 hover:text-rose-200 flex items-center gap-1 cursor-pointer"
+                >
+                  <span>Cek Rujukan</span>
+                  <ArrowRight className="w-3 h-3" />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Pilar 2: Kemenkes / Dinkes */}
+          <div className="bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 hover:border-emerald-500/60 rounded-xl p-4 transition-all duration-200 group">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs border border-emerald-500/30">
+                  <HeartPulse className="w-3.5 h-3.5" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-mono text-emerald-300 uppercase block font-semibold">Pilar 02 • Kemenkes / Dinkes</span>
+                  <span className="text-xs font-bold text-white group-hover:text-emerald-200 transition-colors">SIGAP CONVERGE (Gizi &amp; Sanitasi)</span>
+                </div>
+              </div>
+              <span className="text-[10px] font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded-full">
+                88% Outreach
+              </span>
+            </div>
+
+            <div className="mt-3 flex items-baseline justify-between">
+              <div className="text-2xl font-extrabold font-mono text-white">
+                <AnimatedCounter value={1420} duration={1000} suffix=" Jiwa" />
+              </div>
+              <span className="text-[11px] text-slate-300 font-sans">Balita, Ibu Hamil &amp; Lansia</span>
+            </div>
+
+            <p className="text-[11px] text-slate-400 mt-2 leading-relaxed line-clamp-2">
+              Pemberian Makanan Tambahan (PMT) lokal, intervensi stunting gawat, dan renovasi jamban sehat.
+            </p>
+
+            <div className="mt-3 pt-2.5 border-t border-slate-700/60 flex items-center justify-between">
+              <span className="text-[10px] text-slate-400">Jalur: Posyandu Prima &amp; Puskesmas</span>
+              {scopedDataList.length > 0 && (
+                <button
+                  onClick={() => handleOpenProfile(scopedDataList[0], undefined, 'referrals')}
+                  className="text-[11px] font-bold text-emerald-300 hover:text-emerald-200 flex items-center gap-1 cursor-pointer"
+                >
+                  <span>Cek Rujukan</span>
+                  <ArrowRight className="w-3 h-3" />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Pilar 3: Kemenko Perekonomian / Kemenkop / BUMN */}
+          <div className="bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 hover:border-indigo-500/60 rounded-xl p-4 transition-all duration-200 group">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-xs border border-indigo-500/30">
+                  <Briefcase className="w-3.5 h-3.5" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-mono text-indigo-300 uppercase block font-semibold">Pilar 03 • Kemenko / BUMN</span>
+                  <span className="text-xs font-bold text-white group-hover:text-indigo-200 transition-colors">SIGAP RISE (Inklusi Produktif)</span>
+                </div>
+              </div>
+              <span className="text-[10px] font-bold text-indigo-300 bg-indigo-950/60 border border-indigo-500/30 px-2 py-0.5 rounded-full">
+                Pasca-Stabil
+              </span>
+            </div>
+
+            <div className="mt-3 flex items-baseline justify-between">
+              <div className="text-2xl font-extrabold font-mono text-white">
+                <AnimatedCounter value={980} duration={1000} suffix=" KPM" />
+              </div>
+              <span className="text-[11px] text-slate-300 font-sans">Vokasi &amp; Graduasi KUR</span>
+            </div>
+
+            <p className="text-[11px] text-slate-400 mt-2 leading-relaxed line-clamp-2">
+              Pelatihan vokasi praktis, hibah aset produktif, dan fasilitasi pembiayaan mikro KUR perbankan Himbara.
+            </p>
+
+            <div className="mt-3 pt-2.5 border-t border-slate-700/60 flex items-center justify-between">
+              <span className="text-[10px] text-slate-400">Siklus: 18 Bulan Graduasi</span>
+              {scopedDataList.length > 0 && (
+                <button
+                  onClick={() => handleOpenProfile(scopedDataList[0], undefined, 'referrals')}
+                  className="text-[11px] font-bold text-indigo-300 hover:text-indigo-200 flex items-center gap-1 cursor-pointer"
+                >
+                  <span>Cek Rujukan</span>
+                  <ArrowRight className="w-3 h-3" />
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Citizen Referral Shortcuts Bar */}
+        <div className="mt-4 pt-4 border-t border-indigo-900/60 relative z-10">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+            <div className="flex items-center gap-2 text-xs font-bold text-indigo-200">
+              <Users className="w-4 h-4 text-indigo-400" />
+              <span>Akses Cepat Hasil Pencocokan Rujukan per Kepala Keluarga Terdata:</span>
+            </div>
+            <span className="text-[10px] text-slate-400">
+              Klik nama keluarga di bawah untuk membuka kartu rujukan K/L langsung
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+            {quickReferralHighlights.map(({ household, item }) => (
+              <div
+                key={household.nik}
+                onClick={() => handleOpenProfile(item, household.nik, 'referrals')}
+                className="p-3 bg-slate-800/90 hover:bg-slate-700/90 rounded-xl border border-slate-700 hover:border-indigo-400 cursor-pointer transition-all duration-200 group flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-1">
+                    <span className="text-xs font-bold text-white group-hover:text-indigo-200 truncate">
+                      {household.headName}
+                    </span>
+                    <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-rose-900/60 text-rose-300 border border-rose-700/60 shrink-0">
+                      Desil {household.desilRegsosek}
+                    </span>
+                  </div>
+                  <div className="text-[10px] font-mono text-indigo-300/80 mt-0.5 truncate">
+                    NIK: {household.nik}
+                  </div>
+                  <div className="text-[10px] text-slate-400 mt-1 line-clamp-1">
+                    {household.vulnerabilityNotes[0] || 'Keluarga rentan terindikasi'}
+                  </div>
+                </div>
+
+                <div className="mt-2.5 pt-2 border-t border-slate-700/60 flex items-center justify-between">
+                  <span className="text-[10px] font-semibold text-emerald-400 flex items-center gap-1">
+                    <Sparkles className="w-3 h-3 text-amber-400" />
+                    <span>Rujukan Multi-Pilar</span>
+                  </span>
+                  <span className="text-[10px] font-bold text-indigo-300 group-hover:translate-x-0.5 transition-transform flex items-center gap-0.5">
+                    <span>Lihat</span>
+                    <ChevronRight className="w-3 h-3" />
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Main Table & Instant Search Section */}
       <div className="bg-gradient-to-br from-white via-slate-50/70 to-rose-50/20 rounded-xl border border-rose-200/60 shadow-sm overflow-hidden">
         {/* Table Filters & Toolbar */}
@@ -508,12 +825,23 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
                         {item.village} • Desil {household.desilRegsosek} (DTSEN)
                       </div>
                     </div>
-                    <button
-                      onClick={() => handleOpenProfile(item, household.nik)}
-                      className="px-2.5 py-1 bg-gradient-to-r from-rose-600 to-blue-600 hover:from-rose-500 hover:to-blue-500 text-white text-[10px] font-bold rounded-md shadow-xs transition-colors shrink-0 cursor-pointer"
-                    >
-                      Buka Profil
-                    </button>
+                    <div className="flex items-center gap-1 shrink-0">
+                      <button
+                        onClick={() => handleOpenProfile(item, household.nik, 'referrals')}
+                        className="px-2.5 py-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-[10px] font-bold rounded-md shadow-xs transition-colors cursor-pointer flex items-center gap-1"
+                        title="Buka Rujukan & Rekomendasi Program Langsung"
+                      >
+                        <Sparkles className="w-3 h-3" />
+                        <span>Rujukan</span>
+                      </button>
+                      <button
+                        onClick={() => handleOpenProfile(item, household.nik, 'beneficiaries')}
+                        className="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold rounded-md transition-colors cursor-pointer"
+                        title="Lihat Profil Lengkap"
+                      >
+                        Profil
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -536,7 +864,7 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
                   </div>
                 </th>
                 <th className="py-3 px-4">RT Rentan Terdata</th>
-                <th className="py-3 px-4 text-right">Aksi Profil</th>
+                <th className="py-3 px-4 text-right">Rujukan &amp; Aksi Profil</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -650,20 +978,29 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
                       {item.vulnerableHouseholds.toLocaleString('id-ID')} KK
                     </td>
                     <td className="py-3.5 px-4 text-right">
-                      <div className="flex items-center justify-end gap-2">
+                      <div className="flex items-center justify-end gap-1.5">
                         {item.status === 'Konflik Data' && (
                           <button
                             onClick={() => onOpenConflictModal(item)}
-                            className="px-3 py-1.5 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-lg shadow-xs transition-colors cursor-pointer"
+                            className="px-2.5 py-1.5 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-lg shadow-xs transition-colors cursor-pointer"
                           >
-                            Selesaikan Konflik
+                            Selesaikan
                           </button>
                         )}
                         <button
-                          onClick={() => handleOpenProfile(item)}
-                          className="px-3 py-1.5 text-xs font-bold text-indigo-600 hover:text-white hover:bg-indigo-600 rounded-lg transition-all border border-indigo-200 shadow-xs flex items-center gap-1.5 cursor-pointer"
+                          onClick={() => handleOpenProfile(item, undefined, 'referrals')}
+                          className="px-2.5 py-1.5 text-xs font-bold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-lg shadow-xs transition-all flex items-center gap-1 cursor-pointer"
+                          title="Buka Pusat Rujukan Lintas K/L untuk Wilayah Ini"
                         >
-                          <span>Lihat Profil</span>
+                          <Sparkles className="w-3 h-3 text-amber-300" />
+                          <span>Rujukan K/L</span>
+                        </button>
+                        <button
+                          onClick={() => handleOpenProfile(item, undefined, 'beneficiaries')}
+                          className="px-2.5 py-1.5 text-xs font-bold text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-100 rounded-lg transition-all border border-slate-300 shadow-xs flex items-center gap-1 cursor-pointer"
+                          title="Buka Profil Lengkap & Daftar NIK"
+                        >
+                          <span>Profil</span>
                           <ChevronRight className="w-3 h-3" />
                         </button>
                       </div>
@@ -688,11 +1025,13 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
       <SatuDataProfileModal
         item={selectedProfileItem}
         selectedNik={selectedNikTarget}
+        initialTab={modalInitialTab}
         isOpen={isProfileModalOpen}
         onClose={() => {
           setIsProfileModalOpen(false);
           setSelectedNikTarget(null);
         }}
+        onNavigate={onNavigate}
       />
     </div>
   );

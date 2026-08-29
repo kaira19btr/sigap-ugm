@@ -319,94 +319,125 @@ export const LandingView: React.FC<LandingViewProps> = ({
         </div>
       </section>
 
-      {/* Feature Pillar Section */}
+      {/* 3-Pillar Framework Section */}
       <section id="fitur" className="py-20 px-6 max-w-7xl mx-auto w-full">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-3">
-            Inovasi Paradigma
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold uppercase tracking-wider mb-3">
+            <Layers className="w-3.5 h-3.5" />
+            <span>Kerangka Komprehensif 3 Pilar SIGAP</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+            Perlindungan Adaptif Sepanjang Daur Hidup
           </h2>
-          <p className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Dari Reaktif Menjadi Proaktif
-          </p>
-          <p className="text-slate-600 text-base mt-3">
-            Mengubah pendekatan bantuan sosial konvensional dengan 4 pilar sistem terintegrasi yang tanggap krisis.
+          <p className="text-slate-600 text-base mt-3 leading-relaxed">
+            Menghubungkan ketahanan darurat (Shock-Responsive), pembangunan modal manusia (Konvergensi Layanan), dan kemandirian ekonomi keluarga (Livelihood Graduation) yang disatukan oleh <strong>DTSEN (Data Tunggal Ekonomi Sosial Nasional)</strong>.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Card 1 */}
-          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-300 transition-all flex flex-col justify-between">
+        {/* 3 Pillar Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Pilar 1: SHIELD */}
+          <div className="p-7 rounded-3xl bg-gradient-to-b from-rose-50/50 via-white to-rose-50/20 border-2 border-rose-200 shadow-lg shadow-rose-900/5 hover:border-rose-300 transition-all flex flex-col justify-between relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full blur-2xl pointer-events-none group-hover:scale-150 transition-transform"></div>
             <div>
-              <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-5">
-                <Radio className="w-6 h-6" />
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 rounded-2xl bg-rose-600 text-white flex items-center justify-center shadow-md shadow-rose-600/30">
+                  <Shield className="w-6 h-6" />
+                </div>
+                <span className="px-2.5 py-1 rounded-full bg-rose-100 text-rose-800 font-mono text-[10px] font-extrabold tracking-wider uppercase">
+                  Pilar Q1 • Shock-Responsive
+                </span>
               </div>
-              <div className="text-[10px] font-bold uppercase tracking-wider text-blue-600 mb-1">Tahap 01 • Deteksi Cepat</div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2">
-                Deteksi Dini &amp; Peringatan (Sensing)
+              <h3 className="text-xl font-extrabold text-slate-900 mb-2">
+                SIGAP SHIELD
               </h3>
-              <p className="text-sm text-slate-600 leading-relaxed">
-                Pemantauan real-time anomali iklim, fluktuasi harga pangan pokok, dan seismik multi-sensor untuk peringatan cepat sebelum krisis meluas.
+              <p className="text-xs font-semibold text-rose-600 mb-3 uppercase tracking-wide">
+                Perlindungan Kilat Krisis &amp; Bencana
+              </p>
+              <p className="text-sm text-slate-600 leading-relaxed space-y-2">
+                Respons darurat berbasis sensor BMKG, penilaian risiko 8 indikator analitis (Skala 120 Poin), pembiayaan kontinjensi berlapis (DRFI: APBD BTT, APBN DSP, Pooling Fund Bencana), dan penyaluran bantuan adaptif &lt; 5 hari.
               </p>
             </div>
-            <div className="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-semibold text-blue-600">
-              <span>Sensor BMKG &amp; BPS Terpadu</span>
+
+            <div className="mt-6 pt-4 border-t border-rose-100 flex flex-col gap-2">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-rose-700">
+                <CheckCircle2 className="w-4 h-4 text-rose-600 shrink-0" />
+                <span>Deteksi Dini, Aktivasi 120 Poin &amp; DRFI</span>
+              </div>
+              <div className="flex items-center gap-1.5 text-xs font-bold text-rose-700">
+                <CheckCircle2 className="w-4 h-4 text-rose-600 shrink-0" />
+                <span>Safeguard Human-in-the-Loop 45-35-20</span>
+              </div>
             </div>
           </div>
 
-          {/* Card 2 */}
-          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-300 transition-all flex flex-col justify-between">
+          {/* Pilar 2: CONVERGE */}
+          <div className="p-7 rounded-3xl bg-gradient-to-b from-emerald-50/50 via-white to-emerald-50/20 border-2 border-emerald-200 shadow-lg shadow-emerald-900/5 hover:border-emerald-300 transition-all flex flex-col justify-between relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none group-hover:scale-150 transition-transform"></div>
             <div>
-              <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-5">
-                <Database className="w-6 h-6" />
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-md shadow-emerald-600/30">
+                  <Activity className="w-6 h-6" />
+                </div>
+                <span className="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-mono text-[10px] font-extrabold tracking-wider uppercase">
+                  Pilar Q2 • Konvergensi
+                </span>
               </div>
-              <div className="text-[10px] font-bold uppercase tracking-wider text-indigo-600 mb-1">Tahap 02 • Validasi Target</div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2">
-                Satu Data Terpadu (Targeting)
+              <h3 className="text-xl font-extrabold text-slate-900 mb-2">
+                SIGAP CONVERGE
               </h3>
+              <p className="text-xs font-semibold text-emerald-600 mb-3 uppercase tracking-wide">
+                Konvergensi Layanan Kesehatan &amp; Pendidikan
+              </p>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Interoperabilitas DTKS, Regsosek, dan data geospasial kebencanaan untuk validasi kelayakan otomatis tanpa tumpang tindih penerima manfaat.
+                Pemetaan kerentanan modal manusia lintas kementerian: prevalensi stunting, Angka Partisipasi Murni (APM) sekolah, rasio tenaga kesehatan desa, serta pemerataan sarana esensial (PLTS, internet, lab IPA).
               </p>
             </div>
-            <div className="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-semibold text-indigo-600">
-              <span>Deduplikasi Berbasis NIK</span>
+
+            <div className="mt-6 pt-4 border-t border-emerald-100 flex flex-col gap-2">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-700">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>Human Capital Vulnerability Mapping</span>
+              </div>
+              <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-700">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>Supply-Side Equalization Dashboard</span>
+              </div>
             </div>
           </div>
 
-          {/* Card 3 */}
-          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-300 transition-all flex flex-col justify-between">
+          {/* Pilar 3: RISE */}
+          <div className="p-7 rounded-3xl bg-gradient-to-b from-purple-50/50 via-white to-purple-50/20 border-2 border-purple-200 shadow-lg shadow-purple-900/5 hover:border-purple-300 transition-all flex flex-col justify-between relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl pointer-events-none group-hover:scale-150 transition-transform"></div>
             <div>
-              <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-5">
-                <Zap className="w-6 h-6" />
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 rounded-2xl bg-purple-600 text-white flex items-center justify-center shadow-md shadow-purple-600/30">
+                  <TrendingUp className="w-6 h-6" />
+                </div>
+                <span className="px-2.5 py-1 rounded-full bg-purple-100 text-purple-800 font-mono text-[10px] font-extrabold tracking-wider uppercase">
+                  Pilar Q3 • Livelihood Graduation
+                </span>
               </div>
-              <div className="text-[10px] font-bold uppercase tracking-wider text-amber-600 mb-1">Tahap 03 • Respons Kilat</div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2">
-                Penilaian Risiko &amp; Aktivasi Kilat (Activation)
+              <h3 className="text-xl font-extrabold text-slate-900 mb-2">
+                SIGAP RISE
               </h3>
+              <p className="text-xs font-semibold text-purple-600 mb-3 uppercase tracking-wide">
+                Pemberdayaan Ekonomi &amp; Graduasi Mandiri
+              </p>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Kalkulasi 7 parameter analitis risiko krisis, safeguard confidence score, dan otorisasi bantuan adaptif dalam rata-rata 4.2 hari nasional.
+                Kohort berjenjang 5 tahap (Stabilize → Assess → Build → Connect → Graduate), pendampingan aset produktif, akses permodalan KUR/Himbara, serta validasi 4 kriteria kelulusan mandiri DTSEN.
               </p>
             </div>
-            <div className="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-semibold text-amber-600">
-              <span>Aktivasi Protokol Otomatis</span>
-            </div>
-          </div>
 
-          {/* Card 4 */}
-          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-300 transition-all flex flex-col justify-between">
-            <div>
-              <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-5">
-                <BarChart3 className="w-6 h-6" />
+            <div className="mt-6 pt-4 border-t border-purple-100 flex flex-col gap-2">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-purple-700">
+                <CheckCircle2 className="w-4 h-4 text-purple-600 shrink-0" />
+                <span>Sequenced Productive Inclusion Tracker</span>
               </div>
-              <div className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 mb-1">Tahap 04 • Respons Berkelanjutan</div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2">
-                Monitoring &amp; Evaluasi Berkelanjutan (Feedback)
-              </h3>
-              <p className="text-sm text-slate-600 leading-relaxed">
-                Monitoring transparan, survei kepuasan dua arah berbasis SMS/WhatsApp, dan pemulihan kemandirian pasca-bencana secara terukur.
-              </p>
-            </div>
-            <div className="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-semibold text-emerald-600">
-              <span>Umpan Balik Warga 360°</span>
+              <div className="flex items-center gap-1.5 text-xs font-bold text-purple-700">
+                <CheckCircle2 className="w-4 h-4 text-purple-600 shrink-0" />
+                <span>Graduation Scorecard &amp; Sertifikat Mandiri</span>
+              </div>
             </div>
           </div>
         </div>
@@ -516,7 +547,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
               Peta Siaga Bencana
             </button>
             <button onClick={onEnterDashboard} className="hover:text-white transition-colors">
-              Satu Data DTKS
+              Satu Data Terpadu (DTSEN)
             </button>
             <button onClick={() => setIsArchitectureModalOpen(true)} className="hover:text-white transition-colors">
               Arsitektur Sistem

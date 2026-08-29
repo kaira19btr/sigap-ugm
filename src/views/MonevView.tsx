@@ -21,13 +21,22 @@ import { AnimatedCounter } from '../components/AnimatedCounter';
 import { MonevMetricModal, MonevMetricType } from '../components/MonevMetricModal';
 import { MonevCharts } from '../components/MonevCharts';
 import { InterAgencyCoordinationPanel } from '../components/InterAgencyCoordinationPanel';
-import { ActivationProposal } from '../types';
+import { LocalSopCompliancePanel } from '../components/LocalSopCompliancePanel';
+import { ActivationProposal, UserRole, UserProfile } from '../types';
 
 interface MonevViewProps {
   proposals?: ActivationProposal[];
+  currentRole?: UserRole;
+  activeProfile?: UserProfile;
 }
 
-export const MonevView: React.FC<MonevViewProps> = ({ proposals = [] }) => {
+export const MonevView: React.FC<MonevViewProps> = ({
+  proposals = [],
+  currentRole = 'admin_pusat',
+  activeProfile,
+}) => {
+  const isDaerah = currentRole === 'admin_daerah';
+  const targetRegionName = activeProfile?.region || 'Kab. Cianjur';
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -226,8 +235,12 @@ export const MonevView: React.FC<MonevViewProps> = ({ proposals = [] }) => {
       {/* Stunning Interactive Analytics Diagrams (Recharts Multi-Tab Studio) */}
       <MonevCharts />
 
-      {/* Panel Baru: Koordinasi & Akuntabilitas Lintas K/L (Pencegahan Tumpang Tindih Program) */}
-      <InterAgencyCoordinationPanel proposals={proposals} />
+      {/* Panel Koordinasi / Kepatuhan SOP sesuai Peran */}
+      {isDaerah ? (
+        <LocalSopCompliancePanel proposals={proposals} activeProfile={activeProfile} />
+      ) : (
+        <InterAgencyCoordinationPanel proposals={proposals} />
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Comparison & Efficiency Analytics */}

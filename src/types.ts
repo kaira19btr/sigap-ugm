@@ -1,11 +1,22 @@
 export type UserRole = 'admin_pusat' | 'admin_daerah' | 'petugas_lapangan';
 
+export type PillarType = 'shield' | 'converge' | 'rise' | 'governance';
+
 export type AppModule = 
+  // PILAR 1: SIGAP SHIELD (Q1 — Shock-Responsive Protection)
   | 'early_warning'
   | 'satu_data'
   | 'risk_assessment'
-  | 'monev'
+  | 'contingency_financing'
   | 'input_lapangan'
+  // PILAR 2: SIGAP CONVERGE (Q2 — Service Convergence)
+  | 'converge_vulnerability_map'
+  | 'converge_supply_side'
+  // PILAR 3: SIGAP RISE (Q3 — Productive Inclusion & Graduation)
+  | 'rise_inclusion_tracker'
+  | 'rise_graduation_scorecard'
+  // LAPISAN GOVERNANCE & DATA ENGINE (Lintas Pilar)
+  | 'monev'
   | 'pengaduan'
   | 'persetujuan'
   | 'manajemen_pengguna'

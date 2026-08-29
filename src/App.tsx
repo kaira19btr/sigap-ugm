@@ -37,6 +37,11 @@ import { LoginView } from './views/LoginView';
 import { EarlyWarningView } from './views/EarlyWarningView';
 import { SatuDataView } from './views/SatuDataView';
 import { RiskAssessmentView } from './views/RiskAssessmentView';
+import { ContingencyFinancingView } from './views/ContingencyFinancingView';
+import { ConvergeVulnerabilityMapView } from './views/ConvergeVulnerabilityMapView';
+import { ConvergeSupplySideView } from './views/ConvergeSupplySideView';
+import { RiseInclusionTrackerView } from './views/RiseInclusionTrackerView';
+import { RiseGraduationScorecardView } from './views/RiseGraduationScorecardView';
 import { MonevView } from './views/MonevView';
 import { InputLapanganView } from './views/InputLapanganView';
 import { PengaduanView } from './views/PengaduanView';
@@ -81,16 +86,29 @@ export default function App() {
     setEmergencyModalOpen(true);
   };
 
-  const handleDispatchEmergencyAction = (details: { packageType: string; recipientQuota: number; notes: string }) => {
+  const handleDispatchEmergencyAction = (details: {
+    packageType: string;
+    recipientQuota: number;
+    notes: string;
+    actionType: 'pusat_authorization' | 'daerah_activation';
+    documentNumber: string;
+    budgetEstimate: number;
+    targetDesils: string;
+    emergencyPersonnelCount?: number;
+  }) => {
     // Automatically generate a new proposal in Persetujuan module
+    const isPusat = details.actionType === 'pusat_authorization';
     const newProposal: ActivationProposal = {
-      id: `ACT-2023-EMG-${Math.floor(100 + Math.random() * 900)}`,
+      id: details.documentNumber || `ACT-2026-EMG-${Math.floor(100 + Math.random() * 900)}`,
       submittedAt: 'Hari ini, Baru saja',
-      region: `${selectedRegion.name}, ${selectedRegion.province}`,
-      disasterType: selectedRegion.crisisType,
-      riskScore: Math.round(selectedRegion.vulnerabilityIndex * 10),
+      region: `${selectedRegion.name}, ${selectedRegion.regency}`,
+      disasterType: `${selectedRegion.crisisType} (${details.packageType})`,
+      riskScore: Math.min(120, Math.round(selectedRegion.vulnerabilityIndex * 12)),
       proposer: `${activeProfile.name} (${activeProfile.agency})`,
-      status: 'Menunggu',
+      status: isPusat ? 'Disetujui' : 'Menunggu',
+      decisionType: isPusat ? 'Otorisasi DSP Nasional (Tingkat Pusat)' : 'Aktivasi Kedaruratan Wilayah (Tingkat Daerah)',
+      approver: isPusat ? 'Menteri Sosial RI & BNPB' : 'Menunggu Verifikasi Kemensos RI',
+      confidenceScore: '94%',
     };
     setProposals((prev) => [newProposal, ...prev]);
   };
@@ -282,16 +300,63 @@ export default function App() {
                 dataList={satuData}
                 onOpenConflictModal={handleOpenConflictModal}
                 onRefreshData={handleRefreshSatuData}
+                currentRole={currentRole}
+                activeProfile={activeProfile}
+                onNavigate={(module) => setCurrentModule(module)}
               />
             )}
 
             {currentModule === 'risk_assessment' && (
               <RiskAssessmentView
                 onForwardToApproval={handleForwardProposal}
+                currentRole={currentRole}
+                activeProfile={activeProfile}
+                regions={regions}
               />
             )}
 
-            {currentModule === 'monev' && <MonevView proposals={proposals} />}
+            {currentModule === 'contingency_financing' && (
+              <ContingencyFinancingView
+                currentRole={currentRole}
+                activeProfile={activeProfile}
+              />
+            )}
+
+            {currentModule === 'converge_vulnerability_map' && (
+              <ConvergeVulnerabilityMapView
+                currentRole={currentRole}
+                activeProfile={activeProfile}
+              />
+            )}
+
+            {currentModule === 'converge_supply_side' && (
+              <ConvergeSupplySideView
+                currentRole={currentRole}
+                activeProfile={activeProfile}
+              />
+            )}
+
+            {currentModule === 'rise_inclusion_tracker' && (
+              <RiseInclusionTrackerView
+                currentRole={currentRole}
+                activeProfile={activeProfile}
+              />
+            )}
+
+            {currentModule === 'rise_graduation_scorecard' && (
+              <RiseGraduationScorecardView
+                currentRole={currentRole}
+                activeProfile={activeProfile}
+              />
+            )}
+
+            {currentModule === 'monev' && (
+              <MonevView
+                proposals={proposals}
+                currentRole={currentRole}
+                activeProfile={activeProfile}
+              />
+            )}
 
             {currentModule === 'input_lapangan' && (
               <InputLapanganView
@@ -341,9 +406,13 @@ export default function App() {
       {/* Global Interactive Modals */}
       <EmergencyModal
         region={selectedRegion}
+        allRegions={regions}
+        onSelectRegion={(reg) => setSelectedRegion(reg)}
         isOpen={emergencyModalOpen}
         onClose={() => setEmergencyModalOpen(false)}
         onDispatchAction={handleDispatchEmergencyAction}
+        currentRole={currentRole}
+        activeProfile={activeProfile}
       />
 
       <DataConflictModal

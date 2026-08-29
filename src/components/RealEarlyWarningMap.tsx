@@ -28,6 +28,8 @@ interface RealEarlyWarningMapProps {
   onSelectRegion: (region: RegionRiskData) => void;
   onOpenEmergencyAction: (region: RegionRiskData) => void;
   onOpenRadar?: (region: RegionRiskData) => void;
+  isDaerah?: boolean;
+  regionTitle?: string;
 }
 
 type MapLayerType = 'dark' | 'street' | 'satellite' | 'terrain';
@@ -38,11 +40,14 @@ export const RealEarlyWarningMap: React.FC<RealEarlyWarningMapProps> = ({
   onSelectRegion,
   onOpenEmergencyAction,
   onOpenRadar,
+  isDaerah = false,
+  regionTitle = 'Kab. Cianjur',
 }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
   const markersRef = useRef<{ [id: string]: L.Marker }>({});
   const circlesRef = useRef<{ [id: string]: L.Circle }>({});
+  const boundaryLayerRef = useRef<L.Circle | L.Polygon | null>(null);
   const tileLayerRef = useRef<L.TileLayer | null>(null);
   const overlayLayerRef = useRef<L.TileLayer | null>(null);
 
@@ -128,10 +133,15 @@ export const RealEarlyWarningMap: React.FC<RealEarlyWarningMapProps> = ({
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
-    // Center on Indonesia Archipelago
+    // Center initially on target region if isDaerah, else Center on Indonesia Archipelago
+    const initialCenter: [number, number] = isDaerah && regions.length > 0
+      ? [regions[0].lat, regions[0].lng]
+      : [-2.5, 118.0];
+    const initialZoom = isDaerah ? 11 : 5;
+
     const map = L.map(mapContainerRef.current, {
-      center: [-2.5, 118.0],
-      zoom: 5,
+      center: initialCenter,
+      zoom: initialZoom,
       minZoom: 4,
       maxZoom: 18,
       zoomControl: false,
@@ -177,6 +187,10 @@ export const RealEarlyWarningMap: React.FC<RealEarlyWarningMapProps> = ({
     // Initial resize trigger
     setTimeout(() => {
       map.invalidateSize();
+      if (isDaerah && regions.length > 0) {
+        const bounds = L.latLngBounds(regions.map((r) => [r.lat, r.lng]));
+        map.fitBounds(bounds, { padding: [50, 50], maxZoom: 12 });
+      }
     }, 200);
 
     return () => {
@@ -340,7 +354,11 @@ export const RealEarlyWarningMap: React.FC<RealEarlyWarningMapProps> = ({
     const map = mapInstanceRef.current;
     if (!map || !selectedRegion) return;
 
-    map.flyTo([selectedRegion.lat, selectedRegion.lng], 8, {
+    // Check if regions are clustered in one regency
+    const isSingleRegency = regions.every((r) => r.regency === regions[0]?.regency);
+    const targetZoom = isSingleRegency ? 11 : 8;
+
+    map.flyTo([selectedRegion.lat, selectedRegion.lng], targetZoom, {
       duration: 1.5,
       easeLinearity: 0.25,
     });
@@ -352,19 +370,38 @@ export const RealEarlyWarningMap: React.FC<RealEarlyWarningMapProps> = ({
         marker.openPopup();
       }, 800);
     }
-  }, [selectedRegion]);
+  }, [selectedRegion, regions]);
+
+  // Fit bounds whenever region set changes (e.g. when switching from Pusat to Daerah)
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    if (!map || regions.length === 0) return;
+    
+    const isSingleRegency = regions.every((r) => r.regency === regions[0]?.regency);
+    if (isSingleRegency) {
+      const bounds = L.latLngBounds(regions.map((r) => [r.lat, r.lng]));
+      map.fitBounds(bounds, { padding: [40, 40], maxZoom: 12 });
+    }
+  }, [regions]);
 
   const handleResetView = () => {
     const map = mapInstanceRef.current;
     if (!map) return;
-    map.flyTo([-2.5, 118.0], 5, { duration: 1.2 });
+    const isSingleRegency = regions.every((r) => r.regency === regions[0]?.regency);
+    if (isSingleRegency && regions.length > 0) {
+      const bounds = L.latLngBounds(regions.map((r) => [r.lat, r.lng]));
+      map.fitBounds(bounds, { padding: [40, 40], maxZoom: 12 });
+    } else {
+      map.flyTo([-2.5, 118.0], 5, { duration: 1.2 });
+    }
   };
 
   const handleFitAll = () => {
     const map = mapInstanceRef.current;
     if (!map || regions.length === 0) return;
     const bounds = L.latLngBounds(regions.map((r) => [r.lat, r.lng]));
-    map.fitBounds(bounds, { padding: [50, 50], maxZoom: 8 });
+    const isSingleRegency = regions.every((r) => r.regency === regions[0]?.regency);
+    map.fitBounds(bounds, { padding: [50, 50], maxZoom: isSingleRegency ? 12 : 8 });
   };
 
   return (
@@ -443,14 +480,14 @@ export const RealEarlyWarningMap: React.FC<RealEarlyWarningMapProps> = ({
         <button
           onClick={handleFitAll}
           className="p-2 bg-slate-900/90 hover:bg-slate-800 text-slate-200 hover:text-white rounded-xl border border-slate-700 shadow-lg backdrop-blur-md transition-colors"
-          title="Fokus Seluruh Indonesia"
+          title={isDaerah ? `Fokus Wilayah ${regionTitle}` : 'Fokus Seluruh Indonesia'}
         >
           <Compass className="w-4 h-4" />
         </button>
         <button
           onClick={handleResetView}
           className="p-2 bg-slate-900/90 hover:bg-slate-800 text-slate-200 hover:text-white rounded-xl border border-slate-700 shadow-lg backdrop-blur-md transition-colors"
-          title="Reset Sudut Pandang Default"
+          title={isDaerah ? `Reset Sudut Pandang ${regionTitle}` : 'Reset Sudut Pandang Default'}
         >
           <RotateCcw className="w-4 h-4" />
         </button>

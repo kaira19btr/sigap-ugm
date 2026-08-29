@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { RegionRiskData } from '../types';
+import React, { useState, useMemo } from 'react';
+import { RegionRiskData, UserRole, UserProfile } from '../types';
 import { RealEarlyWarningMap } from '../components/RealEarlyWarningMap';
 import { AnimatedCounter } from '../components/AnimatedCounter';
 import { EarlyWarningMetricModal, EarlyWarningMetricType } from '../components/EarlyWarningMetricModal';
@@ -24,6 +24,9 @@ import {
   Radar,
   Workflow,
   ShieldCheck,
+  Building2,
+  Lock,
+  Truck,
 } from 'lucide-react';
 
 interface EarlyWarningViewProps {
@@ -31,6 +34,8 @@ interface EarlyWarningViewProps {
   selectedRegion: RegionRiskData;
   onSelectRegion: (region: RegionRiskData) => void;
   onOpenEmergencyAction: (region: RegionRiskData) => void;
+  currentRole?: UserRole;
+  activeProfile?: UserProfile;
 }
 
 export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
@@ -38,19 +43,38 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
   selectedRegion,
   onSelectRegion,
   onOpenEmergencyAction,
+  currentRole = 'admin_pusat',
+  activeProfile,
 }) => {
   const [filterStatus, setFilterStatus] = useState<'all' | 'darurat' | 'siaga' | 'normal'>('all');
   const [activeMetricModal, setActiveMetricModal] = useState<EarlyWarningMetricType | null>(null);
   const [isRadarModalOpen, setIsRadarModalOpen] = useState<boolean>(false);
   const [isArchitectureModalOpen, setIsArchitectureModalOpen] = useState<boolean>(false);
 
-  const filteredRegions = regions.filter((r) => {
+  // Filter regions based on active role (Role-Based Access Control)
+  const isDaerah = currentRole === 'admin_daerah';
+  const targetRegionName = activeProfile?.region || 'Kab. Cianjur';
+
+  const scopedRegions = useMemo(() => {
+    if (isDaerah) {
+      return regions.filter((r) => r.regency.toLowerCase().includes('cianjur') || r.regency.toLowerCase().includes(targetRegionName.toLowerCase()));
+    }
+    return regions;
+  }, [regions, isDaerah, targetRegionName]);
+
+  // Ensure active selected region belongs to scopedRegions
+  const effectiveSelectedRegion = useMemo(() => {
+    const exists = scopedRegions.find((r) => r.id === selectedRegion?.id);
+    return exists || scopedRegions[0] || selectedRegion;
+  }, [scopedRegions, selectedRegion]);
+
+  const filteredRegions = scopedRegions.filter((r) => {
     if (filterStatus === 'all') return true;
     return r.status === filterStatus;
   });
 
-  const daruratCount = regions.filter((r) => r.status === 'darurat').length;
-  const siagaCount = regions.filter((r) => r.status === 'siaga').length;
+  const daruratCount = scopedRegions.filter((r) => r.status === 'darurat').length;
+  const siagaCount = scopedRegions.filter((r) => r.status === 'siaga').length;
 
   return (
     <div id="early-warning-module" className="p-6 space-y-6">
@@ -60,12 +84,20 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-blue-600">
             <span className="w-2 h-2 rounded-full bg-blue-600"></span>
             <span>Modul 01 • Deteksi Dini &amp; Peringatan (Sensing)</span>
+            {isDaerah && (
+              <span className="ml-2 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-300">
+                <Lock className="w-3 h-3 text-amber-600" />
+                <span>Cakupan Wilayah Kerja: {targetRegionName}</span>
+              </span>
+            )}
           </div>
           <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight mt-1">
-            Deteksi Dini &amp; Peringatan Bencana
+            {isDaerah ? `Deteksi Dini & Peringatan • ${targetRegionName}` : 'Deteksi Dini & Peringatan Bencana'}
           </h1>
           <p className="text-xs text-slate-500 mt-0.5">
-            Pemantauan telemetri multi-bahaya real-time di 12 wilayah target dengan SLA adaptif dan matriks 7 dimensi risiko
+            {isDaerah
+              ? `Pemantauan telemetri multi-bahaya real-time khusus wilayah kerja ${targetRegionName} (${scopedRegions.length} titik operasional) dengan SLA adaptif`
+              : 'Pemantauan telemetri multi-bahaya real-time di seluruh wilayah target nasional dengan SLA adaptif dan matriks 7 dimensi risiko'}
           </p>
         </div>
 
@@ -158,11 +190,11 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
               <span className="text-xs font-semibold text-slate-700 group-hover:text-blue-700 transition-colors">Avg. Deteksi Dini</span>
             </div>
             <div className="text-3xl font-extrabold font-mono text-slate-900 group-hover:text-blue-600 transition-colors mt-1 flex items-baseline gap-1">
-              <AnimatedCounter value={4.2} duration={1200} decimalPlaces={1} />
+              <AnimatedCounter value={isDaerah ? 3.8 : 4.2} duration={1200} decimalPlaces={1} />
               <span className="text-xs font-sans font-bold text-slate-500">Hari</span>
             </div>
             <div className="text-[11px] text-blue-600 font-semibold mt-1">
-              Lead time sebelum puncak krisis
+              {isDaerah ? 'Lead time telemetri lokal Cianjur' : 'Lead time sebelum puncak krisis'}
             </div>
             <div className="text-[10px] text-slate-500 group-hover:text-blue-600 font-medium flex items-center gap-1 mt-2 transition-colors">
               <MousePointerClick className="w-3 h-3" />
@@ -187,11 +219,11 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
               <span className="text-xs font-semibold text-slate-700 group-hover:text-indigo-700 transition-colors">Notifikasi Terkirim</span>
             </div>
             <div className="text-3xl font-extrabold font-mono text-slate-900 group-hover:text-indigo-600 transition-colors mt-1 flex items-baseline gap-1">
-              <AnimatedCounter value={1248} duration={1200} />
+              <AnimatedCounter value={isDaerah ? 342 : 1248} duration={1200} />
               <span className="text-xs font-sans font-bold text-slate-400">Pesan</span>
             </div>
             <div className="text-[11px] text-emerald-600 font-semibold mt-1">
-              99.8% keterbacaan petugas
+              {isDaerah ? '100% diterima Tagana & Posko Wilayah' : '99.8% keterbacaan petugas'}
             </div>
             <div className="text-[10px] text-slate-500 group-hover:text-indigo-600 font-medium flex items-center gap-1 mt-2 transition-colors">
               <MousePointerClick className="w-3 h-3" />
@@ -212,7 +244,7 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
             <div className="flex items-center gap-2">
               <span className="text-xs font-bold uppercase tracking-wide text-slate-100 flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
-                Peta Pantauan Kerentanan Wilayah
+                {isDaerah ? `Peta Pantauan Wilayah Kerja (${targetRegionName})` : 'Peta Pantauan Kerentanan Wilayah'}
               </span>
               <span className="text-[10px] bg-rose-950/60 text-rose-300 border border-rose-800/40 px-2 py-0.5 rounded font-mono font-bold">
                 {filteredRegions.length} Titik Fokus Aktif
@@ -229,7 +261,7 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
                     : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
-                Semua ({regions.length})
+                Semua ({scopedRegions.length})
               </button>
               <button
                 onClick={() => setFilterStatus('darurat')}
@@ -268,13 +300,15 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
           <div className="relative">
             <RealEarlyWarningMap
               regions={filteredRegions}
-              selectedRegion={selectedRegion}
+              selectedRegion={effectiveSelectedRegion}
               onSelectRegion={onSelectRegion}
               onOpenEmergencyAction={onOpenEmergencyAction}
               onOpenRadar={(region) => {
                 onSelectRegion(region);
                 setIsRadarModalOpen(true);
               }}
+              isDaerah={isDaerah}
+              regionTitle={targetRegionName}
             />
           </div>
 
@@ -283,12 +317,12 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
             <span className="text-[11px] font-bold text-rose-400 uppercase shrink-0 pl-1">
               Fokus Wilayah:
             </span>
-            {regions.map((reg) => (
+            {scopedRegions.map((reg) => (
               <button
                 key={reg.id}
                 onClick={() => onSelectRegion(reg)}
                 className={`text-xs px-3 py-1.5 rounded-lg font-medium shrink-0 transition-all flex items-center gap-1.5 ${
-                  selectedRegion.id === reg.id
+                  effectiveSelectedRegion.id === reg.id
                     ? 'bg-gradient-to-r from-rose-600 to-blue-600 text-white font-bold shadow-xs'
                     : 'bg-slate-900/90 text-slate-300 hover:bg-slate-800 border border-slate-800'
                 }`}
@@ -317,21 +351,21 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
                 <span className="text-[10px] font-bold tracking-wider text-rose-700 uppercase">
                   Detail Wilayah Terpilih
                 </span>
-                <h3 className="text-lg font-bold text-slate-900 mt-0.5">{selectedRegion.name}</h3>
+                <h3 className="text-lg font-bold text-slate-900 mt-0.5">{effectiveSelectedRegion.name}</h3>
                 <p className="text-xs text-slate-500">
-                  {selectedRegion.regency}, {selectedRegion.province}
+                  {effectiveSelectedRegion.regency}, {effectiveSelectedRegion.province}
                 </p>
               </div>
               <span
                 className={`text-xs px-2.5 py-1 rounded-full font-bold uppercase ${
-                  selectedRegion.status === 'darurat'
+                  effectiveSelectedRegion.status === 'darurat'
                     ? 'bg-rose-100 text-rose-700 border border-rose-200'
-                    : selectedRegion.status === 'siaga'
+                    : effectiveSelectedRegion.status === 'siaga'
                     ? 'bg-amber-100 text-amber-800 border border-amber-200'
                     : 'bg-emerald-100 text-emerald-800 border border-emerald-200'
                 }`}
               >
-                {selectedRegion.status}
+                {effectiveSelectedRegion.status}
               </span>
             </div>
 
@@ -342,21 +376,21 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
                   Pemicu Utama Anomali
                 </span>
                 <p className="text-xs font-bold text-slate-100 mt-0.5">
-                  {selectedRegion.crisisType}
+                  {effectiveSelectedRegion.crisisType}
                 </p>
               </div>
               
               <div className="flex items-center justify-between pt-1 border-t border-rose-900/40 text-xs">
                 <span className="text-slate-400">Target SLA Penyaluran:</span>
                 <span className="font-bold font-mono text-amber-300 bg-amber-950/60 px-2 py-0.5 rounded border border-amber-700/50">
-                  {selectedRegion.slaTargetDays} Hari Kerja
+                  {effectiveSelectedRegion.slaTargetDays} Hari Kerja
                 </span>
               </div>
 
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-400">Estimasi Terdampak:</span>
                 <span className="font-bold text-slate-100">
-                  {selectedRegion.affectedPopulation.toLocaleString('id-ID')} Jiwa
+                  {effectiveSelectedRegion.affectedPopulation.toLocaleString('id-ID')} Jiwa
                 </span>
               </div>
             </div>
@@ -367,19 +401,19 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
                 <div className="flex items-center justify-between text-xs mb-1">
                   <span className="text-slate-700 font-semibold">Indeks Kerentanan</span>
                   <span className="font-bold font-mono text-slate-900">
-                    {selectedRegion.vulnerabilityIndex} / 10.0
+                    {effectiveSelectedRegion.vulnerabilityIndex} / 10.0
                   </span>
                 </div>
                 <div className="w-full bg-slate-200 rounded-full h-2">
                   <div
                     className={`h-2 rounded-full transition-all ${
-                      selectedRegion.vulnerabilityIndex >= 8
+                      effectiveSelectedRegion.vulnerabilityIndex >= 8
                         ? 'bg-rose-500'
-                        : selectedRegion.vulnerabilityIndex >= 6
+                        : effectiveSelectedRegion.vulnerabilityIndex >= 6
                         ? 'bg-amber-500'
                         : 'bg-emerald-500'
                     }`}
-                    style={{ width: `${selectedRegion.vulnerabilityIndex * 10}%` }}
+                    style={{ width: `${effectiveSelectedRegion.vulnerabilityIndex * 10}%` }}
                   ></div>
                 </div>
               </div>
@@ -391,7 +425,7 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
                     <span>Curah Hujan</span>
                   </div>
                   <div className="text-xs font-bold text-slate-900 mt-1">
-                    {selectedRegion.rainfall}
+                    {effectiveSelectedRegion.rainfall}
                   </div>
                 </div>
 
@@ -401,8 +435,24 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
                     <span>Harga Beras</span>
                   </div>
                   <div className="text-xs font-bold text-slate-900 mt-1">
-                    {selectedRegion.ricePrice}
+                    {effectiveSelectedRegion.ricePrice}
                   </div>
+                </div>
+              </div>
+
+              {/* Automatic Target DTSEN & Projected Budget Pill */}
+              <div className="p-2.5 rounded-lg bg-slate-100/90 border border-slate-200 text-[11px] space-y-1 text-slate-700">
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Estimasi Sasaran DTSEN:</span>
+                  <span className="font-mono font-bold text-slate-900">
+                    ~{Math.round(effectiveSelectedRegion.affectedPopulation / 3.8).toLocaleString('id-ID')} KK
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Estimasi Kebutuhan DSP:</span>
+                  <span className="font-mono font-bold text-emerald-700">
+                    Rp {((Math.round(effectiveSelectedRegion.affectedPopulation / 3.8) * 600000) / 1_000_000_000).toFixed(2)} Miliar
+                  </span>
                 </div>
               </div>
             </div>
@@ -416,15 +466,104 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
               <span>Lihat Grafik Radar 7 Indikator</span>
             </button>
 
-            {/* Action Trigger Button */}
+            {/* Role-Specific Action Trigger Button */}
             <button
               id="btn-tinjau-tindakan-darurat"
-              onClick={() => onOpenEmergencyAction(selectedRegion)}
-              className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-rose-600 via-rose-500 to-blue-600 hover:from-rose-500 hover:to-blue-500 text-white font-bold text-xs shadow-md shadow-rose-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+              onClick={() => onOpenEmergencyAction(effectiveSelectedRegion)}
+              className={`w-full py-2.5 px-4 rounded-xl text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                isDaerah
+                  ? 'bg-gradient-to-r from-amber-600 via-rose-600 to-rose-700 hover:from-amber-500 hover:to-rose-600 shadow-amber-600/20'
+                  : 'bg-gradient-to-r from-rose-600 via-rose-500 to-blue-600 hover:from-rose-500 hover:to-blue-500 shadow-rose-600/20'
+              }`}
             >
-              <span>Tinjau Tindakan Darurat</span>
+              <span>
+                {isDaerah
+                  ? `Aktivasi Lapangan & Respon Cepat Daerah`
+                  : `Otorisasi Respon Cepat & DSP Nasional`}
+              </span>
               <ArrowUpRight className="w-4 h-4" />
             </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Comparison Guide: Perbedaan Prosedur & Otoritas Pusat vs Daerah */}
+      <div className="bg-white rounded-xl border border-slate-200 shadow-xs p-5 space-y-4">
+        <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+          <ShieldCheck className="w-5 h-5 text-blue-600" />
+          <div>
+            <h2 className="text-sm font-extrabold text-slate-900 tracking-tight">
+              Matriks Perbedaan Otoritas &amp; Prosedur Respon Cepat (Pusat vs Daerah)
+            </h2>
+            <p className="text-[11px] text-slate-500">
+              Standar Operasional Prosedur Penanggulangan Bencana Adaptif (Bowen dkk., 2020 &amp; Permensos RI)
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          {/* Box Pusat */}
+          <div className="p-4 rounded-xl bg-gradient-to-br from-rose-50/60 via-white to-blue-50/40 border border-rose-200/80 space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="font-extrabold text-rose-800 flex items-center gap-1.5 uppercase text-[11px]">
+                <Building2 className="w-4 h-4 text-rose-600" />
+                Pemerintah Pusat (Kemensos / BNPB)
+              </span>
+              <span className="px-2 py-0.5 rounded bg-rose-100 text-rose-700 font-mono font-bold text-[10px]">
+                Level Nasional
+              </span>
+            </div>
+
+            <ul className="space-y-2 text-slate-700">
+              <li className="flex items-start gap-2">
+                <span className="text-rose-600 font-bold">•</span>
+                <span><strong>Kewenangan:</strong> Otorisasi Dana Siap Pakai (DSP) APBN &amp; Penetapan Status Darurat Nasional.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-rose-600 font-bold">•</span>
+                <span><strong>Instrumen:</strong> Penerbitan SP2D Online massal ke Bank Himbara &amp; Penugasan Juru Bayar PT Pos Indonesia.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-rose-600 font-bold">•</span>
+                <span><strong>Mekanisme Adaptif:</strong> Horizontal Expansion membuka cutoff DTSEN ke Desil 5–6 secara otomatis.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-rose-600 font-bold">•</span>
+                <span><strong>Output Dokumen:</strong> Surat Keputusan (SK) Menteri Sosial &amp; Instruksi Kliring Bank.</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Box Daerah */}
+          <div className="p-4 rounded-xl bg-gradient-to-br from-amber-50/60 via-white to-rose-50/40 border border-amber-200/80 space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="font-extrabold text-amber-800 flex items-center gap-1.5 uppercase text-[11px]">
+                <Truck className="w-4 h-4 text-amber-600" />
+                Pemerintah Daerah (Dinsos / Posko Tagana)
+              </span>
+              <span className="px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-mono font-bold text-[10px]">
+                Level Kabupaten/Kota
+              </span>
+            </div>
+
+            <ul className="space-y-2 text-slate-700">
+              <li className="flex items-start gap-2">
+                <span className="text-amber-600 font-bold">•</span>
+                <span><strong>Kewenangan:</strong> Aktivasi Posko Lapangan, Mobilisasi Personel Satgas Tagana &amp; Rekomendasi Bupati.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-amber-600 font-bold">•</span>
+                <span><strong>Instrumen:</strong> Pembukaan Dapur Umum Mandiri, Tenda Darurat, dan Penyaluran Buffer Stock Beras Dinsos.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-amber-600 font-bold">•</span>
+                <span><strong>Mekanisme Lapangan:</strong> Pendataan Cepat (Fast-track) NIK korban dan pembukaan posko sanggah desa.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-amber-600 font-bold">•</span>
+                <span><strong>Output Dokumen:</strong> Berita Acara Kedaruratan (BA-DARURAT) Dinsos &amp; Usulan Aktivasi Resmi ke Pusat.</span>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -434,14 +573,14 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
         metricType={activeMetricModal}
         isOpen={!!activeMetricModal}
         onClose={() => setActiveMetricModal(null)}
-        regions={regions}
+        regions={scopedRegions}
         onSelectRegion={onSelectRegion}
         onOpenEmergencyAction={onOpenEmergencyAction}
       />
 
       {/* Region 7-Indicator Radar Chart Modal */}
       <RegionRadarChartModal
-        region={selectedRegion}
+        region={effectiveSelectedRegion}
         isOpen={isRadarModalOpen}
         onClose={() => setIsRadarModalOpen(false)}
         onOpenEmergencyAction={onOpenEmergencyAction}
