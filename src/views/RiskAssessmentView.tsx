@@ -50,7 +50,7 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
   const [dataQuality, setDataQuality] = useState({
     fieldCompleteness: 90, // Kelengkapan Sampling & Asesmen Lapangan Tagana/BPBD (10-100%)
     sensorTelemetry: 88, // Ketersediaan Telemetri Sensor Real-Time BMKG/PVMBG (10-100%)
-    identityMatchRate: 94, // Tingkat Kepadanan NIK & Validasi DTKS (10-100%)
+    identityMatchRate: 94, // Tingkat Kepadanan NIK & Validasi DTSEN (10-100%)
   });
 
   // Human-in-the-loop manual confirmation state
@@ -62,7 +62,7 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
   const [showExportNotification, setShowExportNotification] = useState<string | null>(null);
 
   // Dynamic Confidence Score Calculation:
-  // Weighted: 45% Asesmen Lapangan + 35% Sensor Real-Time + 20% Validasi NIK DTKS
+  // Weighted: 45% Asesmen Lapangan + 35% Sensor Real-Time + 20% Validasi NIK DTSEN
   const dynamicConfidenceScore = Math.min(
     99,
     Math.max(
@@ -762,7 +762,7 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
               <div>
                 <div className="flex items-center justify-between text-xs mb-1">
                   <span className="text-slate-300 font-medium text-[11px]">
-                    3. Kepadanan NIK &amp; Validasi Basis Data DTKS-Regsosek (Bobot 20%)
+                    3. Kepadanan NIK &amp; Validasi Basis Data DTSEN (Bobot 20%)
                   </span>
                   <span className="font-bold font-mono text-rose-400">{dataQuality.identityMatchRate}%</span>
                 </div>
@@ -1151,7 +1151,7 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-400">Integrasi Data:</span>
-                <span className="text-slate-800 font-semibold">DTKS, BMKG &amp; BPS</span>
+                <span className="text-slate-800 font-semibold">DTSEN, BMKG &amp; BPS</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-400">SHA-256 Checksum:</span>
