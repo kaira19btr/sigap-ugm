@@ -20,6 +20,11 @@ import {
   UserCheck,
   Lock,
   CheckSquare,
+  Users,
+  Maximize2,
+  Check,
+  XCircle,
+  Layers,
 } from 'lucide-react';
 
 interface RiskAssessmentViewProps {
@@ -885,6 +890,203 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
                       (proyeksi spesifik wilayah simulasi)
                     </span>
                   </div>
+                </div>
+              </div>
+            </div>
+
+            {/* PANEL: Perluasan Kelayakan Sementara (Horizontal & Vertical Expansion) */}
+            <div
+              id="panel-expansion-adaptive"
+              className="p-4 rounded-xl bg-white border border-rose-200/80 shadow-xs space-y-3.5"
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 pb-2.5 border-b border-slate-100">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-700 flex items-center justify-center shrink-0">
+                    <Maximize2 className="w-3.5 h-3.5" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold text-slate-900">
+                      Perluasan Kelayakan Sementara (Horizontal &amp; Vertical Expansion)
+                    </h4>
+                    <span className="text-[10px] text-slate-500">
+                      Prinsip Adaptive Social Protection (Bowen dkk., 2020)
+                    </span>
+                  </div>
+                </div>
+
+                <div className="self-start sm:self-auto">
+                  <span
+                    className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                      totalScore >= 81
+                        ? 'bg-rose-50 text-rose-700 border-rose-200 animate-pulse'
+                        : totalScore >= 41
+                        ? 'bg-amber-50 text-amber-700 border-amber-200'
+                        : 'bg-slate-100 text-slate-600 border-slate-200'
+                    }`}
+                  >
+                    <span
+                      className={`w-1.5 h-1.5 rounded-full ${
+                        totalScore >= 81 ? 'bg-rose-600' : totalScore >= 41 ? 'bg-amber-500' : 'bg-slate-400'
+                      }`}
+                    />
+                    {totalScore >= 81
+                      ? 'Aktif — Status Darurat (Level 3)'
+                      : totalScore >= 41
+                      ? 'Aktif — Status Siaga (Level 2)'
+                      : 'Nonaktif — Status Normal'}
+                  </span>
+                </div>
+              </div>
+
+              {/* 2 Cards Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {/* Kartu 1: Perluasan Cutoff Desil DTSEN */}
+                <div
+                  className={`p-3 rounded-xl border transition-all ${
+                    totalScore >= 81
+                      ? 'bg-rose-50/50 border-rose-200'
+                      : totalScore >= 41
+                      ? 'bg-amber-50/40 border-amber-200'
+                      : 'bg-slate-50/60 border-slate-200'
+                  }`}
+                >
+                  <div className="flex items-center justify-between gap-1 mb-2">
+                    <span className="text-[11px] font-bold text-slate-800 flex items-center gap-1.5">
+                      <Users className="w-3.5 h-3.5 text-indigo-600" />
+                      Perluasan Cutoff Desil DTSEN
+                    </span>
+                    <span
+                      className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${
+                        totalScore >= 81
+                          ? 'bg-rose-600 text-white'
+                          : totalScore >= 41
+                          ? 'bg-amber-500 text-white'
+                          : 'bg-slate-200 text-slate-600'
+                      }`}
+                    >
+                      {totalScore >= 81 ? 'Desil 1–6 (Darurat)' : totalScore >= 41 ? 'Desil 1–5 (Siaga)' : 'Desil 1–4 (Normal)'}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 my-2">
+                    <div className="p-2 bg-white rounded-lg border border-slate-200/80 shadow-2xs">
+                      <span className="text-[9px] text-slate-500 block">Baseline (Sebelum Aktivasi):</span>
+                      <span className="font-mono font-bold text-xs text-slate-700">Desil 1–4</span>
+                    </div>
+                    <div
+                      className={`p-2 rounded-lg border shadow-2xs ${
+                        totalScore >= 81
+                          ? 'bg-rose-600 text-white border-rose-700'
+                          : totalScore >= 41
+                          ? 'bg-amber-500 text-white border-amber-600'
+                          : 'bg-white text-slate-400 border-slate-200'
+                      }`}
+                    >
+                      <span className={`text-[9px] block ${totalScore >= 41 ? 'text-white/80' : 'text-slate-400'}`}>
+                        Setelah Aktivasi:
+                      </span>
+                      <span className="font-mono font-bold text-xs">
+                        {totalScore >= 81 ? 'Desil 1–6' : totalScore >= 41 ? 'Desil 1–5' : 'Desil 1–4'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="text-[10px] text-slate-500 leading-snug space-y-1 mt-2 pt-2 border-t border-slate-200/60">
+                    <div className="flex items-center justify-between font-semibold">
+                      <span className="text-slate-600">Estimasi Tambahan RT:</span>
+                      <span
+                        className={`font-mono font-bold ${
+                          totalScore >= 81
+                            ? 'text-rose-600'
+                            : totalScore >= 41
+                            ? 'text-amber-600'
+                            : 'text-slate-500'
+                        }`}
+                      >
+                        {totalScore >= 81 ? '+2.340 KK' : totalScore >= 41 ? '+1.150 KK' : '+0 KK (Baseline)'}
+                      </span>
+                    </div>
+                    <p className="text-[9px] text-slate-500 leading-relaxed italic">
+                      Menjangkau rumah tangga yang baru jatuh rentan akibat guncangan, sekaligus jaring pengaman kedua bagi kasus salah klasifikasi desil (lihat Modul 02).
+                    </p>
+                  </div>
+                </div>
+
+                {/* Kartu 2: Pelonggaran Syarat Kondisional PKH */}
+                <div
+                  className={`p-3 rounded-xl border transition-all ${
+                    totalScore >= 81
+                      ? 'bg-rose-50/50 border-rose-200'
+                      : totalScore >= 41
+                      ? 'bg-amber-50/40 border-amber-200'
+                      : 'bg-slate-50/60 border-slate-200'
+                  }`}
+                >
+                  <div className="flex items-center justify-between gap-1 mb-2">
+                    <span className="text-[11px] font-bold text-slate-800 flex items-center gap-1.5">
+                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                      Pelonggaran Syarat Kondisional PKH
+                    </span>
+                    <span
+                      className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${
+                        totalScore >= 41
+                          ? 'bg-emerald-600 text-white'
+                          : 'bg-slate-200 text-slate-600'
+                      }`}
+                    >
+                      {totalScore >= 41 ? 'Syarat Dilonggarkan' : 'Syarat Standar'}
+                    </span>
+                  </div>
+
+                  <div className="space-y-1.5 my-2">
+                    <div className="p-2 bg-white rounded-lg border border-slate-200/80 shadow-2xs flex items-center justify-between text-[10px]">
+                      <div className="flex items-center gap-1.5">
+                        {totalScore >= 41 ? (
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                        ) : (
+                          <div className="w-3.5 h-3.5 rounded-full border border-slate-300 flex items-center justify-center text-[8px] text-slate-400">
+                            •
+                          </div>
+                        )}
+                        <span className="font-medium text-slate-700">Kehadiran sekolah minimal 85%</span>
+                      </div>
+                      <span
+                        className={`font-semibold font-mono text-[9px] px-1.5 py-0.5 rounded ${
+                          totalScore >= 41
+                            ? 'bg-emerald-100 text-emerald-800'
+                            : 'bg-slate-100 text-slate-600'
+                        }`}
+                      >
+                        {totalScore >= 41 ? '→ Dilonggarkan' : 'Wajib 85%'}
+                      </span>
+                    </div>
+
+                    <div className="p-2 bg-white rounded-lg border border-slate-200/80 shadow-2xs flex items-center justify-between text-[10px]">
+                      <div className="flex items-center gap-1.5">
+                        {totalScore >= 41 ? (
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                        ) : (
+                          <div className="w-3.5 h-3.5 rounded-full border border-slate-300 flex items-center justify-center text-[8px] text-slate-400">
+                            •
+                          </div>
+                        )}
+                        <span className="font-medium text-slate-700">Pemeriksaan kesehatan rutin bulanan</span>
+                      </div>
+                      <span
+                        className={`font-semibold font-mono text-[9px] px-1.5 py-0.5 rounded ${
+                          totalScore >= 41
+                            ? 'bg-emerald-100 text-emerald-800'
+                            : 'bg-slate-100 text-slate-600'
+                        }`}
+                      >
+                        {totalScore >= 41 ? '→ Dilonggarkan' : 'Wajib Bulanan'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <p className="text-[9px] text-slate-500 leading-relaxed italic pt-2 border-t border-slate-200/60">
+                    Berlaku otomatis selama status wilayah Siaga/Darurat, kembali ke baseline saat status Normal.
+                  </p>
                 </div>
               </div>
             </div>

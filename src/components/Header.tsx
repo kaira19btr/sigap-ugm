@@ -353,14 +353,16 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header
       id="top-header"
-      className="h-16 bg-gradient-to-r from-[#0F172A] via-[#1A0B22] to-[#0B1328] border-b border-rose-950/40 px-6 flex items-center justify-between z-20 shrink-0 sticky top-0 text-slate-100 shadow-md relative overflow-hidden"
+      className="h-16 bg-gradient-to-r from-[#0B0F19] via-[#1A0B22] to-[#0B1328] border-b border-rose-950/40 px-6 flex items-center justify-between z-40 shrink-0 sticky top-0 text-slate-100 shadow-md relative"
     >
-      {/* Ambient gradient beam matching SIGAP logo */}
-      <div className="absolute top-0 left-1/4 w-96 h-16 bg-gradient-to-r from-rose-500/10 via-amber-500/5 to-transparent blur-xl pointer-events-none" />
-      <div className="absolute top-0 right-0 w-80 h-16 bg-blue-600/10 blur-xl pointer-events-none" />
+      {/* Ambient gradient beam matching SIGAP logo (contained in clipped container) */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-96 h-16 bg-gradient-to-r from-rose-500/10 via-amber-500/5 to-transparent blur-xl" />
+        <div className="absolute top-0 right-0 w-80 h-16 bg-blue-600/10 blur-xl" />
+      </div>
 
       {/* Left: Global Search with Interactive Dropdown */}
-      <div ref={searchContainerRef} className="flex items-center gap-6 flex-1 max-w-2xl relative z-10">
+      <div ref={searchContainerRef} className="flex items-center gap-6 flex-1 max-w-2xl relative z-30">
         <div className="relative w-full max-w-md">
           <Search className="w-4 h-4 text-rose-300/60 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
@@ -835,7 +837,7 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       {/* Right: Quick actions, notifications, user dropdown */}
-      <div className="flex items-center gap-3 relative z-10">
+      <div className="flex items-center gap-3 relative z-30">
         {/* Navigation shortcut to Landing */}
         <button
           id="btn-nav-landing-header"

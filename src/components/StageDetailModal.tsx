@@ -36,25 +36,25 @@ export interface StageInfo {
 export const STAGES_DATA: Record<number, StageInfo> = {
   1: {
     stepNumber: 1,
-    title: 'Registrasi Lapangan & Asesmen Cepat',
-    shortDesc: 'Pengumpulan data primer korban dan keluarga rentan di titik kumpul/posko darurat melalui aplikasi mobile offline-first.',
+    title: 'Registrasi Lapangan & Koneksi DTSEN',
+    shortDesc: 'Menyambungkan basis data tunggal DTSEN (Data Tunggal Sosial Ekonomi Nasional) dengan registrasi cepat dan sensor guncangan di posko darurat.',
     status: 'Aktif Berjalan',
-    metricLabel: 'Total Data Masuk',
+    metricLabel: 'Total Profil DTSEN Tersambung',
     metricValue: '15.755 KK',
     metricSub: 'Dari 18 posko terpadu bencana',
     leadAgency: 'Relawan Tagana Kemensos & BPBD Lapangan',
     slaTime: '< 6 Jam Pasca Kejadian Bencana',
-    regulationBasis: 'Permensos No. 3/2021 & Juknis Asesmen Cepat Bencana',
-    objective: 'Merekam profil kependudukan awal, kondisi fisik tempat tinggal, kebutuhan desakan logistik, dan data geospasial lokasi terdampak.',
+    regulationBasis: 'Permensos No. 3/2021 & Integrasi DTSEN Nasional (Feb 2025)',
+    objective: 'Menghubungkan profil kependudukan DTSEN dengan kondisi fisik tempat tinggal riil, kebutuhan desakan logistik, dan data geospasial lokasi terdampak.',
     validationChecklist: [
       { title: 'Geotagging Presisi (< 10 meter)', desc: 'Validasi koordinat GPS lokasi riil tempat tinggal/pengungsian.', passed: true },
       { title: 'Foto Bukti Kerusakan Fisik Hunian', desc: 'Verifikasi visual kondisi rumah rusak berat, sedang, atau ringan.', passed: true },
-      { title: 'Perekaman NIK & Nomor KK Awal', desc: 'Input identitas kependudukan manual atau OCR scan e-KTP.', passed: true },
+      { title: 'Pencocokan Profil DTSEN Terpadu', desc: 'Verifikasi identitas kependudukan dengan data tunggal DTSEN nasional.', passed: true },
       { title: 'Penandaan Anggota Keluarga Rentan', desc: 'Identifikasi lansia, balita, disabilitas, dan ibu hamil.', passed: true },
     ],
     processFlow: [
       { step: '01. Perekaman Mobile', actor: 'Petugas Tagana Lapangan', desc: 'Input formulir asesmen kaji cepat di zona bencana via aplikasi Android offline.' },
-      { step: '02. Sinkronisasi Posko', actor: 'Operator Komando Darurat', desc: 'Unggah antrean data saat perangkat terhubung ke satelit/BTS darurat.' },
+      { step: '02. Sinkronisasi Posko & DTSEN', actor: 'Operator Komando Darurat', desc: 'Unggah antrean data saat perangkat terhubung ke satelit/BTS darurat untuk dipadankan ke DTSEN.' },
       { step: '03. Penerbitan ID Registrasi', actor: 'Engine SIGAP Pusat', desc: 'Pemberian token digital unik per keluarga untuk pelacakan bansos darurat.' },
     ],
     liveStatistics: [
@@ -67,14 +67,14 @@ export const STAGES_DATA: Record<number, StageInfo> = {
   2: {
     stepNumber: 2,
     title: 'Pencocokan & Deduplikasi Data (Cleansing)',
-    shortDesc: 'Pembersihan data otomatis dan verifikasi padan NIK dengan Dukcapil Kemendagri, DTKS Kemensos, dan Registrasi Sosial Ekonomi (Regsosek).',
+    shortDesc: 'Pembersihan data otomatis dan verifikasi padan NIK dengan Dukcapil Kemendagri, DTSEN (gabungan DTKS, Regsosek, P3KE), dan BPJS Ketenagakerjaan.',
     status: 'Tingkat Keberhasilan Tinggi (89.2%)',
     metricLabel: 'Data Lolos Kliring NIK',
     metricValue: '14.053 KK (89.2%)',
     metricSub: '1.702 KK memerlukan verifikasi anomali',
     leadAgency: 'Pusdatin Kesos Kemensos & Ditjen Dukcapil',
     slaTime: '< 15 Menit (Automated Batch Matching)',
-    regulationBasis: 'Perpres Satu Data Indonesia No. 39/2019 & UU PDP No. 27/2022',
+    regulationBasis: 'Perpres Satu Data Indonesia No. 39/2019 & Kebijakan DTSEN Feb 2025',
     objective: 'Mencegah duplikasi data bantuan ganda, memvalidasi NIK aktif kependudukan, serta mencocokkan status desil kerentanan ekonomi historis.',
     validationChecklist: [
       { title: 'Validitas Algoritma Luhn NIK Dukcapil', desc: 'Pengecekan keabsahan format 16 digit NIK resmi nasional.', passed: true },
@@ -85,7 +85,7 @@ export const STAGES_DATA: Record<number, StageInfo> = {
     processFlow: [
       { step: '01. Algoritma Fuzzy Matching', actor: 'Data Cleansing Worker', desc: 'Pencocokan nama, tanggal lahir, dan NIK dengan margin error toleransi rendah.' },
       { step: '02. API Lookup Dukcapil', actor: 'Secure Gateway Kemendagri', desc: 'Verifikasi status keaktifan warga dan keaslian nomor kartu keluarga.' },
-      { step: '03. Cross-check DTKS & Regsosek', actor: 'Pusdatin Kesos', desc: 'Sinkronisasi tingkat desil 1-4 untuk penentuan paket bantuan adaptif.' },
+      { step: '03. Cross-check DTSEN & Desil', actor: 'Pusdatin Kesos', desc: 'Sinkronisasi tingkat desil 1-4 untuk penentuan paket bantuan adaptif.' },
     ],
     liveStatistics: [
       { label: 'Tingkat Klir NIK', value: '89.2%', color: 'text-indigo-600' },

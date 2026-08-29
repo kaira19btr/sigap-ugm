@@ -142,8 +142,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className="absolute bottom-1/3 right-0 w-48 h-48 bg-amber-500/5 rounded-full blur-2xl pointer-events-none translate-x-1/3" />
       <div className="absolute bottom-0 left-0 w-56 h-56 bg-blue-600/10 rounded-full blur-3xl pointer-events-none -translate-x-1/3 translate-y-1/3" />
 
-      {/* Brand Header */}
-      <div className="p-5 border-b border-rose-900/20 bg-black/20 backdrop-blur-xs flex items-center justify-between relative z-10">
+      {/* Brand Header - Exact h-16 alignment to seamlessly connect with top header */}
+      <div className="h-16 px-4 sm:px-5 border-b border-rose-950/40 bg-black/20 backdrop-blur-xs flex items-center justify-between relative z-10 shrink-0">
         <button
           id="btn-brand-landing"
           onClick={onGoToLanding}

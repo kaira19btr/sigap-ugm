@@ -269,7 +269,7 @@ export const SatuDataProfileModal: React.FC<SatuDataProfileModalProps> = ({
               </h2>
               <p className="text-xs text-slate-300 mt-0.5 flex items-center gap-1.5">
                 <MapPin className="w-3.5 h-3.5 text-rose-400" />
-                <span>{item.regency} • Interoperabilitas DTKS, Regsosek & BNPB</span>
+                <span>{item.regency} • Interoperabilitas DTSEN &amp; Sinyal BNPB</span>
               </p>
             </div>
           </div>
@@ -407,7 +407,7 @@ export const SatuDataProfileModal: React.FC<SatuDataProfileModalProps> = ({
                     <tr>
                       <th className="py-2.5 px-3.5">Nama & NIK</th>
                       <th className="py-2.5 px-3.5">Alamat / RT</th>
-                      <th className="py-2.5 px-3.5">Desil Regsosek</th>
+                      <th className="py-2.5 px-3.5">Desil DTSEN</th>
                       <th className="py-2.5 px-3.5">Status Bansos Reguler</th>
                       <th className="py-2.5 px-3.5">Bantuan Darurat SIGAP</th>
                       <th className="py-2.5 px-3.5 text-right">Rincian</th>

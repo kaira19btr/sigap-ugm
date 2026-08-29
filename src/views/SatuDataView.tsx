@@ -24,6 +24,12 @@ import {
   ShieldCheck,
   ChevronRight,
   UserCheck,
+  FileQuestion,
+  Scale,
+  AlertTriangle,
+  BellRing,
+  HelpCircle,
+  ShieldAlert,
 } from 'lucide-react';
 
 interface SatuDataViewProps {
@@ -117,7 +123,7 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', 'SIGAP_Satu_Data_Terpadu.csv');
+    link.setAttribute('download', 'SIGAP_Satu_Data_Terpadu_DTSEN.csv');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -146,8 +152,8 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
           <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight mt-1">
             Satu Data Terpadu Perlindungan Sosial
           </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
-            Integrasi data lintas kementerian dan lembaga untuk profil kerentanan yang akurat
+          <p className="text-xs text-slate-500 mt-0.5 max-w-3xl leading-relaxed">
+            Menyambungkan DTSEN (basis data tunggal sejak Feb 2025) ke sinyal guncangan real-time, dengan penanganan akurasi klasifikasi desil
           </p>
         </div>
 
@@ -157,15 +163,15 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
             id="btn-sync-dtks-nasional"
             onClick={handleSyncTrigger}
             disabled={isSyncing}
-            className="px-3.5 py-2 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 rounded-xl border border-slate-200 shadow-xs flex items-center gap-2 transition-all"
+            className="px-3.5 py-2 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 rounded-xl border border-slate-200 shadow-xs flex items-center gap-2 transition-all cursor-pointer"
           >
             <RefreshCw className={`w-3.5 h-3.5 text-indigo-600 ${isSyncing ? 'animate-spin' : ''}`} />
-            <span>{isSyncing ? 'Sinkronisasi...' : 'Sinkronkan DTKS'}</span>
+            <span>{isSyncing ? 'Sinkronisasi...' : 'Sinkronkan DTSEN'}</span>
           </button>
           <button
             id="btn-download-csv"
             onClick={handleDownloadCsv}
-            className="px-3.5 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-xs shadow-indigo-600/20 flex items-center gap-2 transition-all"
+            className="px-3.5 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-xs shadow-indigo-600/20 flex items-center gap-2 transition-all cursor-pointer"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Ekspor CSV</span>
@@ -210,7 +216,7 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
             </div>
             <div className="mt-1 text-[11px] text-slate-500 flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
-              <span>Total terdata masuk</span>
+              <span>Total profil DTSEN tersambung</span>
             </div>
             <div className="absolute top-3 right-3 text-slate-200/60 group-hover:text-blue-200/60 font-mono text-3xl font-extrabold select-none transition-colors">
               01
@@ -312,6 +318,103 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
         </div>
       </div>
 
+      {/* NEW PANEL D: Kualitas & Sanggah Klasifikasi DTSEN */}
+      <div
+        id="panel-kualitas-sanggah-dtsen"
+        className="bg-white rounded-xl border border-rose-200/80 p-5 shadow-xs relative overflow-hidden"
+      >
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 via-rose-500 to-indigo-600"></div>
+        
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 pb-4 border-b border-slate-100">
+          <div className="flex items-start gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-50 to-amber-50 border border-rose-200 flex items-center justify-center text-rose-600 shrink-0 shadow-2xs">
+              <FileQuestion className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="text-sm font-bold text-slate-900">
+                  Kualitas &amp; Sanggah Klasifikasi DTSEN
+                </h3>
+                <span className="text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full flex items-center gap-1">
+                  <BellRing className="w-2.5 h-2.5" />
+                  Mekanisme Sanggah Aktif
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 mt-0.5 max-w-2xl leading-relaxed">
+                Menampung dan menindaklanjuti kasus kesalahan klasifikasi desil (mengacu temuan Komisi X DPR RI, Mei 2026)
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 self-start">
+            <span className="text-[11px] text-slate-500 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-lg font-medium">
+              Siklus Validasi: <strong>Mei - Agustus 2026</strong>
+            </span>
+          </div>
+        </div>
+
+        {/* Metrics Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 my-4">
+          <div className="p-3.5 bg-gradient-to-br from-rose-50/50 to-white rounded-xl border border-rose-200/70 shadow-2xs">
+            <div className="text-[11px] font-bold text-slate-600 flex items-center justify-between">
+              <span>Kasus Sanggah Masuk Bulan Ini</span>
+              <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+            </div>
+            <div className="text-2xl font-extrabold font-mono text-rose-600 mt-1.5 flex items-baseline gap-1">
+              <AnimatedCounter value={34} duration={1000} suffix=" Kasus" />
+            </div>
+            <div className="text-[10px] text-slate-500 mt-1 flex items-center gap-1">
+              <span>Laporan salah desil &amp; exclusion error warga</span>
+            </div>
+          </div>
+
+          <div className="p-3.5 bg-gradient-to-br from-emerald-50/50 to-white rounded-xl border border-emerald-200/70 shadow-2xs">
+            <div className="text-[11px] font-bold text-slate-600 flex items-center justify-between">
+              <span>Sudah Diverifikasi Ulang</span>
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+            </div>
+            <div className="text-2xl font-extrabold font-mono text-emerald-600 mt-1.5 flex items-baseline gap-1">
+              <AnimatedCounter value={28} duration={1000} suffix=" Kasus" />
+              <span className="text-xs font-semibold text-slate-500 font-sans">(82.4%)</span>
+            </div>
+            <div className="text-[10px] text-emerald-700 mt-1 font-medium">
+              Berhasil disesuaikan ke desil aktual di DTSEN
+            </div>
+          </div>
+
+          <div className="p-3.5 bg-gradient-to-br from-amber-50/50 to-white rounded-xl border border-amber-200/70 shadow-2xs">
+            <div className="text-[11px] font-bold text-slate-600 flex items-center justify-between">
+              <span>Dalam Verifikasi Lapangan</span>
+              <Clock className="w-3.5 h-3.5 text-amber-600" />
+            </div>
+            <div className="text-2xl font-extrabold font-mono text-amber-600 mt-1.5 flex items-baseline gap-1">
+              <AnimatedCounter value={6} duration={1000} suffix=" Kasus" />
+            </div>
+            <div className="text-[10px] text-amber-700 mt-1 font-medium">
+              Proses kaji ulang bersama pendamping sosial
+            </div>
+          </div>
+        </div>
+
+        {/* Critical Policy Note on Confidence Score */}
+        <div className="bg-gradient-to-r from-amber-50/80 via-rose-50/40 to-indigo-50/40 border border-amber-200/80 rounded-xl p-3.5 flex items-start gap-3">
+          <div className="w-7 h-7 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 mt-0.5">
+            <AlertTriangle className="w-4 h-4" />
+          </div>
+          <div className="text-xs text-slate-700 space-y-1">
+            <p className="font-bold text-amber-950 flex items-center gap-1.5">
+              <span>Pengaruh Terhadap Alokasi Bansos Adaptif:</span>
+            </p>
+            <p className="text-slate-600 leading-relaxed">
+              <strong className="text-rose-900 font-semibold underline decoration-rose-300 underline-offset-2">
+                Wilayah dengan riwayat sanggah tinggi otomatis mendapat Confidence Score lebih rendah di Modul 03
+              </strong>
+              , sehingga sistem otomatis menerapkan buffer mitigasi risiko untuk memastikan tidak ada korban rentan yang tertinggal (*no one left behind*).
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Main Table & Instant Search Section */}
       <div className="bg-gradient-to-br from-white via-slate-50/70 to-rose-50/20 rounded-xl border border-rose-200/60 shadow-sm overflow-hidden">
         {/* Table Filters & Toolbar */}
@@ -343,7 +446,7 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
               <div className="flex items-center gap-1 bg-slate-100/90 p-1 rounded-xl border border-slate-200">
                 <button
                   onClick={() => setStatusFilter('all')}
-                  className={`text-[11px] font-semibold px-2.5 py-1 rounded-lg transition-all ${
+                  className={`text-[11px] font-semibold px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
                     statusFilter === 'all' ? 'bg-gradient-to-r from-rose-600 to-blue-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
@@ -351,7 +454,7 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
                 </button>
                 <button
                   onClick={() => setStatusFilter('Selesai')}
-                  className={`text-[11px] font-semibold px-2.5 py-1 rounded-lg transition-all ${
+                  className={`text-[11px] font-semibold px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
                     statusFilter === 'Selesai' ? 'bg-emerald-600 text-white shadow-xs' : 'text-emerald-700 hover:bg-emerald-50'
                   }`}
                 >
@@ -359,7 +462,7 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
                 </button>
                 <button
                   onClick={() => setStatusFilter('Diproses')}
-                  className={`text-[11px] font-semibold px-2.5 py-1 rounded-lg transition-all ${
+                  className={`text-[11px] font-semibold px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
                     statusFilter === 'Diproses' ? 'bg-amber-500 text-white shadow-xs' : 'text-amber-700 hover:bg-amber-50'
                   }`}
                 >
@@ -367,7 +470,7 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
                 </button>
                 <button
                   onClick={() => setStatusFilter('Konflik Data')}
-                  className={`text-[11px] font-semibold px-2.5 py-1 rounded-lg transition-all ${
+                  className={`text-[11px] font-semibold px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
                     statusFilter === 'Konflik Data' ? 'bg-rose-600 text-white shadow-xs' : 'text-rose-700 hover:bg-rose-50'
                   }`}
                 >
@@ -402,7 +505,7 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
                         NIK: {household.nik}
                       </div>
                       <div className="text-[10px] text-slate-500">
-                        {item.village} • Desil {household.desilRegsosek}
+                        {item.village} • Desil {household.desilRegsosek} (DTSEN)
                       </div>
                     </div>
                     <button
@@ -426,7 +529,12 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
                 <th className="py-3 px-4">Wilayah / Kelurahan</th>
                 <th className="py-3 px-4">Status Integrasi</th>
                 <th className="py-3 px-4">Sumber Data Terkait</th>
-                <th className="py-3 px-4">Tingkat Kelengkapan</th>
+                <th className="py-3 px-4">
+                  <div className="flex items-center gap-1 group/th relative cursor-help" title="Kelengkapan dihitung dari kelengkapan profil DTSEN + konektivitas ke data BNPB, ketenagakerjaan, dan harga pangan">
+                    <span>Tingkat Kelengkapan</span>
+                    <Info className="w-3 h-3 text-slate-400 group-hover/th:text-indigo-600 transition-colors" />
+                  </div>
+                </th>
                 <th className="py-3 px-4">RT Rentan Terdata</th>
                 <th className="py-3 px-4 text-right">Aksi Profil</th>
               </tr>
@@ -468,22 +576,58 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
                         </span>
                       )}
                     </td>
+                    {/* B. Sumber Data with DTSEN main badge + external shock sources + update note */}
                     <td className="py-3.5 px-4">
-                      <div className="flex flex-wrap gap-1">
-                        {item.sources.map((src) => (
-                          <span
-                            key={src}
-                            className="text-[10px] font-mono font-semibold bg-slate-100 text-slate-700 px-2 py-0.5 rounded border border-slate-200"
-                          >
-                            {src}
+                      <div className="space-y-1">
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          {/* Main DTSEN badge representing DTKS + Regsosek + P3KE */}
+                          <span className="inline-flex items-center gap-1 text-[10px] font-mono font-bold bg-indigo-900 text-indigo-100 px-2 py-0.5 rounded border border-indigo-700 shadow-2xs">
+                            <Database className="w-2.5 h-2.5 text-indigo-300" />
+                            <span>DTSEN</span>
                           </span>
-                        ))}
+
+                          {/* Companion shock/specialized sources not yet in DTSEN */}
+                          {item.sources
+                            .filter((src) => src !== 'DTSEN' && src !== 'DTKS' && src !== 'Regsosek')
+                            .map((src) => {
+                              const isBnpb = src.includes('BNPB');
+                              const isPangan = src.includes('Pangan') || src.includes('Inflasi');
+                              const isKerja = src.includes('Ketenagakerjaan') || src.includes('Informal');
+                              return (
+                                <span
+                                  key={src}
+                                  className={`text-[10px] font-mono font-semibold px-2 py-0.5 rounded border ${
+                                    isBnpb
+                                      ? 'bg-rose-50 text-rose-700 border-rose-200'
+                                      : isPangan
+                                      ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                                      : isKerja
+                                      ? 'bg-blue-50 text-blue-700 border-blue-200'
+                                      : 'bg-slate-100 text-slate-700 border-slate-200'
+                                  }`}
+                                >
+                                  {src}
+                                </span>
+                              );
+                            })}
+                        </div>
+                        <div className="text-[9px] text-slate-500 font-sans flex items-center gap-1">
+                          <Sparkles className="w-2.5 h-2.5 text-amber-500 shrink-0" />
+                          <span>Update otomatis: Dukcapil, BPJS Ketenagakerjaan, PLN</span>
+                        </div>
                       </div>
                     </td>
+                    {/* E. Tingkat Kelengkapan with Tooltip / Hover explainer */}
                     <td className="py-3.5 px-4">
-                      <div className="w-36">
+                      <div
+                        className="w-36 group/tooltip relative cursor-help"
+                        title="Kelengkapan dihitung dari kelengkapan profil DTSEN + konektivitas ke data BNPB, ketenagakerjaan, dan harga pangan"
+                      >
                         <div className="flex items-center justify-between text-[11px] font-mono font-bold text-slate-800 mb-1">
                           <span>{item.completeness}%</span>
+                          <span className="text-[9px] font-normal text-slate-400 group-hover/tooltip:text-indigo-600 transition-colors">
+                            Hover info
+                          </span>
                         </div>
                         <div className="w-full bg-slate-100 rounded-full h-1.5">
                           <div
@@ -497,6 +641,9 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
                             style={{ width: `${item.completeness}%` }}
                           ></div>
                         </div>
+                        <div className="text-[9px] text-slate-400 mt-1 truncate">
+                          DTSEN + Sinyal Guncangan
+                        </div>
                       </div>
                     </td>
                     <td className="py-3.5 px-4 font-mono font-bold text-slate-800">
@@ -507,14 +654,14 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
                         {item.status === 'Konflik Data' && (
                           <button
                             onClick={() => onOpenConflictModal(item)}
-                            className="px-3 py-1.5 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-lg shadow-xs transition-colors"
+                            className="px-3 py-1.5 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-lg shadow-xs transition-colors cursor-pointer"
                           >
                             Selesaikan Konflik
                           </button>
                         )}
                         <button
                           onClick={() => handleOpenProfile(item)}
-                          className="px-3 py-1.5 text-xs font-bold text-indigo-600 hover:text-white hover:bg-indigo-600 rounded-lg transition-all border border-indigo-200 shadow-xs flex items-center gap-1.5"
+                          className="px-3 py-1.5 text-xs font-bold text-indigo-600 hover:text-white hover:bg-indigo-600 rounded-lg transition-all border border-indigo-200 shadow-xs flex items-center gap-1.5 cursor-pointer"
                         >
                           <span>Lihat Profil</span>
                           <ChevronRight className="w-3 h-3" />
@@ -550,3 +697,4 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
     </div>
   );
 };
+
