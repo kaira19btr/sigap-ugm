@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { UserRole, UserProfile, RegionRiskData } from '../types';
+import { ModuleNarrativeBanner } from '../components/ModuleNarrativeBanner';
 import {
   SlidersHorizontal,
   AlertTriangle,
@@ -42,6 +43,7 @@ interface RiskAssessmentViewProps {
 const REGION_ASSESSMENT_PRESETS: {
   [key: string]: {
     disasterType: string;
+    shockTypeCategory: 'kovariat' | 'idiosinkratik';
     params: {
       shockIntensity: number;
       shockType: number;
@@ -59,8 +61,9 @@ const REGION_ASSESSMENT_PRESETS: {
     };
   };
 } = {
-  'Kab. Cianjur, Jawa Barat': {
-    disasterType: 'Gempa Bumi Tektonik Sesar Cugenang M 5.6',
+  'Kab. Cianjur, Jawa Barat (Shock Kovariat)': {
+    disasterType: 'Gempa Bumi Tektonik Sesar Cugenang M 5.6 (Kovariat)',
+    shockTypeCategory: 'kovariat',
     params: {
       shockIntensity: 14,
       shockType: 14,
@@ -77,8 +80,28 @@ const REGION_ASSESSMENT_PRESETS: {
       identityMatchRate: 96,
     },
   },
+  'Simulasi Kasus: PHK Kepala Keluarga (Shock Idiosinkratik)': {
+    disasterType: 'Kehilangan Nafkah Utama & Beban Tanggungan 4 Jiwa (Idiosinkratik)',
+    shockTypeCategory: 'idiosinkratik',
+    params: {
+      shockIntensity: 14,
+      shockType: 15,
+      vulnerableRatio: 12,
+      vulnerableDemographics: 14,
+      fiscalCapacity: 11,
+      paymentAccess: 12,
+      dataReadiness: 14,
+      disbursementHistory: 11,
+    },
+    dataQuality: {
+      fieldCompleteness: 98,
+      sensorTelemetry: 85,
+      identityMatchRate: 99,
+    },
+  },
   'Cugenang (Episentrum Patahan), Kab. Cianjur': {
     disasterType: 'Episentrum Gempa Sesar Cugenang (4.200 Rumah Rusak Berat)',
+    shockTypeCategory: 'kovariat',
     params: {
       shockIntensity: 15,
       shockType: 15,
@@ -97,6 +120,7 @@ const REGION_ASSESSMENT_PRESETS: {
   },
   'Nagrak (Zona Rentan), Kab. Cianjur': {
     disasterType: 'Kerusakan Rumah Warga & Disrupsi Logistik Desa Nagrak',
+    shockTypeCategory: 'kovariat',
     params: {
       shockIntensity: 13,
       shockType: 13,
@@ -115,6 +139,7 @@ const REGION_ASSESSMENT_PRESETS: {
   },
   'Pacet - Cipanas, Kab. Cianjur': {
     disasterType: 'Potensi Longsor Susulan Lereng Gunung Gede-Pangrango',
+    shockTypeCategory: 'kovariat',
     params: {
       shockIntensity: 9,
       shockType: 8,
@@ -133,6 +158,7 @@ const REGION_ASSESSMENT_PRESETS: {
   },
   'Kab. Sumba Timur, NTT': {
     disasterType: 'Kekeringan Ekstrem & Defisit Curah Hujan El-Nino',
+    shockTypeCategory: 'kovariat',
     params: {
       shockIntensity: 13,
       shockType: 12,
@@ -151,6 +177,7 @@ const REGION_ASSESSMENT_PRESETS: {
   },
   'Kab. Flores Timur, NTT': {
     disasterType: 'Erupsi Gunung Lewotobi Laki-Laki & Hujan Abu Vulkanik',
+    shockTypeCategory: 'kovariat',
     params: {
       shockIntensity: 15,
       shockType: 14,
@@ -169,6 +196,7 @@ const REGION_ASSESSMENT_PRESETS: {
   },
   'Kab. Tanah Datar, Sumbar': {
     disasterType: 'Banjir Bandang Lahar Dingin Gunung Marapi',
+    shockTypeCategory: 'kovariat',
     params: {
       shockIntensity: 14,
       shockType: 13,
@@ -187,6 +215,7 @@ const REGION_ASSESSMENT_PRESETS: {
   },
   'Kab. Demak, Jawa Tengah': {
     disasterType: 'Banjir Tanggul Jebol Sungai Wulan & Genangan Rob',
+    shockTypeCategory: 'kovariat',
     params: {
       shockIntensity: 13,
       shockType: 12,
@@ -205,6 +234,7 @@ const REGION_ASSESSMENT_PRESETS: {
   },
   'Kota Semarang, Jawa Tengah': {
     disasterType: 'Genangan Banjir Rob & Cuaca Ekstrem Pesisir',
+    shockTypeCategory: 'kovariat',
     params: {
       shockIntensity: 8,
       shockType: 7,
@@ -543,6 +573,20 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
           <button onClick={() => setShowExportNotification(null)} className="text-emerald-700 text-xs font-bold">✕</button>
         </div>
       )}
+
+      {/* Flowing Narrative Connector */}
+      <ModuleNarrativeBanner
+        currentModule="risk_assessment"
+        narrativeText="Dengan profil rumah tangga di tangan, tahap ini mengubah data menjadi keputusan — skor risiko dihitung (Skala 120 Poin), confidence score diperiksa, dan rekomendasi aktivasi disiapkan untuk melanjutkan rumah tangga menuju tahap Protect."
+        previousStepName="Modul 02: Satu Data Terpadu (DTSEN)"
+        nextStepName="Modul 03b: DRFI / Modul CV-1 (Protect)"
+        shockBadge={regionTarget.includes('PHK') || regionTarget.includes('Idiosinkratik') ? 'idiosinkratik' : 'kovariat'}
+        shockCustomNote={
+          regionTarget.includes('PHK') || regionTarget.includes('Idiosinkratik')
+            ? 'Prinsip Shock Idiosinkratik: Verifikasi berjalan melalui case management pendamping sosial per kasus, berfokus pada hilangnya pendapatan kepala keluarga.'
+            : 'Prinsip Shock Kovariat: Verifikasi berjalan berbasis sampling area (satuan wilayah terdampak), bukan per rumah tangga, guna mencegah bottleneck logistik pada bencana masal.'
+        }
+      />
 
       {/* Academic Disclaimer Banner */}
       <div className="p-3.5 rounded-xl bg-blue-50/70 border border-blue-200 text-xs text-blue-950 flex items-start gap-3">

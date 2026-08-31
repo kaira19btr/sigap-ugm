@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { UserRole, UserProfile } from '../types';
+import { ModuleNarrativeBanner } from '../components/ModuleNarrativeBanner';
 import {
   Award,
   CheckCircle2,
@@ -136,7 +137,7 @@ export const RiseGraduationScorecardView: React.FC<RiseGraduationScorecardViewPr
         <div>
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-purple-600">
             <span className="w-2 h-2 rounded-full bg-purple-600 animate-pulse"></span>
-            <span>SIGAP RISE • Pilar Q3 • Graduation Scorecard &amp; Sertifikasi Mandiri</span>
+            <span>Tahap 3 • Graduate • Modul RS-2 • Graduation Scorecard &amp; Sertifikasi Mandiri</span>
           </div>
           <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight mt-1">
             Kalkulator Skor Kelulusan (Graduation Scorecard)
@@ -148,10 +149,18 @@ export const RiseGraduationScorecardView: React.FC<RiseGraduationScorecardViewPr
 
         <div className="flex items-center gap-2">
           <div className="px-3 py-1.5 rounded-xl bg-purple-50 border border-purple-200 text-purple-800 text-xs font-bold font-mono">
-            4-Pillar Verification
+            Tahap 3: Graduate
           </div>
         </div>
       </div>
+
+      {/* Flowing Narrative Connector */}
+      <ModuleNarrativeBanner
+        currentModule="rise_graduation_scorecard"
+        narrativeText="Puncak dari perjalanan resiliensi keluarga: verifikasi 4 kriteria objektif untuk memastikan keluarga telah benar-benar mandiri, tidak rentan jatuh kembali saat terjadi krisis, dan lulus secara permanen dari bansos reguler."
+        previousStepName="Modul RS-1: Pelacak Graduasi"
+        nextStepName="Modul 04: Monitoring & Evaluasi Dampak (Monev)"
+      />
 
       {/* Conceptual Note */}
       <div className="p-4 rounded-xl bg-gradient-to-r from-purple-50 via-white to-emerald-50 border border-purple-200 text-xs text-slate-700 flex items-start gap-3 shadow-2xs">

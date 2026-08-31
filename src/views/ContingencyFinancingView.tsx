@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { UserRole, UserProfile } from '../types';
+import { ModuleNarrativeBanner } from '../components/ModuleNarrativeBanner';
 import {
   Coins,
   Shield,
@@ -90,10 +91,20 @@ export const ContingencyFinancingView: React.FC<ContingencyFinancingViewProps> =
 
         <div className="flex items-center gap-2">
           <div className="px-3 py-1.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-bold font-mono">
-            Pilar Q1: Shock-Responsive
+            Tahap 1: Stabilize (DRFI)
           </div>
         </div>
       </div>
+
+      {/* Flowing Narrative Connector */}
+      <ModuleNarrativeBanner
+        currentModule="contingency_financing"
+        narrativeText="Setelah keputusan aktivasi ditetapkan, lapisan pembiayaan risiko (DRFI) mengunci ketersediaan likuiditas dari APBD BTT hingga Pooling Fund Bencana agar penyaluran bantuan adaptif tidak terhambat defisit kas."
+        previousStepName="Modul 03: Penilaian Risiko"
+        nextStepName="Modul CV-1: Human Capital Map (Protect)"
+        shockBadge="kovariat"
+        shockCustomNote="Prinsip Pembiayaan Berlapis: Melindungi fiskal daerah dari disrupsi kas mendadak melalui aktivasi otomatis bertingkat."
+      />
 
       {/* Academic Conceptual Note */}
       <div className="p-4 rounded-xl bg-gradient-to-r from-rose-50 via-white to-blue-50 border border-rose-200 text-xs text-slate-700 flex items-start gap-3 shadow-2xs">
@@ -236,7 +247,7 @@ export const ContingencyFinancingView: React.FC<ContingencyFinancingViewProps> =
                 </p>
               </div>
               <span className="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 font-mono font-bold text-xs border border-emerald-200">
-                Sesuai Kerangka Q1
+                Sesuai Kerangka DRFI
               </span>
             </div>
 

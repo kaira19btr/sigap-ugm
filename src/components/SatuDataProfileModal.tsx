@@ -830,82 +830,86 @@ export const SatuDataProfileModal: React.FC<SatuDataProfileModalProps> = ({
                 </div>
               </div>
 
-              {/* BAGIAN B: HASIL PENCOCOKAN (TRIGGER ENGINE OUTPUT - 3 PILAR) */}
+              {/* BAGIAN B: HASIL PENCOCOKAN (RESILIENCE JOURNEY: SHIELD -> CONVERGE -> RISE) */}
               <div className="space-y-3">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                   <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
+                    <span className="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
                     <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900">
-                      Bagian B • Hasil Pencocokan Program (Trigger Engine Output)
+                      Bagian B • Alur Rujukan Perjalanan Ketahanan (Resilience Pathway)
                     </h4>
                   </div>
-                  <span className="text-[11px] text-slate-500">
-                    Satu keluarga dapat menerima rujukan multi-pilar secara simultan
+                  <span className="text-[11px] text-slate-500 font-medium">
+                    Satu alur perjalanan berurutan: SHIELD ➔ CONVERGE ➔ RISE
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                  {/* KARTU 1 — SIGAP SHIELD (AKTIF) */}
-                  <div className="p-4.5 rounded-2xl border-2 border-blue-300 bg-gradient-to-b from-blue-50/80 to-white shadow-sm flex flex-col justify-between space-y-4">
+                {/* Connected Journey Visual Line */}
+                <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-4">
+                  {/* KARTU 1 — SIGAP SHIELD (AKTIF SEKARANG) */}
+                  <div className="p-4.5 rounded-2xl border-2 border-rose-300 bg-gradient-to-b from-rose-50/80 via-white to-white shadow-sm flex flex-col justify-between space-y-4 relative">
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <div className="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold">
+                          <div className="w-8 h-8 rounded-xl bg-rose-600 text-white flex items-center justify-center font-bold shadow-xs">
                             <Shield className="w-4 h-4" />
                           </div>
                           <div>
-                            <span className="text-[10px] font-bold text-blue-700 uppercase tracking-wider block">Pilar 1</span>
-                            <h5 className="text-sm font-extrabold text-blue-950 leading-tight">SIGAP SHIELD</h5>
+                            <span className="text-[10px] font-mono font-bold text-rose-700 uppercase tracking-wider block">Pilar 1</span>
+                            <h5 className="text-sm font-extrabold text-slate-900 leading-tight">SIGAP SHIELD</h5>
                           </div>
                         </div>
-                        <span className="px-2.5 py-1 rounded-full text-[10px] font-extrabold bg-blue-600 text-white uppercase tracking-wider flex items-center gap-1">
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-extrabold bg-rose-600 text-white uppercase tracking-wider flex items-center gap-1 shadow-xs">
                           <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
-                          <span>AKTIF</span>
+                          <span>Aktif Sekarang</span>
                         </span>
                       </div>
 
                       <div className="space-y-2 text-xs">
-                        <div className="p-2.5 rounded-xl bg-blue-100/70 text-blue-900 border border-blue-200">
-                          <span className="text-[10px] font-bold uppercase tracking-wider block text-blue-700">Alasan Aktivasi:</span>
-                          <span className="font-semibold text-[11px]">"Shock Exposure Tinggi terdeteksi (Skor 96/120, Gempa Aktif &amp; Kerusakan Berat)"</span>
+                        <div className="p-2.5 rounded-xl bg-rose-100/70 text-rose-950 border border-rose-200">
+                          <span className="text-[10px] font-bold uppercase tracking-wider block text-rose-800">Alasan Aktivasi:</span>
+                          <span className="font-semibold text-[11px]">"Shock Exposure Tinggi terdeteksi (Skor 96/120, Gempa Aktif &amp; Kerusakan Rumah Berat)"</span>
                         </div>
 
                         <div>
-                          <span className="text-[10px] font-bold uppercase text-slate-400 block">Program Rekomendasi:</span>
+                          <span className="text-[10px] font-bold uppercase text-slate-400 block">Program Riil Pemerintah:</span>
                           <div className="font-bold text-slate-900 text-xs mt-0.5">
-                            BLT Adaptif Kilat + Paket Logistik Tanggap Darurat (Rp 1.200.000)
+                            PKH (Ekspansi Vertikal/Horizontal) &amp; BPNT/BLT — Skema Existing Kemensos
                           </div>
+                          <span className="text-[11px] font-mono font-bold text-rose-700 block mt-0.5">
+                            Nominal: Rp 1.200.000 (Top-up Kartu KKS / Rekening Himbara)
+                          </span>
                         </div>
 
                         <div>
-                          <span className="text-[10px] font-bold uppercase text-slate-400 block">Instansi / Lembaga Pengampu:</span>
-                          <div className="font-bold text-blue-900 text-xs mt-0.5 flex items-center gap-1.5">
-                            <Building2 className="w-3.5 h-3.5 text-blue-600" />
-                            <span>Kementerian Sosial RI (Ditjen Jaminan Sosial)</span>
+                          <span className="text-[10px] font-bold uppercase text-slate-400 block">Instansi / K/L Pengampu:</span>
+                          <div className="font-bold text-rose-900 text-xs mt-0.5 flex items-center gap-1.5">
+                            <Building2 className="w-3.5 h-3.5 text-rose-600 shrink-0" />
+                            <span>Kementerian Sosial RI (Ditjen Perlindungan &amp; Jaminan Sosial)</span>
                           </div>
                         </div>
 
                         <div className="pt-1">
-                          <span className="text-[10px] font-bold uppercase text-slate-400 block">Status Rujukan:</span>
+                          <span className="text-[10px] font-bold uppercase text-slate-400 block">Status Eksekusi Rujukan:</span>
                           <div className="inline-flex items-center gap-1 px-2 py-0.5 mt-1 rounded bg-amber-100 text-amber-900 text-[11px] font-bold border border-amber-300">
                             <Clock className="w-3 h-3 text-amber-600" />
-                            <span>Menunggu Otorisasi PPK (Modul 07)</span>
+                            <span>Menunggu Otorisasi PPK (Modul 07 HITL)</span>
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    <div className="space-y-1.5 pt-2 border-t border-blue-100">
+                    <div className="space-y-1.5 pt-2 border-t border-rose-100">
                       <button
                         onClick={() => handleNavigateToModule('risk_assessment')}
-                        className="w-full py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                        className="w-full py-2 px-3 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                       >
                         <span>Lihat Detail di Modul 03 (Penilaian Risiko)</span>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => handleNavigateToModule('persetujuan')}
-                        className="w-full py-1.5 px-3 bg-white hover:bg-blue-50 text-blue-700 font-bold text-xs rounded-xl border border-blue-300 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                        className="w-full py-1.5 px-3 bg-white hover:bg-rose-50 text-rose-700 font-bold text-xs rounded-xl border border-rose-300 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                       >
                         <FileCheck className="w-3.5 h-3.5" />
                         <span>Buka Antrean Otorisasi (Modul 07)</span>
@@ -913,51 +917,54 @@ export const SatuDataProfileModal: React.FC<SatuDataProfileModalProps> = ({
                     </div>
                   </div>
 
-                  {/* KARTU 2 — SIGAP CONVERGE (AKTIF) */}
-                  <div className="p-4.5 rounded-2xl border-2 border-emerald-300 bg-gradient-to-b from-emerald-50/80 to-white shadow-sm flex flex-col justify-between space-y-4">
+                  {/* KARTU 2 — SIGAP CONVERGE (AKTIF SEKARANG) */}
+                  <div className="p-4.5 rounded-2xl border-2 border-emerald-300 bg-gradient-to-b from-emerald-50/80 via-white to-white shadow-sm flex flex-col justify-between space-y-4 relative">
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <div className="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold">
+                          <div className="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold shadow-xs">
                             <HeartPulse className="w-4 h-4" />
                           </div>
                           <div>
-                            <span className="text-[10px] font-bold text-emerald-700 uppercase tracking-wider block">Pilar 2</span>
-                            <h5 className="text-sm font-extrabold text-emerald-950 leading-tight">SIGAP CONVERGE</h5>
+                            <span className="text-[10px] font-mono font-bold text-emerald-700 uppercase tracking-wider block">Pilar 2</span>
+                            <h5 className="text-sm font-extrabold text-slate-900 leading-tight">SIGAP CONVERGE</h5>
                           </div>
                         </div>
-                        <span className="px-2.5 py-1 rounded-full text-[10px] font-extrabold bg-emerald-600 text-white uppercase tracking-wider flex items-center gap-1">
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-extrabold bg-emerald-600 text-white uppercase tracking-wider flex items-center gap-1 shadow-xs">
                           <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
-                          <span>AKTIF</span>
+                          <span>Aktif Sekarang</span>
                         </span>
                       </div>
 
                       <div className="space-y-2 text-xs">
-                        <div className="p-2.5 rounded-xl bg-emerald-100/70 text-emerald-900 border border-emerald-200">
-                          <span className="text-[10px] font-bold uppercase tracking-wider block text-emerald-700">Alasan Aktivasi:</span>
-                          <span className="font-semibold text-[11px]">"Human Capital Risk Tinggi + Service Gap Sedang (1 Balita Kurang Gizi &amp; Jarak Faskes 8.2 km)"</span>
+                        <div className="p-2.5 rounded-xl bg-emerald-100/70 text-emerald-950 border border-emerald-200">
+                          <span className="text-[10px] font-bold uppercase tracking-wider block text-emerald-800">Alasan Aktivasi:</span>
+                          <span className="font-semibold text-[11px]">"Human Capital Vulnerability (1 Balita Gizi Kurang, Ibu Hamil &amp; Jarak Puskesmas 8.2 km)"</span>
                         </div>
 
                         <div>
-                          <span className="text-[10px] font-bold uppercase text-slate-400 block">Program Rekomendasi:</span>
+                          <span className="text-[10px] font-bold uppercase text-slate-400 block">Program Riil Pemerintah:</span>
                           <div className="font-bold text-slate-900 text-xs mt-0.5">
-                            Rujukan Gizi Balita &amp; Outreach Posyandu Prima (PMT Pangan Lokal)
+                            JKN / Puskesmas Setempat &amp; Program Nusantara Sehat (PMT Gizi Lokal)
                           </div>
+                          <span className="text-[11px] text-emerald-800 block mt-0.5">
+                            Afirmasi KIP (Kartu Indonesia Pintar) untuk 2 anak usia sekolah
+                          </span>
                         </div>
 
                         <div>
-                          <span className="text-[10px] font-bold uppercase text-slate-400 block">Instansi / Lembaga Pengampu:</span>
+                          <span className="text-[10px] font-bold uppercase text-slate-400 block">Instansi / K/L Pengampu:</span>
                           <div className="font-bold text-emerald-900 text-xs mt-0.5 flex items-center gap-1.5">
-                            <Building2 className="w-3.5 h-3.5 text-emerald-600" />
-                            <span>Kemenkes RI &amp; Dinkes Kab. Cianjur (Puskesmas Setempat)</span>
+                            <Building2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                            <span>Kementerian Kesehatan RI &amp; Dinas Kesehatan Kab. Cianjur</span>
                           </div>
                         </div>
 
                         <div className="pt-1">
-                          <span className="text-[10px] font-bold uppercase text-slate-400 block">Status Rujukan:</span>
+                          <span className="text-[10px] font-bold uppercase text-slate-400 block">Status Eksekusi Rujukan:</span>
                           <div className="inline-flex items-center gap-1 px-2 py-0.5 mt-1 rounded bg-emerald-100 text-emerald-900 text-[11px] font-bold border border-emerald-300">
                             <Check className="w-3 h-3 text-emerald-600" />
-                            <span>Terkirim ke Dinkes — Menunggu Tindak Lanjut Nakes</span>
+                            <span>Rujukan Aktif — Tenaga Kesehatan Puskesmas Terjadwal</span>
                           </div>
                         </div>
                       </div>
@@ -968,76 +975,76 @@ export const SatuDataProfileModal: React.FC<SatuDataProfileModalProps> = ({
                         onClick={() => handleNavigateToModule('converge_vulnerability_map')}
                         className="w-full py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                       >
-                        <span>Lihat Detail di Modul Vulnerability Map</span>
+                        <span>Lihat Detail di Peta Kerentanan (CV-1)</span>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => handleNavigateToModule('converge_supply_side')}
                         className="w-full py-1.5 px-3 bg-white hover:bg-emerald-50 text-emerald-700 font-bold text-xs rounded-xl border border-emerald-300 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                       >
-                        <span>Cek Ketersediaan Faskes (CV-2)</span>
+                        <span>Cek Kesiapan Faskes &amp; Sekolah (CV-2)</span>
                       </button>
                     </div>
                   </div>
 
-                  {/* KARTU 3 — SIGAP RISE (BELUM AKTIF / DIJADWALKAN) */}
-                  <div className="p-4.5 rounded-2xl border-2 border-amber-200 bg-gradient-to-b from-amber-50/50 to-white shadow-sm flex flex-col justify-between space-y-4 opacity-90">
+                  {/* KARTU 3 — SIGAP RISE (AKAN DATANG / DIJADWALKAN) */}
+                  <div className="p-4.5 rounded-2xl border-2 border-purple-200 bg-gradient-to-b from-purple-50/50 via-white to-white shadow-sm flex flex-col justify-between space-y-4 relative">
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <div className="w-7 h-7 rounded-lg bg-amber-600 text-white flex items-center justify-center font-bold">
-                            <Briefcase className="w-4 h-4" />
+                          <div className="w-8 h-8 rounded-xl bg-purple-600 text-white flex items-center justify-center font-bold shadow-xs">
+                            <TrendingUp className="w-4 h-4" />
                           </div>
                           <div>
-                            <span className="text-[10px] font-bold text-amber-700 uppercase tracking-wider block">Pilar 3</span>
-                            <h5 className="text-sm font-extrabold text-amber-950 leading-tight">SIGAP RISE</h5>
+                            <span className="text-[10px] font-mono font-bold text-purple-700 uppercase tracking-wider block">Pilar 3</span>
+                            <h5 className="text-sm font-extrabold text-slate-900 leading-tight">SIGAP RISE</h5>
                           </div>
                         </div>
-                        <span className="px-2.5 py-1 rounded-full text-[10px] font-extrabold bg-slate-200 text-slate-700 uppercase tracking-wider">
-                          DIJADWALKAN
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-extrabold bg-purple-100 text-purple-800 border border-purple-300 uppercase tracking-wider">
+                          Akan Datang
                         </span>
                       </div>
 
                       <div className="space-y-2 text-xs">
-                        <div className="p-2.5 rounded-xl bg-amber-100/60 text-amber-900 border border-amber-200">
-                          <span className="text-[10px] font-bold uppercase tracking-wider block text-amber-700">Alasan Penjadwalan:</span>
-                          <span className="font-semibold text-[11px]">"Menunggu status Shield stabil terlebih dahulu (prinsip Stabilize sebelum Assess)"</span>
+                        <div className="p-2.5 rounded-xl bg-purple-100/60 text-purple-950 border border-purple-200">
+                          <span className="text-[10px] font-bold uppercase tracking-wider block text-purple-800">Alasan Penjadwalan:</span>
+                          <span className="font-semibold text-[11px]">"Keluarga dalam tahap pemulihan Shield &amp; penguatan Converge sebelum masuk tahapan Build"</span>
                         </div>
 
                         <div>
-                          <span className="text-[10px] font-bold uppercase text-slate-400 block">Program Rekomendasi:</span>
-                          <div className="font-semibold text-slate-700 text-xs mt-0.5">
-                            Pelatihan Vokasi, Bantuan Modal Usaha Mikro &amp; Graduasi Kemandirian
+                          <span className="text-[10px] font-bold uppercase text-slate-400 block">Program Riil Pemerintah:</span>
+                          <div className="font-bold text-slate-900 text-xs mt-0.5">
+                            Kartu Prakerja, PNM Mekaar / UMi, &amp; Kemitraan BUMDes
                           </div>
-                          <span className="text-[10px] text-amber-700 font-medium italic block mt-0.5">
-                            (Dijadwalkan setelah 3 bulan status darurat berakhir / Tahap Pemulihan)
+                          <span className="text-[10px] text-purple-700 font-medium italic block mt-0.5">
+                            (Tahap Sequenced Inclusion: Stabilize ➔ Assess ➔ Build ➔ Connect ➔ Graduate)
                           </span>
                         </div>
 
                         <div>
-                          <span className="text-[10px] font-bold uppercase text-slate-400 block">Instansi / Lembaga Pengampu:</span>
-                          <div className="font-bold text-amber-900 text-xs mt-0.5 flex items-center gap-1.5">
-                            <Building2 className="w-3.5 h-3.5 text-amber-600" />
-                            <span>Kemenko Perekonomian / Kemensos (Ditjen Pemberdayaan)</span>
+                          <span className="text-[10px] font-bold uppercase text-slate-400 block">Instansi / K/L Pengampu:</span>
+                          <div className="font-bold text-purple-950 text-xs mt-0.5 flex items-center gap-1.5">
+                            <Building2 className="w-3.5 h-3.5 text-purple-600 shrink-0" />
+                            <span>Kemenko Perekonomian / Kemenaker / Kemendes PDTT / LKPP</span>
                           </div>
                         </div>
 
                         <div className="pt-1">
-                          <span className="text-[10px] font-bold uppercase text-slate-400 block">Status Rujukan:</span>
+                          <span className="text-[10px] font-bold uppercase text-slate-400 block">Status Eksekusi Rujukan:</span>
                           <div className="inline-flex items-center gap-1 px-2 py-0.5 mt-1 rounded bg-slate-100 text-slate-700 text-[11px] font-bold border border-slate-300">
                             <Clock className="w-3 h-3 text-slate-500" />
-                            <span>Belum Diaktifkan (Antrean Pipeline Pasca-Darurat)</span>
+                            <span>Antrean Pipeline Pasca-Darurat (Bulan ke-3)</span>
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    <div className="pt-2 border-t border-amber-100">
+                    <div className="pt-2 border-t border-purple-100">
                       <button
                         onClick={() => handleNavigateToModule('rise_inclusion_tracker')}
-                        className="w-full py-2 px-3 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-xl shadow-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                        className="w-full py-2 px-3 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs rounded-xl shadow-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                       >
-                        <span>Buka Inklusi Produktif Tracker (RS-1)</span>
+                        <span>Buka Jalur Pemberdayaan Ekonomi (RS-1)</span>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </button>
                     </div>

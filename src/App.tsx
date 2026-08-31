@@ -30,6 +30,7 @@ import { EmergencyModal } from './components/EmergencyModal';
 import { DataConflictModal } from './components/DataConflictModal';
 import { NewFieldEntryModal } from './components/NewFieldEntryModal';
 import { AuditLogModal } from './components/AuditLogModal';
+import { ResilienceJourneyTracker, JourneyStage } from './components/ResilienceJourneyTracker';
 
 // View imports
 import { LandingView } from './views/LandingView';
@@ -285,6 +286,19 @@ export default function App() {
 
         {/* Scrollable View Content */}
         <main className="flex-1 overflow-y-auto bg-[#F8FAFC]">
+          <div className="max-w-7xl mx-auto px-6 pt-6">
+            {/* Top Resilience Journey Tracker */}
+            <ResilienceJourneyTracker
+              currentModule={currentModule}
+              onNavigateStage={(stage: JourneyStage) => {
+                if (stage === 'shield') setCurrentModule('early_warning');
+                else if (stage === 'converge') setCurrentModule('converge_vulnerability_map');
+                else if (stage === 'rise') setCurrentModule('rise_inclusion_tracker');
+                else if (stage === 'governance') setCurrentModule('monev');
+              }}
+            />
+          </div>
+
           <div className="max-w-7xl mx-auto pb-12">
             {currentModule === 'early_warning' && (
               <EarlyWarningView

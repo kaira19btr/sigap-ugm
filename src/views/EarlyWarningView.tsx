@@ -5,6 +5,7 @@ import { AnimatedCounter } from '../components/AnimatedCounter';
 import { EarlyWarningMetricModal, EarlyWarningMetricType } from '../components/EarlyWarningMetricModal';
 import { RegionRadarChartModal } from '../components/RegionRadarChartModal';
 import { TechnicalArchitectureModal } from '../components/TechnicalArchitectureModal';
+import { ModuleNarrativeBanner } from '../components/ModuleNarrativeBanner';
 import {
   AlertTriangle,
   Radio,
@@ -23,10 +24,7 @@ import {
   MousePointerClick,
   Radar,
   Workflow,
-  ShieldCheck,
-  Building2,
   Lock,
-  Truck,
 } from 'lucide-react';
 
 interface EarlyWarningViewProps {
@@ -112,6 +110,15 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
           </button>
         </div>
       </div>
+
+      {/* Flowing Narrative Connector */}
+      <ModuleNarrativeBanner
+        currentModule="early_warning"
+        narrativeText="Perjalanan pemulihan rumah tangga dimulai di sini — begitu sensor BMKG dan BNPB mendeteksi anomali, status wilayah naik ke siaga sebelum SK darurat administratif diterbitkan, memberi waktu bagi tahap berikutnya untuk bergerak lebih cepat."
+        nextStepName="Modul 02: Satu Data Terpadu (DTSEN)"
+        shockBadge="kovariat"
+        shockCustomNote="Prinsip Shock Kovariat: Verifikasi berjalan berbasis sampling area (satuan wilayah terdampak), bukan per rumah tangga, guna mencegah bottleneck logistik pada bencana masal."
+      />
 
       {/* 4 Interactive KPI Metrics with Hover Expand & Counter Animation */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -483,87 +490,6 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
               </span>
               <ArrowUpRight className="w-4 h-4" />
             </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Comparison Guide: Perbedaan Prosedur & Otoritas Pusat vs Daerah */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-xs p-5 space-y-4">
-        <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-          <ShieldCheck className="w-5 h-5 text-blue-600" />
-          <div>
-            <h2 className="text-sm font-extrabold text-slate-900 tracking-tight">
-              Matriks Perbedaan Otoritas &amp; Prosedur Respon Cepat (Pusat vs Daerah)
-            </h2>
-            <p className="text-[11px] text-slate-500">
-              Standar Operasional Prosedur Penanggulangan Bencana Adaptif (Bowen dkk., 2020 &amp; Permensos RI)
-            </p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-          {/* Box Pusat */}
-          <div className="p-4 rounded-xl bg-gradient-to-br from-rose-50/60 via-white to-blue-50/40 border border-rose-200/80 space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="font-extrabold text-rose-800 flex items-center gap-1.5 uppercase text-[11px]">
-                <Building2 className="w-4 h-4 text-rose-600" />
-                Pemerintah Pusat (Kemensos / BNPB)
-              </span>
-              <span className="px-2 py-0.5 rounded bg-rose-100 text-rose-700 font-mono font-bold text-[10px]">
-                Level Nasional
-              </span>
-            </div>
-
-            <ul className="space-y-2 text-slate-700">
-              <li className="flex items-start gap-2">
-                <span className="text-rose-600 font-bold">•</span>
-                <span><strong>Kewenangan:</strong> Otorisasi Dana Siap Pakai (DSP) APBN &amp; Penetapan Status Darurat Nasional.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-rose-600 font-bold">•</span>
-                <span><strong>Instrumen:</strong> Penerbitan SP2D Online massal ke Bank Himbara &amp; Penugasan Juru Bayar PT Pos Indonesia.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-rose-600 font-bold">•</span>
-                <span><strong>Mekanisme Adaptif:</strong> Horizontal Expansion membuka cutoff DTSEN ke Desil 5–6 secara otomatis.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-rose-600 font-bold">•</span>
-                <span><strong>Output Dokumen:</strong> Surat Keputusan (SK) Menteri Sosial &amp; Instruksi Kliring Bank.</span>
-              </li>
-            </ul>
-          </div>
-
-          {/* Box Daerah */}
-          <div className="p-4 rounded-xl bg-gradient-to-br from-amber-50/60 via-white to-rose-50/40 border border-amber-200/80 space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="font-extrabold text-amber-800 flex items-center gap-1.5 uppercase text-[11px]">
-                <Truck className="w-4 h-4 text-amber-600" />
-                Pemerintah Daerah (Dinsos / Posko Tagana)
-              </span>
-              <span className="px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-mono font-bold text-[10px]">
-                Level Kabupaten/Kota
-              </span>
-            </div>
-
-            <ul className="space-y-2 text-slate-700">
-              <li className="flex items-start gap-2">
-                <span className="text-amber-600 font-bold">•</span>
-                <span><strong>Kewenangan:</strong> Aktivasi Posko Lapangan, Mobilisasi Personel Satgas Tagana &amp; Rekomendasi Bupati.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-amber-600 font-bold">•</span>
-                <span><strong>Instrumen:</strong> Pembukaan Dapur Umum Mandiri, Tenda Darurat, dan Penyaluran Buffer Stock Beras Dinsos.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-amber-600 font-bold">•</span>
-                <span><strong>Mekanisme Lapangan:</strong> Pendataan Cepat (Fast-track) NIK korban dan pembukaan posko sanggah desa.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-amber-600 font-bold">•</span>
-                <span><strong>Output Dokumen:</strong> Berita Acara Kedaruratan (BA-DARURAT) Dinsos &amp; Usulan Aktivasi Resmi ke Pusat.</span>
-              </li>
-            </ul>
           </div>
         </div>
       </div>

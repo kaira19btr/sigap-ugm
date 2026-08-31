@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { UserRole, UserProfile } from '../types';
+import { ModuleNarrativeBanner } from '../components/ModuleNarrativeBanner';
 import {
   TrendingUp,
   Award,
@@ -401,7 +402,7 @@ export const RiseInclusionTrackerView: React.FC<RiseInclusionTrackerViewProps> =
         <div>
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-purple-700">
             <span className="w-2 h-2 rounded-full bg-purple-600 animate-pulse"></span>
-            <span>SIGAP RISE • Pilar Q3 • Sequenced Productive Inclusion Tracker</span>
+            <span>Tahap 3 • Graduate (Graduasi Produktif &amp; Kemandirian) • Modul RS-1</span>
           </div>
           <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight mt-1">
             Pelacak Graduasi Produktif &amp; Kemandirian Ekonomi
@@ -414,10 +415,18 @@ export const RiseInclusionTrackerView: React.FC<RiseInclusionTrackerViewProps> =
         <div className="flex items-center gap-2">
           <div className="px-3.5 py-1.5 rounded-xl bg-purple-50 border border-purple-200 text-purple-800 text-xs font-bold font-mono shadow-2xs flex items-center gap-1.5">
             <TrendingUp className="w-4 h-4 text-purple-600" />
-            <span>Kemandirian Berkelanjutan</span>
+            <span>Tahap 3: Graduate</span>
           </div>
         </div>
       </div>
+
+      {/* Flowing Narrative Connector */}
+      <ModuleNarrativeBanner
+        currentModule="rise_inclusion_tracker"
+        narrativeText="Setelah kesehatan dan pendidikan terlindungi di tahap Protect, keluarga kini dipersiapkan untuk lepas dari bansos reguler — dirujuk ke pelatihan Kartu Prakerja, modal PNM Mekaar / UMi, dan akses pasar lokal BUMDes."
+        previousStepName="Tahap 2: Protect (Modul CV-2)"
+        nextStepName="Modul RS-2: Graduation Scorecard"
+      />
 
       {/* Conceptual Banner with Clear Principle */}
       <div className="p-4.5 rounded-2xl bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-900 text-white border border-purple-800/40 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">

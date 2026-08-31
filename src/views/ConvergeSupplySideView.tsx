@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { UserRole, UserProfile } from '../types';
+import { ModuleNarrativeBanner } from '../components/ModuleNarrativeBanner';
 import {
   Building2,
   Stethoscope,
@@ -192,7 +193,7 @@ export const ConvergeSupplySideView: React.FC<ConvergeSupplySideViewProps> = ({
         <div>
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-600">
             <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
-            <span>SIGAP CONVERGE • Pilar Q2 • Supply-Side Equalization Dashboard</span>
+            <span>Tahap 2 • Protect • Modul CV-2 • Supply-Side Readiness</span>
           </div>
           <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight mt-1">
             Pemerataan Intervensi Supply-Side (Kesehatan &amp; Pendidikan)
@@ -204,10 +205,18 @@ export const ConvergeSupplySideView: React.FC<ConvergeSupplySideViewProps> = ({
 
         <div className="flex items-center gap-2">
           <div className="px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold font-mono">
-            Supply-Side Matrix
+            Tahap 2: Protect
           </div>
         </div>
       </div>
+
+      {/* Flowing Narrative Connector */}
+      <ModuleNarrativeBanner
+        currentModule="converge_supply_side"
+        narrativeText="Bantuan PKH Kesehatan dan Kartu Indonesia Pintar (KIP) tidak optimal jika faskes atau sekolah setempat lumpuh. Modul ini memastikan fasilitas kesehatan dan sekolah telah siap menyerap kebutuhan keluarga sebelum mereka melangkah ke tahap kemandirian ekonomi (Graduate)."
+        previousStepName="Modul CV-1: Human Capital Map"
+        nextStepName="Tahap 3: Graduate (Modul RS-1 Inclusion Tracker)"
+      />
 
       {/* Aggregate Readiness Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

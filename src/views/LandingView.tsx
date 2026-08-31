@@ -319,25 +319,25 @@ export const LandingView: React.FC<LandingViewProps> = ({
         </div>
       </section>
 
-      {/* 3-Pillar Framework Section */}
+      {/* 3-Pillar Resilience Journey Framework Section */}
       <section id="fitur" className="py-20 px-6 max-w-7xl mx-auto w-full">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold uppercase tracking-wider mb-3">
             <Layers className="w-3.5 h-3.5" />
-            <span>Kerangka Komprehensif 3 Pilar SIGAP</span>
+            <span>Satu Rumah Tangga, Satu Resilience Pathway</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Perlindungan Adaptif Sepanjang Daur Hidup
+            Alur Perjalanan Ketahanan Berkelanjutan
           </h2>
           <p className="text-slate-600 text-base mt-3 leading-relaxed">
-            Menghubungkan ketahanan darurat (Shock-Responsive), pembangunan modal manusia (Konvergensi Layanan), dan kemandirian ekonomi keluarga (Livelihood Graduation) yang disatukan oleh <strong>DTSEN (Data Tunggal Ekonomi Sosial Nasional)</strong>.
+            SIGAP bukan tiga sistem terpisah yang berdiri sendiri, melainkan <strong>satu rangkaian perjalanan berurutan</strong> untuk setiap rumah tangga terdampak: menstabilkan konsumsi saat krisis (<strong>SHIELD</strong>), melindungi modal manusia kesehatan &amp; pendidikan (<strong>CONVERGE</strong>), hingga mandiri ekonomi (<strong>RISE</strong>) berlandaskan <strong>DTSEN (Data Tunggal Ekonomi Sosial Nasional)</strong>.
           </p>
         </div>
 
-        {/* 3 Pillar Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Pilar 1: SHIELD */}
-          <div className="p-7 rounded-3xl bg-gradient-to-b from-rose-50/50 via-white to-rose-50/20 border-2 border-rose-200 shadow-lg shadow-rose-900/5 hover:border-rose-300 transition-all flex flex-col justify-between relative overflow-hidden group">
+        {/* 3 Continuous Journey Cards with Sequential Connected Pathway */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+          {/* Tahap 1: SHIELD */}
+          <div className="p-7 rounded-3xl bg-gradient-to-b from-rose-50/60 via-white to-rose-50/20 border-2 border-rose-200 shadow-lg shadow-rose-900/5 hover:border-rose-300 transition-all flex flex-col justify-between relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full blur-2xl pointer-events-none group-hover:scale-150 transition-transform"></div>
             <div>
               <div className="flex items-center justify-between mb-4">
@@ -345,17 +345,17 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   <Shield className="w-6 h-6" />
                 </div>
                 <span className="px-2.5 py-1 rounded-full bg-rose-100 text-rose-800 font-mono text-[10px] font-extrabold tracking-wider uppercase">
-                  Pilar Q1 • Shock-Responsive
+                  Pilar 1 • Respons Kilat
                 </span>
               </div>
-              <h3 className="text-xl font-extrabold text-slate-900 mb-2">
-                SIGAP SHIELD
+              <h3 className="text-xl font-extrabold text-slate-900 mb-1">
+                SHIELD
               </h3>
               <p className="text-xs font-semibold text-rose-600 mb-3 uppercase tracking-wide">
-                Perlindungan Kilat Krisis &amp; Bencana
+                Perlindungan Konsumsi &amp; Stabilisasi Darurat
               </p>
-              <p className="text-sm text-slate-600 leading-relaxed space-y-2">
-                Respons darurat berbasis sensor BMKG, penilaian risiko 8 indikator analitis (Skala 120 Poin), pembiayaan kontinjensi berlapis (DRFI: APBD BTT, APBN DSP, Pooling Fund Bencana), dan penyaluran bantuan adaptif &lt; 5 hari.
+              <p className="text-sm text-slate-600 leading-relaxed">
+                Respons darurat berbasis telemetri BMKG/PVMBG, penilaian risiko 8 indikator analitis (Skala 120 Poin), pembiayaan kontinjensi berlapis (DRFI: APBD BTT, APBN DSP, Pooling Fund Bencana), dan top-up bansos adaptif (PKH/BPNT/BLT Kemensos) &lt; 5 hari.
               </p>
             </div>
 
@@ -371,8 +371,8 @@ export const LandingView: React.FC<LandingViewProps> = ({
             </div>
           </div>
 
-          {/* Pilar 2: CONVERGE */}
-          <div className="p-7 rounded-3xl bg-gradient-to-b from-emerald-50/50 via-white to-emerald-50/20 border-2 border-emerald-200 shadow-lg shadow-emerald-900/5 hover:border-emerald-300 transition-all flex flex-col justify-between relative overflow-hidden group">
+          {/* Tahap 2: CONVERGE */}
+          <div className="p-7 rounded-3xl bg-gradient-to-b from-emerald-50/60 via-white to-emerald-50/20 border-2 border-emerald-200 shadow-lg shadow-emerald-900/5 hover:border-emerald-300 transition-all flex flex-col justify-between relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none group-hover:scale-150 transition-transform"></div>
             <div>
               <div className="flex items-center justify-between mb-4">
@@ -380,17 +380,17 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   <Activity className="w-6 h-6" />
                 </div>
                 <span className="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-mono text-[10px] font-extrabold tracking-wider uppercase">
-                  Pilar Q2 • Konvergensi
+                  Pilar 2 • Layanan Dasar
                 </span>
               </div>
-              <h3 className="text-xl font-extrabold text-slate-900 mb-2">
-                SIGAP CONVERGE
+              <h3 className="text-xl font-extrabold text-slate-900 mb-1">
+                CONVERGE
               </h3>
               <p className="text-xs font-semibold text-emerald-600 mb-3 uppercase tracking-wide">
                 Konvergensi Layanan Kesehatan &amp; Pendidikan
               </p>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Pemetaan kerentanan modal manusia lintas kementerian: prevalensi stunting, Angka Partisipasi Murni (APM) sekolah, rasio tenaga kesehatan desa, serta pemerataan sarana esensial (PLTS, internet, lab IPA).
+                Pemetaan kerentanan modal manusia: prevalensi stunting, Angka Partisipasi Murni (APM) sekolah, kepesertaan JKN/PBI Kemenkes, afirmasi KIP Kemendikbudristek, serta pemerataan sarana esensial (Puskesmas Prima, PLTS, sanitasi).
               </p>
             </div>
 
@@ -406,8 +406,8 @@ export const LandingView: React.FC<LandingViewProps> = ({
             </div>
           </div>
 
-          {/* Pilar 3: RISE */}
-          <div className="p-7 rounded-3xl bg-gradient-to-b from-purple-50/50 via-white to-purple-50/20 border-2 border-purple-200 shadow-lg shadow-purple-900/5 hover:border-purple-300 transition-all flex flex-col justify-between relative overflow-hidden group">
+          {/* Tahap 3: RISE */}
+          <div className="p-7 rounded-3xl bg-gradient-to-b from-purple-50/60 via-white to-purple-50/20 border-2 border-purple-200 shadow-lg shadow-purple-900/5 hover:border-purple-300 transition-all flex flex-col justify-between relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl pointer-events-none group-hover:scale-150 transition-transform"></div>
             <div>
               <div className="flex items-center justify-between mb-4">
@@ -415,17 +415,17 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   <TrendingUp className="w-6 h-6" />
                 </div>
                 <span className="px-2.5 py-1 rounded-full bg-purple-100 text-purple-800 font-mono text-[10px] font-extrabold tracking-wider uppercase">
-                  Pilar Q3 • Livelihood Graduation
+                  Pilar 3 • Kemandirian
                 </span>
               </div>
-              <h3 className="text-xl font-extrabold text-slate-900 mb-2">
-                SIGAP RISE
+              <h3 className="text-xl font-extrabold text-slate-900 mb-1">
+                RISE
               </h3>
               <p className="text-xs font-semibold text-purple-600 mb-3 uppercase tracking-wide">
-                Pemberdayaan Ekonomi &amp; Graduasi Mandiri
+                Inklusi Produktif &amp; Graduasi Ekonomi
               </p>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Kohort berjenjang 5 tahap (Stabilize → Assess → Build → Connect → Graduate), pendampingan aset produktif, akses permodalan KUR/Himbara, serta validasi 4 kriteria kelulusan mandiri DTSEN.
+                Kohort 5 tahap bertingkat (Stabilize ➔ Assess ➔ Build ➔ Connect ➔ Graduate), pelatihan Kartu Prakerja, permodalan PNM Mekaar / UMi, kemitraan BUMDes &amp; E-Katalog LKPP, serta validasi kelulusan mandiri DTSEN.
               </p>
             </div>
 
@@ -448,18 +448,18 @@ export const LandingView: React.FC<LandingViewProps> = ({
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <h2 className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-3">
-              Mekanisme Kerja
+              Mekanisme Kerja Terpadu
             </h2>
             <p className="text-3xl font-extrabold text-slate-900">
               4 Tahap Alur Kerja Sistem SIGAP
             </p>
             <p className="text-slate-600 text-sm mt-2">
-              Alur kerja terstandardisasi dari deteksi anomali hingga pelaporan akuntabilitas dua arah.
+              Alur kerja terstandardisasi dari deteksi dini multi-bahaya hingga monitoring graduasi dan akuntabilitas dua arah.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
-            <div className="bg-white p-6 rounded-xl border border-slate-200 relative">
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative">
               <div className="text-3xl font-mono font-extrabold text-blue-600 mb-3">01</div>
               <div className="text-[10px] font-mono font-bold text-slate-400 uppercase mb-1">Tahap 1 • Sensing</div>
               <h4 className="font-bold text-slate-900 mb-1">Deteksi Dini &amp; Peringatan</h4>
@@ -468,30 +468,30 @@ export const LandingView: React.FC<LandingViewProps> = ({
               </p>
             </div>
 
-            <div className="bg-white p-6 rounded-xl border border-slate-200 relative">
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative">
               <div className="text-3xl font-mono font-extrabold text-indigo-600 mb-3">02</div>
               <div className="text-[10px] font-mono font-bold text-slate-400 uppercase mb-1">Tahap 2 • Targeting</div>
-              <h4 className="font-bold text-slate-900 mb-1">Satu Data Terpadu</h4>
+              <h4 className="font-bold text-slate-900 mb-1">Satu Data Terpadu (DTSEN)</h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Pencocokan dan deduplikasi data DTKS, Regsosek, dan kependudukan untuk registrasi target sasaran yang bersih.
+                Pencocokan dan deduplikasi data DTKS, Regsosek, dan kependudukan untuk registrasi sasaran satu keluarga utuh.
               </p>
             </div>
 
-            <div className="bg-white p-6 rounded-xl border border-slate-200 relative">
-              <div className="text-3xl font-mono font-extrabold text-amber-600 mb-3">03</div>
-              <div className="text-[10px] font-mono font-bold text-slate-400 uppercase mb-1">Tahap 3 • Activation</div>
-              <h4 className="font-bold text-slate-900 mb-1">Penilaian Risiko &amp; Aktivasi Kilat</h4>
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative">
+              <div className="text-3xl font-mono font-extrabold text-rose-600 mb-3">03</div>
+              <div className="text-[10px] font-mono font-bold text-slate-400 uppercase mb-1">Tahap 3 • Activation &amp; Service</div>
+              <h4 className="font-bold text-slate-900 mb-1">Penilaian Risiko &amp; Rujukan Terpadu</h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Evaluasi 8 indikator risiko objektif (Skala 120 Poin) dan penyaluran bantuan adaptif langsung via Himbara/PT Pos.
+                Evaluasi 8 indikator risiko (Skala 120 Poin), otorisasi HITL, penyaluran bansos kilat, dan rujukan nakes/sekolah.
               </p>
             </div>
 
-            <div className="bg-white p-6 rounded-xl border border-slate-200 relative">
-              <div className="text-3xl font-mono font-extrabold text-emerald-600 mb-3">04</div>
-              <div className="text-[10px] font-mono font-bold text-slate-400 uppercase mb-1">Tahap 4 • Feedback</div>
-              <h4 className="font-bold text-slate-900 mb-1">Monitoring &amp; Evaluasi Berkelanjutan</h4>
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative">
+              <div className="text-3xl font-mono font-extrabold text-purple-600 mb-3">04</div>
+              <div className="text-[10px] font-mono font-bold text-slate-400 uppercase mb-1">Tahap 4 • Graduation &amp; Feedback</div>
+              <h4 className="font-bold text-slate-900 mb-1">Inklusi Produktif &amp; Akuntabilitas</h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Pelacakan penyaluran real-time, kanal whistleblowing &amp; aspirasi warga, dan survei kepuasan 360°.
+                Pelacakan graduasi mandiri ekonomi (Rise), kanal aspirasi &amp; whistleblowing warga, serta monitoring SLA 360°.
               </p>
             </div>
           </div>
