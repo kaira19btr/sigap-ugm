@@ -10,6 +10,7 @@ import {
 } from '../types';
 import { Avatar } from './Avatar';
 import { soundEffects } from '../utils/soundEffects';
+import { GradientButton } from '@/components/ui/gradient-button';
 import {
   Search,
   Bell,
@@ -884,25 +885,29 @@ export const Header: React.FC<HeaderProps> = ({
       {/* Right: Quick actions, notifications, user dropdown */}
       <div className="flex items-center gap-3 relative z-30">
         {/* Navigation shortcut to Landing */}
-        <button
+        <GradientButton
           id="btn-nav-landing-header"
+          size="sm"
+          variant="cobalt"
           onClick={onGoToLanding}
-          className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/10 rounded-xl transition-colors border border-rose-950/60 hover:border-rose-800/60 bg-slate-900/50 shadow-xs"
+          className="hidden sm:inline-flex !min-w-[120px] !text-xs !py-1.5 !px-3"
         >
-          <Globe className="w-3.5 h-3.5 text-sky-400" />
+          <Globe className="w-3.5 h-3.5 mr-1 text-sky-300" />
           <span>Beranda Publik</span>
-        </button>
+        </GradientButton>
 
         {/* Audit Log Button */}
         {onOpenAuditLog && (
-          <button
+          <GradientButton
             id="btn-quick-audit-log"
+            size="sm"
+            variant="amber"
             onClick={onOpenAuditLog}
-            className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/10 rounded-xl transition-colors border border-rose-950/60 hover:border-rose-800/60 bg-slate-900/50 shadow-xs"
+            className="hidden md:inline-flex !min-w-[110px] !text-xs !py-1.5 !px-3"
           >
-            <FileText className="w-3.5 h-3.5 text-amber-400" />
+            <FileText className="w-3.5 h-3.5 mr-1 text-amber-200" />
             <span>Log Audit</span>
-          </button>
+          </GradientButton>
         )}
 
         {/* Sound FX Toggle Button */}

@@ -6,6 +6,7 @@ import { EarlyWarningMetricModal, EarlyWarningMetricType } from '../components/E
 import { RegionRadarChartModal } from '../components/RegionRadarChartModal';
 import { TechnicalArchitectureModal } from '../components/TechnicalArchitectureModal';
 import { ModuleNarrativeBanner } from '../components/ModuleNarrativeBanner';
+import { GradientButton } from '@/components/ui/gradient-button';
 import {
   AlertTriangle,
   Radio,
@@ -465,31 +466,31 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
             </div>
 
             {/* Radar 7-Indikator Quick View Button */}
-            <button
+            <GradientButton
+              size="sm"
+              variant="cobalt"
               onClick={() => setIsRadarModalOpen(true)}
-              className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-slate-100 via-rose-50/50 to-blue-50/50 hover:bg-slate-200 text-slate-800 font-bold text-xs border border-rose-200/80 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+              className="!w-full !min-w-0"
             >
-              <Radar className="w-4 h-4 text-blue-600" />
+              <Radar className="w-4 h-4 mr-1.5 text-sky-200" />
               <span>Lihat Grafik Radar 7 Indikator</span>
-            </button>
+            </GradientButton>
 
             {/* Role-Specific Action Trigger Button */}
-            <button
+            <GradientButton
               id="btn-tinjau-tindakan-darurat"
+              size="sm"
+              variant={isDaerah ? 'amber' : 'rose'}
               onClick={() => onOpenEmergencyAction(effectiveSelectedRegion)}
-              className={`w-full py-2.5 px-4 rounded-xl text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer ${
-                isDaerah
-                  ? 'bg-gradient-to-r from-amber-600 via-rose-600 to-rose-700 hover:from-amber-500 hover:to-rose-600 shadow-amber-600/20'
-                  : 'bg-gradient-to-r from-rose-600 via-rose-500 to-blue-600 hover:from-rose-500 hover:to-blue-500 shadow-rose-600/20'
-              }`}
+              className="!w-full !min-w-0 shadow-md"
             >
               <span>
                 {isDaerah
                   ? `Aktivasi Lapangan & Respon Cepat Daerah`
                   : `Otorisasi Respon Cepat & DSP Nasional`}
               </span>
-              <ArrowUpRight className="w-4 h-4" />
-            </button>
+              <ArrowUpRight className="w-4 h-4 ml-1.5" />
+            </GradientButton>
           </div>
         </div>
       </div>

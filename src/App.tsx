@@ -52,7 +52,7 @@ import { PrivasiView } from './views/PrivasiView';
 
 export default function App() {
   // Navigation & Role State
-  const [viewMode, setViewMode] = useState<ViewMode>('login');
+  const [viewMode, setViewMode] = useState<ViewMode>('landing');
   const [currentModule, setCurrentModule] = useState<AppModule>('early_warning');
   const [currentRole, setCurrentRole] = useState<UserRole>('admin_pusat');
 

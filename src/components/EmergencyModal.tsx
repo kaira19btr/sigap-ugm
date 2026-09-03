@@ -32,6 +32,7 @@ import {
   Zap,
 } from 'lucide-react';
 import { AnimatedCounter } from './AnimatedCounter';
+import { GradientButton } from '@/components/ui/gradient-button';
 
 interface EmergencyModalProps {
   region: RegionRiskData | null;
@@ -247,13 +248,14 @@ export const EmergencyModal: React.FC<EmergencyModalProps> = ({
               </div>
 
               <div className="pt-3 flex justify-center gap-3">
-                <button
+                <GradientButton
                   type="button"
+                  variant="variant"
+                  size="sm"
                   onClick={handleDone}
-                  className="px-6 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-md transition-all cursor-pointer"
                 >
                   Selesai &amp; Tutup
-                </button>
+                </GradientButton>
               </div>
             </div>
           ) : (
@@ -617,26 +619,25 @@ export const EmergencyModal: React.FC<EmergencyModalProps> = ({
                 </div>
 
                 <div className="flex items-center gap-2.5">
-                  <button
+                  <GradientButton
                     type="button"
+                    variant="variant"
+                    size="sm"
                     onClick={onClose}
-                    className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
+                    className="!min-w-[80px]"
                   >
                     Batal
-                  </button>
-                  <button
+                  </GradientButton>
+                  <GradientButton
                     type="submit"
-                    className={`px-5 py-2.5 text-xs font-bold text-white rounded-xl shadow-md flex items-center gap-2 transition-all cursor-pointer ${
-                      isDaerah
-                        ? 'bg-gradient-to-r from-amber-600 via-rose-600 to-rose-700 hover:from-amber-500 hover:to-rose-600 shadow-amber-600/20'
-                        : 'bg-gradient-to-r from-rose-600 via-rose-500 to-blue-600 hover:from-rose-500 hover:to-blue-500 shadow-rose-600/20'
-                    }`}
+                    variant={isDaerah ? 'amber' : 'rose'}
+                    size="sm"
                   >
-                    <Send className="w-3.5 h-3.5" />
+                    <Send className="w-3.5 h-3.5 mr-1.5" />
                     <span>
                       {isDaerah ? 'Jalankan Aktivasi & Teruskan ke Pusat' : 'Terbitkan Otorisasi Nasional (DSP)'}
                     </span>
-                  </button>
+                  </GradientButton>
                 </div>
               </div>
             </form>

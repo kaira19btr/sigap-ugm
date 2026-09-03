@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ActivationProposal } from '../types';
+import { GradientButton } from '@/components/ui/gradient-button';
 import {
   CheckSquare,
   CheckCircle2,
@@ -184,19 +185,23 @@ export const PersetujuanView: React.FC<PersetujuanViewProps> = ({
                   <td className="py-3.5 px-4 text-right">
                     {p.status === 'Menunggu' ? (
                       <div className="flex items-center justify-end gap-1.5">
-                        <button
+                        <GradientButton
+                          size="sm"
+                          variant="variant"
                           onClick={() => onReject(p.id)}
-                          className="px-2.5 py-1 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-lg border border-rose-200 transition-colors"
+                          className="!min-w-0 !py-1 !px-2.5 !text-xs text-rose-300 hover:text-white"
                         >
                           Tolak
-                        </button>
-                        <button
+                        </GradientButton>
+                        <GradientButton
+                          size="sm"
+                          variant="emerald"
                           onClick={() => onApprove(p.id)}
-                          className="px-3 py-1 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg shadow-xs transition-colors flex items-center gap-1"
+                          className="!min-w-0 !py-1 !px-3 !text-xs"
                         >
-                          <CheckCircle2 className="w-3.5 h-3.5" />
+                          <CheckCircle2 className="w-3.5 h-3.5 mr-1" />
                           <span>Setujui</span>
-                        </button>
+                        </GradientButton>
                       </div>
                     ) : (
                       <span className="text-[11px] text-slate-400 font-semibold font-mono">

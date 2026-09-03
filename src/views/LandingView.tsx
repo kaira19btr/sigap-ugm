@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { SigapLogo } from '../components/SigapLogo';
 import { TechnicalArchitectureModal } from '../components/TechnicalArchitectureModal';
 import { soundEffects } from '../utils/soundEffects';
+import { SmokeyBackground, LoginForm } from '@/components/ui/login-form';
+import { GradientButton } from '@/components/ui/gradient-button';
 import {
   Shield,
   Radio,
@@ -25,6 +27,10 @@ import {
   TrendingUp,
   Volume2,
   VolumeX,
+  Palette,
+  Maximize2,
+  X,
+  Sparkle,
 } from 'lucide-react';
 
 interface LandingViewProps {
@@ -38,9 +44,91 @@ export const LandingView: React.FC<LandingViewProps> = ({
 }) => {
   const [isArchitectureModalOpen, setIsArchitectureModalOpen] = useState(false);
   const [isSoundMuted, setIsSoundMuted] = useState(soundEffects.getMuted());
+  const [activeShaderColor, setActiveShaderColor] = useState<string>('#E11D48'); // SIGAP Crimson Rose default
+  const [showFullscreenDemo, setShowFullscreenDemo] = useState<boolean>(false);
+
+  const sigapPalette = [
+    { id: 'rose', name: 'SIGAP Rose (Shield)', hex: '#E11D48', border: 'border-rose-500', bg: 'bg-rose-600' },
+    { id: 'amber', name: 'SIGAP Amber (Alert)', hex: '#F59E0B', border: 'border-amber-500', bg: 'bg-amber-500' },
+    { id: 'cobalt', name: 'SIGAP Cobalt (Governance)', hex: '#1E40AF', border: 'border-blue-600', bg: 'bg-blue-600' },
+    { id: 'emerald', name: 'SIGAP Emerald (Converge)', hex: '#059669', border: 'border-emerald-500', bg: 'bg-emerald-600' },
+  ];
+
+  // Full-screen interactive demo mode matching demo.tsx
+  if (showFullscreenDemo) {
+    return (
+      <main className="relative w-screen h-screen bg-slate-950 overflow-hidden text-slate-100 flex flex-col justify-between">
+        {/* Interactive WebGL Shader in SIGAP Colors */}
+        <SmokeyBackground className="absolute inset-0" color={activeShaderColor} backdropBlurAmount="md" />
+
+        {/* Top Control Bar */}
+        <header className="relative z-20 px-6 py-4 flex items-center justify-between bg-slate-950/60 backdrop-blur-lg border-b border-white/10">
+          <div className="flex items-center gap-3">
+            <SigapLogo size="sm" variant="dark" showText={true} />
+            <span className="hidden sm:inline-block px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-rose-600/30 text-rose-300 border border-rose-500/40">
+              Interactive Shader Portal
+            </span>
+          </div>
+
+          <div className="flex items-center gap-3">
+            {/* Color Switcher Swatches */}
+            <div className="flex items-center gap-1.5 p-1 bg-slate-900/80 rounded-xl border border-white/10">
+              {sigapPalette.map((swatch) => (
+                <button
+                  key={swatch.id}
+                  type="button"
+                  onClick={() => {
+                    soundEffects.playClick();
+                    setActiveShaderColor(swatch.hex);
+                  }}
+                  title={swatch.name}
+                  className={`w-6 h-6 rounded-lg ${swatch.bg} transition-all cursor-pointer ${
+                    activeShaderColor === swatch.hex
+                      ? 'ring-2 ring-white scale-110 shadow-lg'
+                      : 'opacity-60 hover:opacity-100'
+                  }`}
+                />
+              ))}
+            </div>
+
+            <GradientButton
+              size="sm"
+              variant="variant"
+              onClick={() => {
+                soundEffects.playClick();
+                setShowFullscreenDemo(false);
+              }}
+              className="!min-w-[120px] !text-xs !py-1.5 !px-3"
+            >
+              <X className="w-3.5 h-3.5 mr-1" />
+              <span>Kembali ke Beranda</span>
+            </GradientButton>
+          </div>
+        </header>
+
+        {/* Centered Glassmorphic Login Form */}
+        <div className="relative z-10 flex-1 flex items-center justify-center p-4">
+          <LoginForm
+            title="Portal SIGAP"
+            subtitle="Sistem Gerak Cepat Perlindungan Sosial Adaptif"
+            onLogin={(email, role) => {
+              soundEffects.playSuccessChime();
+              onEnterDashboard();
+            }}
+          />
+        </div>
+
+        {/* Bottom Hint */}
+        <footer className="relative z-20 py-3 text-center text-xs text-slate-400 bg-slate-950/60 backdrop-blur-md border-t border-white/5 flex items-center justify-center gap-2">
+          <Sparkle className="w-3.5 h-3.5 text-rose-400 animate-pulse" />
+          <span>Gerakkan kursor pada layar untuk melihat distorsi gelombang shader WebGL interaktif</span>
+        </footer>
+      </main>
+    );
+  }
 
   return (
-    <div id="landing-page-container" className="min-h-screen bg-white text-slate-900 flex flex-col selection:bg-blue-100">
+    <div id="landing-page-container" className="min-h-screen bg-white text-slate-900 flex flex-col selection:bg-rose-100">
       {/* Top Navigation */}
       <header className="border-b border-slate-100 sticky top-0 bg-white/95 backdrop-blur-md z-40">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -49,19 +137,35 @@ export const LandingView: React.FC<LandingViewProps> = ({
           </div>
 
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
-            <a href="#fitur" className="hover:text-blue-600 transition-colors">Fitur Utama</a>
-            <a href="#agregat-data" className="hover:text-blue-600 transition-colors">Data Agregat</a>
-            <a href="#alur-kerja" className="hover:text-blue-600 transition-colors">Alur Kerja</a>
+            <a href="#fitur" className="hover:text-rose-600 transition-colors">Fitur Utama</a>
+            <a href="#agregat-data" className="hover:text-rose-600 transition-colors">Data Agregat</a>
+            <a href="#alur-kerja" className="hover:text-rose-600 transition-colors">Alur Kerja</a>
             <button
               onClick={() => setIsArchitectureModalOpen(true)}
-              className="text-slate-600 hover:text-blue-600 transition-colors flex items-center gap-1.5"
+              className="text-slate-600 hover:text-rose-600 transition-colors flex items-center gap-1.5 cursor-pointer"
             >
-              <Workflow className="w-3.5 h-3.5 text-blue-600" />
+              <Workflow className="w-3.5 h-3.5 text-rose-600" />
               <span>Arsitektur Sistem</span>
             </button>
           </div>
 
           <div className="flex items-center gap-3">
+            {/* Fullscreen Demo Mode Trigger */}
+            <GradientButton
+              id="btn-fullscreen-demo"
+              size="sm"
+              variant="variant"
+              onClick={() => {
+                soundEffects.playClick();
+                setShowFullscreenDemo(true);
+              }}
+              className="hidden lg:inline-flex !text-xs !py-2 !px-3.5 text-slate-100"
+              title="Tampilkan demo login-form layar penuh dengan WebGL smokey shader"
+            >
+              <Maximize2 className="w-3.5 h-3.5 mr-1 text-rose-400" />
+              <span>Demo Shader Layar Penuh</span>
+            </GradientButton>
+
             {/* Sound FX Toggle Button */}
             <button
               id="btn-landing-sound-toggle"
@@ -69,106 +173,222 @@ export const LandingView: React.FC<LandingViewProps> = ({
                 const nextMuted = soundEffects.toggleMute();
                 setIsSoundMuted(nextMuted);
               }}
-              className={`p-2 rounded-lg transition-colors border ${
+              className={`p-2 rounded-lg transition-colors border cursor-pointer ${
                 isSoundMuted
                   ? 'text-slate-400 hover:text-slate-700 bg-slate-50 border-slate-200'
-                  : 'text-blue-600 hover:text-blue-700 bg-blue-50/70 border-blue-200'
+                  : 'text-rose-600 hover:text-rose-700 bg-rose-50/70 border-rose-200'
               }`}
               title={isSoundMuted ? 'Efek Suara: Bisu (Klik untuk aktifkan)' : 'Efek Suara: Aktif (Klik untuk matikan)'}
             >
               {isSoundMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
             </button>
 
-            <button
+            <GradientButton
               id="btn-landing-login"
+              size="sm"
+              variant="cobalt"
               onClick={onLoginClick}
-              className="px-4 py-2 text-sm font-semibold text-slate-700 hover:text-blue-600 hover:bg-slate-50 rounded-lg transition-colors border border-slate-200"
+              className="!text-xs !py-2 !px-4"
             >
-              Masuk Akun
-            </button>
-            <button
+              <span>Masuk Akun</span>
+            </GradientButton>
+            <GradientButton
               id="btn-landing-enter-dashboard"
+              size="sm"
+              variant="rose"
               onClick={onEnterDashboard}
-              className="px-5 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-md shadow-blue-600/20 transition-all flex items-center gap-2"
+              className="!text-xs !py-2 !px-4 shadow-md shadow-rose-600/20"
             >
               <span>Akses Dashboard</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+              <ArrowRight className="w-3.5 h-3.5 ml-1" />
+            </GradientButton>
           </div>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="pt-16 pb-20 px-6 bg-gradient-to-b from-blue-50/50 via-white to-white overflow-hidden relative">
-        <div className="max-w-5xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-100/80 text-blue-800 text-xs font-semibold mb-6 border border-blue-200">
-            <Activity className="w-3.5 h-3.5 text-blue-600" />
-            <span>Platform Siaga Bencana &amp; Perlindungan Adaptif Indonesia</span>
-          </div>
+      {/* Hero Section with Interactive WebGL Smokey Shader Background */}
+      <section className="relative pt-12 pb-20 px-6 bg-gradient-to-b from-[#080C16] via-[#100A1C] to-[#0A1429] text-white overflow-hidden">
+        {/* Interactive WebGL Shader Layer in SIGAP Palette */}
+        <SmokeyBackground
+          className="absolute inset-0 opacity-80"
+          color={activeShaderColor}
+          backdropBlurAmount="sm"
+        />
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.15]">
-            Sistem Gerak Cepat{' '}
-            <span className="text-blue-600">Perlindungan Sosial</span> Adaptif
-          </h1>
+        {/* Ambient atmospheric backlights */}
+        <div className="absolute -top-24 left-1/4 w-96 h-96 bg-rose-600/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute top-1/2 right-10 w-96 h-96 bg-amber-500/15 rounded-full blur-3xl pointer-events-none"></div>
 
-          <p className="mt-6 text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto font-normal leading-relaxed">
-            Platform terpadu untuk respons cepat, penilaian risiko otomatis berbasis 8 indikator analitis (120 Poin), dan tata kelola bantuan sosial adaptif geospasial real-time saat krisis dan bencana.
-          </p>
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            {/* Left Column: Heading, Badge, Description & CTAs */}
+            <div className="lg:col-span-7 space-y-6 text-left">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-950/80 border border-rose-500/30 text-rose-300 text-xs font-semibold backdrop-blur-md shadow-sm">
+                <Activity className="w-3.5 h-3.5 text-rose-400 animate-pulse" />
+                <span>Platform Siaga Bencana &amp; Perlindungan Adaptif Indonesia</span>
+              </div>
 
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <button
-              id="btn-hero-primary-dashboard"
-              onClick={onEnterDashboard}
-              className="px-7 py-3.5 text-base font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-lg shadow-blue-600/30 transition-all flex items-center gap-2.5 group"
-            >
-              <span>Buka Dasbor Siaga</span>
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </button>
-            <button
-              id="btn-hero-architecture"
-              onClick={() => setIsArchitectureModalOpen(true)}
-              className="px-7 py-3.5 text-base font-bold text-slate-700 bg-white hover:bg-slate-50 rounded-xl border border-slate-300 shadow-sm transition-all flex items-center gap-2"
-            >
-              <Workflow className="w-4 h-4 text-blue-600" />
-              <span>Diagram Arsitektur</span>
-            </button>
-            <button
-              id="btn-hero-login-modal"
-              onClick={onLoginClick}
-              className="px-6 py-3.5 text-base font-bold text-slate-600 hover:text-slate-900 bg-transparent hover:bg-slate-100 rounded-xl transition-all"
-            >
-              Masuk Dinas / Instansi
-            </button>
-          </div>
+              <h1 className="text-4xl sm:text-5xl xl:text-6xl font-black tracking-tight leading-[1.12]">
+                Sistem Gerak Cepat{' '}
+                <span className="bg-gradient-to-r from-rose-400 via-amber-300 to-amber-100 bg-clip-text text-transparent">
+                  Perlindungan Sosial
+                </span>{' '}
+                Adaptif
+              </h1>
 
-          {/* Quick Metrics Bar */}
-          <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto pt-8 border-t border-slate-200">
-            <div className="text-center p-3">
-              <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono">4.2 Hari</div>
-              <div className="text-xs text-slate-600 font-semibold mt-1">Rata-rata SLA Penyaluran Nasional</div>
-              <div className="text-[10px] text-slate-400 font-medium">(agregat 12 wilayah pilot)</div>
+              <p className="text-base sm:text-lg text-slate-300 max-w-2xl font-normal leading-relaxed">
+                Respons darurat berbasis telemetri BMKG/PVMBG, penilaian risiko 8 indikator analitis (Skala 120 Poin), dan penyaluran bantuan adaptif geospasial real-time &lt; 5 hari saat krisis dan bencana.
+              </p>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center gap-3 pt-2">
+                <GradientButton
+                  id="btn-hero-primary-dashboard"
+                  size="lg"
+                  variant="rose"
+                  onClick={onEnterDashboard}
+                  className="shadow-xl shadow-rose-900/40"
+                >
+                  <span>Buka Dasbor Siaga</span>
+                  <ArrowRight className="w-4 h-4 ml-1.5" />
+                </GradientButton>
+                <GradientButton
+                  id="btn-hero-architecture"
+                  size="lg"
+                  variant="cobalt"
+                  onClick={() => setIsArchitectureModalOpen(true)}
+                >
+                  <Workflow className="w-4 h-4 mr-1.5 text-sky-300" />
+                  <span>Diagram Arsitektur</span>
+                </GradientButton>
+                <GradientButton
+                  id="btn-hero-fullscreen-trigger"
+                  size="lg"
+                  variant="variant"
+                  onClick={() => {
+                    soundEffects.playClick();
+                    setShowFullscreenDemo(true);
+                  }}
+                >
+                  <Maximize2 className="w-4 h-4 mr-1.5 text-rose-300" />
+                  <span>Mode Demo Shader</span>
+                </GradientButton>
+              </div>
+
+              {/* Shader Interactive Palette Switcher */}
+              <div className="pt-2 flex flex-wrap items-center gap-3">
+                <div className="flex items-center gap-1.5 text-xs text-slate-400 font-medium">
+                  <Palette className="w-3.5 h-3.5 text-rose-400" />
+                  <span>Tema Warna Shader:</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  {sigapPalette.map((swatch) => (
+                    <button
+                      key={swatch.id}
+                      type="button"
+                      onClick={() => {
+                        soundEffects.playClick();
+                        setActiveShaderColor(swatch.hex);
+                      }}
+                      className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 border transition-all cursor-pointer backdrop-blur-md ${
+                        activeShaderColor === swatch.hex
+                          ? `${swatch.bg} text-white border-white/40 shadow-md scale-105`
+                          : 'bg-slate-900/70 text-slate-300 border-white/10 hover:border-white/30'
+                      }`}
+                    >
+                      <span className={`w-2 h-2 rounded-full ${swatch.bg} ring-1 ring-white/50`}></span>
+                      <span>{swatch.name.split(' ')[1]}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Quick Metrics Bar in Dark Contrast */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-6 border-t border-white/10 max-w-2xl">
+                <div className="p-2.5 rounded-xl bg-slate-900/60 border border-white/10 backdrop-blur-md">
+                  <div className="text-xl sm:text-2xl font-black text-rose-400 font-mono">4.2 Hari</div>
+                  <div className="text-[11px] text-slate-300 font-medium">SLA Penyaluran</div>
+                </div>
+                <div className="p-2.5 rounded-xl bg-slate-900/60 border border-white/10 backdrop-blur-md">
+                  <div className="text-xl sm:text-2xl font-black text-amber-400 font-mono">94.8%</div>
+                  <div className="text-[11px] text-slate-300 font-medium">Akurasi DTKS/DTSEN</div>
+                </div>
+                <div className="p-2.5 rounded-xl bg-slate-900/60 border border-white/10 backdrop-blur-md">
+                  <div className="text-xl sm:text-2xl font-black text-blue-400 font-mono">120 Poin</div>
+                  <div className="text-[11px] text-slate-300 font-medium">Matriks 8 Indikator</div>
+                </div>
+                <div className="p-2.5 rounded-xl bg-slate-900/60 border border-white/10 backdrop-blur-md">
+                  <div className="text-xl sm:text-2xl font-black text-emerald-400 font-mono">Offline-1st</div>
+                  <div className="text-[11px] text-slate-300 font-medium">PWA Tagana URC</div>
+                </div>
+              </div>
             </div>
-            <div className="text-center p-3">
-              <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono">94.8%</div>
-              <div className="text-xs text-slate-600 font-semibold mt-1">Akurasi Target Penerima (DTKS)</div>
-              <div className="text-[10px] text-slate-400 font-medium">(Desil 1-2 &amp; Regsosek)</div>
-            </div>
-            <div className="text-center p-3">
-              <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono">120 Poin</div>
-              <div className="text-xs text-slate-600 font-semibold mt-1">Standar Matriks 8 Indikator</div>
-              <div className="text-[10px] text-slate-400 font-medium">(Maks. 15 Poin per Indikator)</div>
-            </div>
-            <div className="text-center p-3">
-              <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono">Offline-First</div>
-              <div className="text-xs text-slate-600 font-semibold mt-1">Pendataan Lapangan Tagana</div>
-              <div className="text-[10px] text-slate-400 font-medium">(Sinkronisasi Cepat PWA)</div>
+
+            {/* Right Column: Embedded Glassmorphic LoginForm in SIGAP Theme */}
+            <div className="lg:col-span-5 flex flex-col items-center justify-center relative">
+              {/* Subtle ambient glow behind login form */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-rose-600/20 to-amber-500/20 rounded-3xl blur-2xl pointer-events-none"></div>
+              
+              <div className="w-full max-w-sm">
+                <LoginForm
+                  title="Portal SIGAP"
+                  subtitle="Akses Masuk Petugas &amp; Operator Kemensos"
+                  accentColor="sigap-rose"
+                  onLogin={() => {
+                    soundEffects.playSuccessChime();
+                    onEnterDashboard();
+                  }}
+                />
+
+                {/* Quick 1-Click Role Access below the form */}
+                <div className="mt-3 p-2.5 rounded-2xl bg-slate-950/60 border border-white/10 backdrop-blur-md text-center">
+                  <span className="text-[10px] font-bold text-rose-300/80 uppercase tracking-wider block mb-1.5">
+                    Akses Cepat Demo Peran
+                  </span>
+                  <div className="grid grid-cols-3 gap-1.5">
+                    <GradientButton
+                      size="sm"
+                      variant="rose"
+                      onClick={() => {
+                        soundEffects.playClick();
+                        onEnterDashboard();
+                      }}
+                      className="!min-w-0 !w-full !py-1.5 !px-1 text-[10px] leading-tight"
+                    >
+                      Pusat Kemensos
+                    </GradientButton>
+                    <GradientButton
+                      size="sm"
+                      variant="cobalt"
+                      onClick={() => {
+                        soundEffects.playClick();
+                        onEnterDashboard();
+                      }}
+                      className="!min-w-0 !w-full !py-1.5 !px-1 text-[10px] leading-tight"
+                    >
+                      Dinas Daerah
+                    </GradientButton>
+                    <GradientButton
+                      size="sm"
+                      variant="emerald"
+                      onClick={() => {
+                        soundEffects.playClick();
+                        onEnterDashboard();
+                      }}
+                      className="!min-w-0 !w-full !py-1.5 !px-1 text-[10px] leading-tight"
+                    >
+                      Tagana Lapangan
+                    </GradientButton>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Dashboard Graphic Mockup */}
-        <div className="max-w-6xl mx-auto mt-14 px-4">
-          <div className="rounded-2xl bg-slate-900 p-2 sm:p-3 ring-1 ring-slate-800 shadow-2xl shadow-slate-900/40">
+        {/* Live Telemetry Window Bar Mockup */}
+        <div className="max-w-6xl mx-auto mt-14 px-4 relative z-10">
+          <div className="rounded-2xl bg-slate-900 p-2 sm:p-3 ring-1 ring-slate-800 shadow-2xl shadow-black/60 backdrop-blur-md">
             <div className="bg-slate-950 rounded-xl overflow-hidden border border-slate-800">
               {/* Fake Window Bar */}
               <div className="h-9 bg-slate-900/90 px-4 flex items-center justify-between border-b border-slate-800">
@@ -198,11 +418,11 @@ export const LandingView: React.FC<LandingViewProps> = ({
                       2 WILAYAH DARURAT • 5 SIAGA
                     </span>
                   </div>
-                  <div className="h-52 rounded-lg bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800/80 flex items-center justify-center relative overflow-hidden">
-                    <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px]"></div>
-                    <div className="text-center z-10">
+                  <div className="h-44 rounded-lg bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800/80 flex items-center justify-center relative overflow-hidden">
+                    <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#e11d48_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                    <div className="text-center z-10 px-4">
                       <p className="text-sm font-semibold text-slate-200">
-                        Telemetri Sensor Iklim, Harga Pangan &amp; Seismik Aktif
+                        Telemetri Sensor Iklim BMKG, Harga Pangan Bapanas &amp; Seismik PVMBG
                       </p>
                       <p className="text-xs text-slate-400 mt-1">
                         Sumba Timur (Defisit Hujan 12mm) • Cianjur (Pasca Gempa) • Demak (Banjir Tanggul)
@@ -220,16 +440,17 @@ export const LandingView: React.FC<LandingViewProps> = ({
                     </div>
                   </div>
                   <div className="bg-slate-950 rounded-xl p-3.5 border border-slate-800">
+                    <span className="text-[11px] text-slate-400 font-semibold block">Status Penyaluran Cepat</span>
+                    <span className="text-xl font-bold font-mono text-amber-400 mt-1 block">&lt; 3.8 Hari Rata-rata</span>
+                    <div className="mt-2 w-full bg-slate-800 rounded-full h-1.5">
+                      <div className="bg-amber-500 h-1.5 rounded-full w-[80%]"></div>
+                    </div>
+                  </div>
+                  <div className="bg-slate-950 rounded-xl p-3.5 border border-slate-800">
                     <span className="text-[11px] text-slate-400 font-semibold block">Sinkronisasi Data Lapangan</span>
                     <span className="text-xl font-bold font-mono text-emerald-400 mt-1 block">98.5% Lengkap</span>
-                    <p className="text-[10px] text-slate-500 mt-1">DTKS + Regsosek + Laporan Tagana</p>
+                    <p className="text-[10px] text-slate-400 mt-1">DTKS + Regsosek + Laporan Tagana</p>
                   </div>
-                  <button
-                    onClick={onEnterDashboard}
-                    className="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-md transition-colors"
-                  >
-                    Buka Dasbor Interaktif →
-                  </button>
                 </div>
               </div>
             </div>
@@ -253,13 +474,15 @@ export const LandingView: React.FC<LandingViewProps> = ({
                 Rekapitulasi nasional dari 12 wilayah fokus pilot project SIGAP di seluruh Indonesia
               </p>
             </div>
-            <button
+            <GradientButton
               onClick={onEnterDashboard}
-              className="mt-4 md:mt-0 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-md transition-colors flex items-center gap-1.5 self-start"
+              size="sm"
+              variant="cobalt"
+              className="mt-4 md:mt-0 self-start"
             >
               <span>Eksplorasi 12 Wilayah di Peta</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+              <ArrowRight className="w-3.5 h-3.5 ml-1" />
+            </GradientButton>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

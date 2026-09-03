@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { UserRole } from '../types';
 import { SigapLogo } from '../components/SigapLogo';
 import { soundEffects } from '../utils/soundEffects';
+import { SmokeyBackground } from '@/components/ui/login-form';
+import { GradientButton } from '@/components/ui/gradient-button';
 import {
   Shield,
   Lock,
@@ -101,6 +103,9 @@ export const LoginView: React.FC<LoginViewProps> = ({
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#080C16] via-[#1C0A22] to-[#0A1429] text-slate-100 flex flex-col justify-center items-center px-4 py-12 relative overflow-hidden">
+      {/* Interactive WebGL Smokey Background in SIGAP Rose Theme */}
+      <SmokeyBackground color="#E11D48" backdropBlurAmount="md" className="opacity-75" />
+
       {/* Dynamic atmospheric gradient orbs matching SIGAP logo */}
       <div className="absolute -top-28 -left-28 w-[420px] h-[420px] bg-rose-600/15 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[380px] h-[380px] bg-amber-500/10 rounded-full blur-[90px] pointer-events-none" />
@@ -114,18 +119,20 @@ export const LoginView: React.FC<LoginViewProps> = ({
 
       {/* Top action controls: return & sound toggle */}
       <div className="absolute top-6 left-6 right-6 z-20 flex items-center justify-between pointer-events-none">
-        <button
+        <GradientButton
           id="btn-back-to-landing"
+          size="sm"
+          variant="variant"
           disabled={isAuthenticating}
           onClick={() => {
             soundEffects.playClick();
             onBackToLanding();
           }}
-          className="pointer-events-auto flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-white bg-slate-900/80 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-rose-950/60 hover:border-rose-700/60 transition-all disabled:opacity-50 hover:scale-105 active:scale-95 shadow-md"
+          className="pointer-events-auto !min-w-[140px] !text-xs !py-1.5 !px-3"
         >
-          <ChevronLeft className="w-4 h-4 text-rose-400" />
+          <ChevronLeft className="w-4 h-4 mr-1 text-rose-400" />
           <span>Kembali ke Beranda</span>
-        </button>
+        </GradientButton>
 
         <button
           id="btn-toggle-sound"
@@ -313,31 +320,26 @@ export const LoginView: React.FC<LoginViewProps> = ({
               </button>
             </div>
 
-            <button
+            <GradientButton
               id="btn-submit-login"
               type="submit"
               disabled={isAuthenticating}
-              className={`w-full py-3 text-white font-bold text-xs rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 mt-2 relative overflow-hidden ${
-                isAuthenticating
-                  ? 'bg-gradient-to-r from-rose-600 via-amber-600 to-blue-600 shadow-rose-600/30'
-                  : 'bg-gradient-to-r from-rose-600 via-rose-500 to-blue-600 hover:from-rose-500 hover:to-blue-500 shadow-lg shadow-rose-950/50 hover:scale-[1.01] active:scale-[0.99] border border-rose-400/20'
-              }`}
+              size="full"
+              variant="rose"
+              className="mt-3 shadow-xl shadow-rose-950/50"
             >
-              {isAuthenticating && (
-                <div className="absolute inset-0 bg-white/20 animate-pulse pointer-events-none"></div>
-              )}
               {isAuthenticating ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin text-white" />
+                  <Loader2 className="w-4 h-4 animate-spin mr-1.5 text-white" />
                   <span>Mengotentikasi Sesi SIGAP...</span>
                 </>
               ) : (
                 <>
                   <span>Masuk ke Dashboard SIGAP</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4 ml-1.5" />
                 </>
               )}
-            </button>
+            </GradientButton>
           </form>
 
           {/* Quick 1-Click Simulation Profiles */}
@@ -348,33 +350,39 @@ export const LoginView: React.FC<LoginViewProps> = ({
               <span className="w-1 h-1 rounded-full bg-sky-500" />
             </p>
             <div className="grid grid-cols-3 gap-2">
-              <button
+              <GradientButton
                 type="button"
                 disabled={isAuthenticating}
+                size="sm"
+                variant="rose"
                 onClick={() => triggerLoginSequence('admin_pusat')}
-                className="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-850 border border-rose-950/60 hover:border-rose-500/50 text-[10px] font-medium text-slate-300 hover:text-white text-center transition-all disabled:opacity-50 hover:scale-105 active:scale-95 shadow-xs"
+                className="!min-w-0 !w-full !py-2 !px-1 flex flex-col items-center justify-center !text-[11px] leading-tight"
               >
-                <div className="font-bold text-rose-400">Pusat</div>
-                <div>Kemensos RI</div>
-              </button>
-              <button
+                <div className="font-bold text-rose-200">Pusat</div>
+                <div className="text-[9px] opacity-80">Kemensos RI</div>
+              </GradientButton>
+              <GradientButton
                 type="button"
                 disabled={isAuthenticating}
+                size="sm"
+                variant="cobalt"
                 onClick={() => triggerLoginSequence('admin_daerah')}
-                className="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-850 border border-blue-950/60 hover:border-blue-500/50 text-[10px] font-medium text-slate-300 hover:text-white text-center transition-all disabled:opacity-50 hover:scale-105 active:scale-95 shadow-xs"
+                className="!min-w-0 !w-full !py-2 !px-1 flex flex-col items-center justify-center !text-[11px] leading-tight"
               >
-                <div className="font-bold text-sky-400">Daerah</div>
-                <div>Dinas Daerah</div>
-              </button>
-              <button
+                <div className="font-bold text-sky-200">Daerah</div>
+                <div className="text-[9px] opacity-80">Dinas Daerah</div>
+              </GradientButton>
+              <GradientButton
                 type="button"
                 disabled={isAuthenticating}
+                size="sm"
+                variant="emerald"
                 onClick={() => triggerLoginSequence('petugas_lapangan')}
-                className="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-850 border border-emerald-950/60 hover:border-emerald-500/50 text-[10px] font-medium text-slate-300 hover:text-white text-center transition-all disabled:opacity-50 hover:scale-105 active:scale-95 shadow-xs"
+                className="!min-w-0 !w-full !py-2 !px-1 flex flex-col items-center justify-center !text-[11px] leading-tight"
               >
-                <div className="font-bold text-emerald-400">Lapangan</div>
-                <div>Tagana URC</div>
-              </button>
+                <div className="font-bold text-emerald-200">Lapangan</div>
+                <div className="text-[9px] opacity-80">Tagana URC</div>
+              </GradientButton>
             </div>
           </div>
         </div>
