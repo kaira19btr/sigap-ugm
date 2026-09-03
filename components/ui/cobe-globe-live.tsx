@@ -22,6 +22,7 @@ export interface GlobeLiveProps {
   glowColor?: [number, number, number]
   onSelectMarker?: (id: string) => void
   activeMarkerId?: string
+  scale?: number
 }
 
 const defaultMarkers: LiveMarker[] = [
@@ -45,6 +46,7 @@ export function GlobeLive({
   glowColor = [0.94, 0.93, 0.91],
   onSelectMarker,
   activeMarkerId,
+  scale = 1,
 }: GlobeLiveProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const pointerInteracting = useRef<{ x: number; y: number } | null>(null)
@@ -53,6 +55,12 @@ export function GlobeLive({
   const thetaOffsetRef = useRef(0)
   const isPausedRef = useRef(false)
   const [liveViewers, setLiveViewers] = useState(2847)
+  const [currentScale, setCurrentScale] = useState(scale)
+  const scaleRef = useRef(scale)
+
+  useEffect(() => {
+    scaleRef.current = currentScale
+  }, [currentScale])
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -119,6 +127,7 @@ export function GlobeLive({
         baseColor,
         markerColor,
         glowColor,
+        scale: scaleRef.current,
         markerElevation: 0.01,
         markers: markers.map((m) => ({
           location: m.location,
@@ -137,6 +146,7 @@ export function GlobeLive({
         globe!.update({
           phi: phi + phiOffsetRef.current + dragOffset.current.phi,
           theta: initialTheta + thetaOffsetRef.current + dragOffset.current.theta,
+          scale: scaleRef.current,
         })
         animationId = requestAnimationFrame(animate)
       }

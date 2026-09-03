@@ -10,10 +10,16 @@ import {
   AlertTriangle,
   Radio,
   Eye,
+  EyeOff,
   Info,
   Layers,
   Sparkles,
   Compass,
+  ZoomIn,
+  ZoomOut,
+  Maximize2,
+  Tag,
+  Crosshair,
 } from 'lucide-react';
 import { soundEffects } from '../utils/soundEffects';
 
@@ -29,9 +35,53 @@ interface Indonesia3DGlobeProps {
 // Pusat Komando Nasional SIGAP (Jakarta)
 const JAKARTA_COORDINATES: [number, number] = [-6.2088, 106.8456];
 
-// Center of Indonesian Archipelago (approx. 2°S, 117°E) in radians
-const INDONESIA_CENTER_PHI = (117 * Math.PI) / 180; // ~2.04 radians
-const INDONESIA_CENTER_THETA = (-2.5 * Math.PI) / 180; // ~-0.043 radians
+// Center of Indonesian Archipelago (approx. 2.5°S, 118°E) in Cobe coordinates
+// In Cobe, a longitude lng is facing the camera center when phi = (270 - lng) * PI / 180
+const INDONESIA_CENTER_PHI = ((270 - 118) * Math.PI) / 180; // ~2.653 radians
+const INDONESIA_CENTER_THETA = (-2.5 * Math.PI) / 180; // ~-0.0436 radians
+
+// Cobe surface radius with marker elevation
+const COBE_RADIUS = 0.8 + 0.018;
+
+// Convert [lat, lng] to 3D Cartesian coordinates according to Cobe internal convention
+function latLngToCobeVector([lat, lng]: [number, number]): [number, number, number] {
+  const r = (lat * Math.PI) / 180;
+  const a = (lng * Math.PI) / 180 - Math.PI;
+  const o = Math.cos(r);
+  return [-o * Math.cos(a), Math.sin(r), o * Math.sin(a)];
+}
+
+// Project 3D coordinate on globe to 2D screen percentage (0-100%) and front-facing visibility
+function projectMarkerToScreen(
+  location: [number, number],
+  phi: number,
+  theta: number,
+  scale: number
+): { xPercent: number; yPercent: number; isVisible: boolean; zDepth: number } {
+  const v = latLngToCobeVector(location);
+  const t: [number, number, number] = [
+    v[0] * COBE_RADIUS,
+    v[1] * COBE_RADIUS,
+    v[2] * COBE_RADIUS,
+  ];
+
+  const r = Math.cos(theta);
+  const a = Math.cos(phi);
+  const o = Math.sin(theta);
+  const i = Math.sin(phi);
+
+  const c = a * t[0] + i * t[2];
+  const s = i * o * t[0] + r * t[1] - a * o * t[2];
+  const zDepth = -i * r * t[0] + o * t[1] + a * r * t[2];
+
+  // Visible when facing front of camera
+  const isVisible = zDepth > 0.05;
+
+  const xPercent = ((c * scale + 1) / 2) * 100;
+  const yPercent = ((-s * scale + 1) / 2) * 100;
+
+  return { xPercent, yPercent, isVisible, zDepth };
+}
 
 export const Indonesia3DGlobe: React.FC<Indonesia3DGlobeProps> = ({
   regions,
@@ -47,7 +97,9 @@ export const Indonesia3DGlobe: React.FC<Indonesia3DGlobeProps> = ({
 
   const [isRotating, setIsRotating] = useState<boolean>(true);
   const [showArcs, setShowArcs] = useState<boolean>(true);
+  const [showLabels, setShowLabels] = useState<boolean>(true);
   const [activeTab, setActiveTab] = useState<'all' | 'darurat' | 'siaga'>('all');
+  const [zoom, setZoom] = useState<number>(1.15);
 
   // Dragging & Interaction State
   const pointerInteracting = useRef<{ x: number; y: number } | null>(null);
@@ -58,12 +110,31 @@ export const Indonesia3DGlobe: React.FC<Indonesia3DGlobeProps> = ({
   const targetThetaRef = useRef(INDONESIA_CENTER_THETA);
   const isPausedRef = useRef(false);
 
+  // Label DOM Refs & State Refs for 60fps Animation Loop
+  const labelElementRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const showLabelsRef = useRef<boolean>(true);
+  const displayRegionsRef = useRef<RegionRiskData[]>([]);
+
+  // Smooth Zoom State
+  const zoomRef = useRef<number>(1.15);
+  const targetZoomRef = useRef<number>(1.15);
+  const touchDistRef = useRef<number | null>(null);
+  const touchStartZoomRef = useRef<number>(1.15);
+
   // Filtered regions for Indonesia
   const displayRegions = useMemo(() => {
     if (activeTab === 'darurat') return regions.filter((r) => r.status === 'darurat');
     if (activeTab === 'siaga') return regions.filter((r) => r.status === 'siaga');
     return regions;
   }, [regions, activeTab]);
+
+  useEffect(() => {
+    showLabelsRef.current = showLabels;
+  }, [showLabels]);
+
+  useEffect(() => {
+    displayRegionsRef.current = displayRegions;
+  }, [displayRegions]);
 
   // Generate Cobe Markers for Indonesian locations
   const cobeMarkers = useMemo(() => {
@@ -148,18 +219,93 @@ export const Indonesia3DGlobe: React.FC<Indonesia3DGlobeProps> = ({
     soundEffects.playClick();
     targetPhiRef.current = INDONESIA_CENTER_PHI;
     targetThetaRef.current = INDONESIA_CENTER_THETA;
+    targetZoomRef.current = 1.15;
+    setZoom(1.15);
+  }, []);
+
+  // Zoom Action Handlers
+  const handleZoomIn = useCallback(() => {
+    soundEffects.playClick();
+    targetZoomRef.current = Math.min(3.2, Number((targetZoomRef.current + 0.35).toFixed(2)));
+    setZoom(targetZoomRef.current);
+  }, []);
+
+  const handleZoomOut = useCallback(() => {
+    soundEffects.playClick();
+    targetZoomRef.current = Math.max(0.75, Number((targetZoomRef.current - 0.35).toFixed(2)));
+    setZoom(targetZoomRef.current);
+  }, []);
+
+  const handleZoomReset = useCallback(() => {
+    soundEffects.playClick();
+    targetZoomRef.current = 1.15;
+    setZoom(1.15);
+  }, []);
+
+  const handleSetZoomPreset = useCallback((preset: number) => {
+    soundEffects.playClick();
+    targetZoomRef.current = preset;
+    setZoom(preset);
+  }, []);
+
+  // Touch Pinch-to-zoom handling
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      touchDistRef.current = Math.hypot(dx, dy);
+      touchStartZoomRef.current = targetZoomRef.current;
+    }
+  }, []);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (e.touches.length === 2 && touchDistRef.current !== null) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const currentDist = Math.hypot(dx, dy);
+      const ratio = currentDist / touchDistRef.current;
+      const newZoom = Math.min(3.2, Math.max(0.75, Number((touchStartZoomRef.current * ratio).toFixed(2))));
+      targetZoomRef.current = newZoom;
+      setZoom(newZoom);
+    }
+  }, []);
+
+  const handleTouchEnd = useCallback(() => {
+    touchDistRef.current = null;
+  }, []);
+
+  // Mouse Wheel Zoom Listener
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      const delta = -Math.sign(e.deltaY) * 0.2;
+      targetZoomRef.current = Math.min(3.2, Math.max(0.75, Number((targetZoomRef.current + delta).toFixed(2))));
+      setZoom(targetZoomRef.current);
+    };
+
+    container.addEventListener('wheel', handleWheel, { passive: false });
+    return () => {
+      container.removeEventListener('wheel', handleWheel);
+    };
   }, []);
 
   // Function to focus onto a specific region's coordinates
   const handleFlyToRegion = useCallback((region: RegionRiskData) => {
     soundEffects.playClick();
     onSelectRegion(region);
-    // In cobe: longitude to phi, latitude to theta
-    // lng in radians:
-    const targetPhi = (region.lng * Math.PI) / 180;
+    // In Cobe, to center longitude `lng` precisely on screen:
+    // phi = ((270 - region.lng) * Math.PI) / 180
+    // theta = (region.lat * Math.PI) / 180
+    const targetPhi = ((270 - region.lng) * Math.PI) / 180;
     const targetTheta = (region.lat * Math.PI) / 180;
     targetPhiRef.current = targetPhi;
     targetThetaRef.current = targetTheta;
+    // Smoothly zoom in to the regional hotspot for closer 3D inspection
+    targetZoomRef.current = 2.2;
+    setZoom(2.2);
   }, [onSelectRegion]);
 
   // Main Cobe WebGL Initializer
@@ -175,6 +321,7 @@ export const Indonesia3DGlobe: React.FC<Indonesia3DGlobeProps> = ({
       devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
       width,
       height: width,
+      scale: zoomRef.current,
       phi: basePhiRef.current,
       theta: baseThetaRef.current,
       dark: 1, // Dark Ops Mode
@@ -194,9 +341,13 @@ export const Indonesia3DGlobe: React.FC<Indonesia3DGlobeProps> = ({
     });
 
     const animate = () => {
-      // Smooth interpolation toward target coordinates (smooth transition)
-      if (Math.abs(targetPhiRef.current - basePhiRef.current) > 0.001) {
-        basePhiRef.current += (targetPhiRef.current - basePhiRef.current) * 0.06;
+      // Smooth interpolation toward target coordinates (taking shortest rotation path)
+      let phiDiff = (targetPhiRef.current - basePhiRef.current) % (2 * Math.PI);
+      if (phiDiff > Math.PI) phiDiff -= 2 * Math.PI;
+      if (phiDiff < -Math.PI) phiDiff += 2 * Math.PI;
+
+      if (Math.abs(phiDiff) > 0.001) {
+        basePhiRef.current += phiDiff * 0.08;
       } else if (isRotating && !isPausedRef.current) {
         // Slow subtle rotation when idle
         basePhiRef.current += 0.0015;
@@ -204,16 +355,66 @@ export const Indonesia3DGlobe: React.FC<Indonesia3DGlobeProps> = ({
       }
 
       if (Math.abs(targetThetaRef.current - baseThetaRef.current) > 0.001) {
-        baseThetaRef.current += (targetThetaRef.current - baseThetaRef.current) * 0.06;
+        baseThetaRef.current += (targetThetaRef.current - baseThetaRef.current) * 0.08;
       }
+
+      // Smooth zoom interpolation
+      if (Math.abs(targetZoomRef.current - zoomRef.current) > 0.002) {
+        zoomRef.current += (targetZoomRef.current - zoomRef.current) * 0.12;
+      }
+
+      const curPhi = basePhiRef.current + dragOffset.current.phi;
+      const curTheta = Math.max(-0.45, Math.min(0.45, baseThetaRef.current + dragOffset.current.theta));
+      const curScale = zoomRef.current;
 
       if (globeRef.current) {
         globeRef.current.update({
-          phi: basePhiRef.current + dragOffset.current.phi,
-          theta: Math.max(-0.4, Math.min(0.4, baseThetaRef.current + dragOffset.current.theta)),
+          phi: curPhi,
+          theta: curTheta,
+          scale: curScale,
           markers: cobeMarkers,
           arcs: cobeArcs,
         });
+      }
+
+      // Real-time 3D to 2D Label Projection (60fps without React re-renders)
+      if (showLabelsRef.current) {
+        const activeRegions = displayRegionsRef.current;
+        for (let i = 0; i < activeRegions.length; i++) {
+          const reg = activeRegions[i];
+          const el = labelElementRefs.current[reg.id];
+          if (!el) continue;
+
+          const proj = projectMarkerToScreen([reg.lat, reg.lng], curPhi, curTheta, curScale);
+
+          // Render only when on front hemisphere facing camera
+          if (
+            proj.isVisible &&
+            proj.xPercent >= -15 &&
+            proj.xPercent <= 115 &&
+            proj.yPercent >= -15 &&
+            proj.yPercent <= 115
+          ) {
+            el.style.left = `${proj.xPercent}%`;
+            el.style.top = `${proj.yPercent}%`;
+            // Fade slightly near limb of globe
+            const alpha = Math.min(1, Math.max(0.15, (proj.zDepth - 0.04) / 0.25));
+            el.style.opacity = String(alpha);
+            el.style.pointerEvents = 'auto';
+          } else {
+            el.style.opacity = '0';
+            el.style.pointerEvents = 'none';
+          }
+        }
+      } else {
+        // Clear all labels if toggled off
+        for (const id in labelElementRefs.current) {
+          const el = labelElementRefs.current[id];
+          if (el) {
+            el.style.opacity = '0';
+            el.style.pointerEvents = 'none';
+          }
+        }
       }
 
       animationId = requestAnimationFrame(animate);
@@ -308,11 +509,25 @@ export const Indonesia3DGlobe: React.FC<Indonesia3DGlobeProps> = ({
             </button>
           </div>
 
+          {/* Toggle Region Labels */}
+          <button
+            onClick={() => setShowLabels((prev) => !prev)}
+            title={showLabels ? 'Sembunyikan Label Nama Daerah di Globe' : 'Tampilkan Label Nama Daerah di Globe'}
+            className={`p-1.5 rounded-lg border text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+              showLabels
+                ? 'bg-sky-950/80 border-sky-500/50 text-sky-300 shadow-sm shadow-sky-500/20'
+                : 'bg-slate-900/80 border-slate-700 text-slate-400 hover:text-white'
+            }`}
+          >
+            {showLabels ? <Tag className="w-3.5 h-3.5 text-sky-400" /> : <EyeOff className="w-3.5 h-3.5" />}
+            <span className="hidden sm:inline text-[10px]">Nama Daerah: {showLabels ? 'ON' : 'OFF'}</span>
+          </button>
+
           {/* Toggle Telemetry Arcs */}
           <button
             onClick={() => setShowArcs((prev) => !prev)}
             title="Toggle Jalur Komunikasi Pusat ke Daerah"
-            className={`p-1.5 rounded-lg border text-xs font-semibold flex items-center gap-1 transition-all ${
+            className={`p-1.5 rounded-lg border text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer ${
               showArcs
                 ? 'bg-blue-950/80 border-blue-500/50 text-sky-300'
                 : 'bg-slate-900/80 border-slate-700 text-slate-400 hover:text-white'
@@ -345,13 +560,230 @@ export const Indonesia3DGlobe: React.FC<Indonesia3DGlobeProps> = ({
 
       {/* Main 3D Interactive Canvas */}
       <div className="relative flex-1 flex items-center justify-center p-2 min-h-[380px]">
-        <div className="relative w-full max-w-[440px] aspect-square flex items-center justify-center">
+        <div className="relative w-full max-w-[460px] aspect-square flex items-center justify-center">
           <canvas
             ref={canvasRef}
             onPointerDown={handlePointerDown}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
             className="w-full h-full cursor-grab transition-opacity duration-1000 rounded-full"
             style={{ opacity: 0, touchAction: 'none' }}
           />
+
+          {/* 3D Anchored Region Name Labels Overlay */}
+          {displayRegions.map((reg) => {
+            const isSelected = reg.id === selectedRegion.id;
+            const isDarurat = reg.status === 'darurat';
+            const isSiaga = reg.status === 'siaga';
+
+            return (
+              <div
+                key={reg.id}
+                id={`globe-label-${reg.id}`}
+                ref={(el) => {
+                  labelElementRefs.current[reg.id] = el;
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleFlyToRegion(reg);
+                }}
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  opacity: 0,
+                  pointerEvents: 'none',
+                  transform: 'translate(-50%, -100%) translateY(-6px)',
+                  zIndex: isSelected ? 35 : isDarurat ? 28 : 22,
+                  willChange: 'left, top, opacity',
+                }}
+                className="group cursor-pointer select-none transition-transform duration-150"
+              >
+                {/* Zoom-Reactive Adaptive Label Design */}
+                {zoom < 1.35 ? (
+                  // Macro Level (Zoom < 1.35x): Compact High-Contrast Region Badge
+                  <div
+                    className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full border backdrop-blur-md shadow-lg transition-all duration-150 ${
+                      isSelected
+                        ? 'bg-blue-600/95 text-white border-sky-300 ring-2 ring-sky-400/50 scale-105'
+                        : isDarurat
+                        ? 'bg-slate-950/90 text-rose-200 border-rose-500/70 hover:border-rose-400 hover:scale-105 shadow-rose-950/40'
+                        : isSiaga
+                        ? 'bg-slate-950/90 text-amber-200 border-amber-500/70 hover:border-amber-400 hover:scale-105 shadow-amber-950/40'
+                        : 'bg-slate-950/90 text-emerald-200 border-emerald-500/60 hover:border-emerald-400 hover:scale-105'
+                    }`}
+                  >
+                    <span
+                      className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+                        isDarurat ? 'bg-rose-500 animate-ping' : isSiaga ? 'bg-amber-400' : 'bg-emerald-400'
+                      }`}
+                    />
+                    <span className="text-[10px] font-bold tracking-tight whitespace-nowrap">{reg.name}</span>
+                  </div>
+                ) : (
+                  // Zoom In Level (Zoom >= 1.35x): Rich Tactical Hotspot Details Card
+                  <div
+                    className={`p-2 rounded-xl border backdrop-blur-md shadow-2xl transition-all duration-150 relative ${
+                      isSelected
+                        ? 'bg-slate-950/95 border-sky-400 ring-2 ring-sky-400/50 shadow-sky-950/80 scale-105'
+                        : isDarurat
+                        ? 'bg-slate-950/95 border-rose-500/80 hover:border-rose-400 hover:scale-105 shadow-rose-950/50'
+                        : isSiaga
+                        ? 'bg-slate-950/95 border-amber-500/80 hover:border-amber-400 hover:scale-105 shadow-amber-950/50'
+                        : 'bg-slate-950/95 border-emerald-500/70 hover:border-emerald-400 hover:scale-105 shadow-emerald-950/50'
+                    }`}
+                  >
+                    {/* Header with status tag and region name */}
+                    <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-1 mb-1">
+                      <div className="flex items-center gap-1.5">
+                        <span
+                          className={`w-2 h-2 rounded-full shrink-0 ${
+                            isDarurat
+                              ? 'bg-rose-500 animate-pulse ring-2 ring-rose-500/40'
+                              : isSiaga
+                              ? 'bg-amber-400 ring-2 ring-amber-400/40'
+                              : 'bg-emerald-400 ring-2 ring-emerald-400/40'
+                          }`}
+                        />
+                        <span className="text-[11px] font-black text-white whitespace-nowrap tracking-wide">
+                          {reg.name}
+                        </span>
+                      </div>
+                      <span
+                        className={`text-[8px] font-mono font-bold uppercase px-1.5 py-0.5 rounded ${
+                          isDarurat
+                            ? 'bg-rose-950 text-rose-300 border border-rose-800/40'
+                            : isSiaga
+                            ? 'bg-amber-950 text-amber-300 border border-amber-800/40'
+                            : 'bg-emerald-950 text-emerald-300 border border-emerald-800/40'
+                        }`}
+                      >
+                        {reg.status}
+                      </span>
+                    </div>
+
+                    {/* Subtitle with Province & Geographic Coordinates */}
+                    <div className="text-[9px] text-slate-300 flex items-center justify-between gap-3 whitespace-nowrap">
+                      <span className="text-slate-400">{reg.province}</span>
+                      <span className="font-mono text-sky-400 font-semibold">
+                        {reg.lat.toFixed(2)}°, {reg.lng.toFixed(2)}°
+                      </span>
+                    </div>
+
+                    {/* Crisis Hazard & Vulnerability Metric (when zoomed in closer) */}
+                    {zoom >= 1.6 && (
+                      <div className="mt-1 pt-1 border-t border-white/10 text-[9px] flex items-center justify-between gap-2 whitespace-nowrap">
+                        <span className="text-amber-300 font-medium truncate max-w-[130px]">
+                          {reg.crisisType.split(',')[0]}
+                        </span>
+                        <span className="text-[8px] bg-blue-950 text-sky-300 px-1 py-0.2 rounded font-mono font-bold border border-blue-800/40">
+                          Skor: {Math.round(reg.vulnerabilityIndex * 10)}%
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Downward Pin Triangle Stem */}
+                    <div className="absolute left-1/2 -bottom-1.5 -translate-x-1/2 w-0 h-0 border-x-4 border-x-transparent border-t-4 border-t-slate-900" />
+                  </div>
+                )}
+
+                {/* Target Pin Point Dot on globe surface */}
+                <div className="absolute left-1/2 top-full -translate-x-1/2 -translate-y-1 w-2 h-2 rounded-full border border-white/60 bg-sky-400/90 pointer-events-none shadow-sm shadow-sky-400" />
+              </div>
+            );
+          })}
+
+          {/* Interactive Zoom & Region Label Status Badge */}
+          <div className="absolute top-2 left-2 pointer-events-none flex items-center gap-1.5 text-[10px] font-mono text-slate-300 bg-slate-950/80 px-2.5 py-1 rounded-md border border-white/10 backdrop-blur-md shadow-md">
+            <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse" />
+            <span className="hidden sm:inline">
+              Zoom: {zoom.toFixed(1)}x &bull; {showLabels ? 'Nama Daerah Aktif' : 'Label Nonaktif'} (Scroll Mouse / +/-)
+            </span>
+            <span className="sm:hidden">Zoom: {zoom.toFixed(1)}x</span>
+          </div>
+
+          {/* Floating 3D Zoom HUD */}
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 z-20 flex flex-col items-center gap-1 bg-slate-950/85 backdrop-blur-md p-1.5 rounded-xl border border-white/10 shadow-xl">
+            <button
+              id="btn-globe-zoom-in"
+              onClick={handleZoomIn}
+              title="Perbesar (Zoom In 3D) [atau Scroll Mouse Atas]"
+              className="p-2 rounded-lg bg-slate-900 hover:bg-blue-600 text-slate-200 hover:text-white border border-slate-700/80 transition-all cursor-pointer active:scale-95 shadow-sm"
+            >
+              <ZoomIn className="w-3.5 h-3.5" />
+            </button>
+
+            <button
+              id="btn-globe-zoom-reset"
+              onClick={handleZoomReset}
+              title="Reset Zoom ke Standar (100%)"
+              className="px-1.5 py-1 rounded bg-slate-900 hover:bg-slate-800 text-[10px] font-mono font-bold text-sky-300 border border-slate-700/70 transition-colors cursor-pointer w-full text-center"
+            >
+              {Math.round((zoom / 1.15) * 100)}%
+            </button>
+
+            <button
+              id="btn-globe-zoom-out"
+              onClick={handleZoomOut}
+              title="Perkecil (Zoom Out 3D) [atau Scroll Mouse Bawah]"
+              className="p-2 rounded-lg bg-slate-900 hover:bg-blue-600 text-slate-200 hover:text-white border border-slate-700/80 transition-all cursor-pointer active:scale-95 shadow-sm"
+            >
+              <ZoomOut className="w-3.5 h-3.5" />
+            </button>
+
+            <div className="w-full h-px bg-slate-800 my-0.5" />
+
+            {/* Quick Zoom Presets */}
+            <div className="flex flex-col gap-1 w-full">
+              <button
+                id="btn-zoom-preset-1"
+                onClick={() => handleSetZoomPreset(1.0)}
+                title="Level 1.0x: Nusantara Makro"
+                className={`text-[9px] font-bold py-0.5 px-1 rounded text-center transition-colors cursor-pointer ${
+                  Math.abs(zoom - 1.0) < 0.2 ? 'bg-blue-600 text-white font-black' : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                1.0x
+              </button>
+              <button
+                id="btn-zoom-preset-2"
+                onClick={() => handleSetZoomPreset(1.8)}
+                title="Level 1.8x: Kepulauan Regional"
+                className={`text-[9px] font-bold py-0.5 px-1 rounded text-center transition-colors cursor-pointer ${
+                  Math.abs(zoom - 1.8) < 0.2 ? 'bg-blue-600 text-white font-black' : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                1.8x
+              </button>
+              <button
+                id="btn-zoom-preset-3"
+                onClick={() => handleSetZoomPreset(2.5)}
+                title="Level 2.5x: Hotspot Detail"
+                className={`text-[9px] font-bold py-0.5 px-1 rounded text-center transition-colors cursor-pointer ${
+                  Math.abs(zoom - 2.5) < 0.2 ? 'bg-blue-600 text-white font-black' : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                2.5x
+              </button>
+            </div>
+
+            <div className="w-full h-px bg-slate-800 my-0.5" />
+
+            {/* Toggle Region Names inside Zoom HUD */}
+            <button
+              id="btn-globe-toggle-labels"
+              onClick={() => setShowLabels((prev) => !prev)}
+              title={showLabels ? 'Sembunyikan Label Nama Daerah' : 'Tampilkan Label Nama Daerah di Globe'}
+              className={`p-1.5 rounded-lg border text-xs transition-all cursor-pointer flex items-center justify-center w-full ${
+                showLabels
+                  ? 'bg-sky-950/80 border-sky-500/70 text-sky-300'
+                  : 'bg-slate-900 hover:bg-slate-800 border-slate-700 text-slate-400'
+              }`}
+            >
+              <Tag className="w-3.5 h-3.5" />
+            </button>
+          </div>
 
           {/* Compass Rose Indicator Overlay */}
           <div className="absolute top-2 right-2 pointer-events-none flex items-center gap-1 text-[10px] font-mono text-slate-400 bg-slate-950/70 px-2 py-1 rounded-md border border-white/10 backdrop-blur-md">
