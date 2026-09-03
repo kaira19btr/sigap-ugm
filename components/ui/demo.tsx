@@ -16,7 +16,7 @@ export function Demo() {
 export default function DemoOne() {
   return (
     <main className="relative w-screen h-screen bg-gray-900 overflow-hidden">
-      <SmokeyBackground className="absolute inset-0" color="#E11D48" />
+      <SmokeyBackground className="absolute inset-0" color="#1D4ED8" />
       <div className="relative z-10 flex flex-col items-center justify-center w-full h-full p-4 gap-6">
         <LoginForm />
         <Demo />

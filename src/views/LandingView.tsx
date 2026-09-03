@@ -27,7 +27,6 @@ import {
   TrendingUp,
   Volume2,
   VolumeX,
-  Palette,
   Maximize2,
   X,
   Sparkle,
@@ -44,53 +43,26 @@ export const LandingView: React.FC<LandingViewProps> = ({
 }) => {
   const [isArchitectureModalOpen, setIsArchitectureModalOpen] = useState(false);
   const [isSoundMuted, setIsSoundMuted] = useState(soundEffects.getMuted());
-  const [activeShaderColor, setActiveShaderColor] = useState<string>('#E11D48'); // SIGAP Crimson Rose default
   const [showFullscreenDemo, setShowFullscreenDemo] = useState<boolean>(false);
-
-  const sigapPalette = [
-    { id: 'rose', name: 'SIGAP Rose (Shield)', hex: '#E11D48', border: 'border-rose-500', bg: 'bg-rose-600' },
-    { id: 'amber', name: 'SIGAP Amber (Alert)', hex: '#F59E0B', border: 'border-amber-500', bg: 'bg-amber-500' },
-    { id: 'cobalt', name: 'SIGAP Cobalt (Governance)', hex: '#1E40AF', border: 'border-blue-600', bg: 'bg-blue-600' },
-    { id: 'emerald', name: 'SIGAP Emerald (Converge)', hex: '#059669', border: 'border-emerald-500', bg: 'bg-emerald-600' },
-  ];
+  const cobaltShaderColor = '#1D4ED8'; // Tema Warna Cobalt SIGAP
 
   // Full-screen interactive demo mode matching demo.tsx
   if (showFullscreenDemo) {
     return (
       <main className="relative w-screen h-screen bg-slate-950 overflow-hidden text-slate-100 flex flex-col justify-between">
-        {/* Interactive WebGL Shader in SIGAP Colors */}
-        <SmokeyBackground className="absolute inset-0" color={activeShaderColor} backdropBlurAmount="md" />
+        {/* Interactive WebGL Shader in SIGAP Cobalt */}
+        <SmokeyBackground className="absolute inset-0" color={cobaltShaderColor} backdropBlurAmount="md" />
 
         {/* Top Control Bar */}
         <header className="relative z-20 px-6 py-4 flex items-center justify-between bg-slate-950/60 backdrop-blur-lg border-b border-white/10">
           <div className="flex items-center gap-3">
             <SigapLogo size="sm" variant="dark" showText={true} />
-            <span className="hidden sm:inline-block px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-rose-600/30 text-rose-300 border border-rose-500/40">
-              Interactive Shader Portal
+            <span className="hidden sm:inline-block px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-blue-600/30 text-sky-300 border border-blue-500/40">
+              Interactive Cobalt Shader Portal
             </span>
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Color Switcher Swatches */}
-            <div className="flex items-center gap-1.5 p-1 bg-slate-900/80 rounded-xl border border-white/10">
-              {sigapPalette.map((swatch) => (
-                <button
-                  key={swatch.id}
-                  type="button"
-                  onClick={() => {
-                    soundEffects.playClick();
-                    setActiveShaderColor(swatch.hex);
-                  }}
-                  title={swatch.name}
-                  className={`w-6 h-6 rounded-lg ${swatch.bg} transition-all cursor-pointer ${
-                    activeShaderColor === swatch.hex
-                      ? 'ring-2 ring-white scale-110 shadow-lg'
-                      : 'opacity-60 hover:opacity-100'
-                  }`}
-                />
-              ))}
-            </div>
-
             <GradientButton
               size="sm"
               variant="variant"
@@ -211,20 +183,20 @@ export const LandingView: React.FC<LandingViewProps> = ({
         {/* Interactive WebGL Shader Layer in SIGAP Palette */}
         <SmokeyBackground
           className="absolute inset-0 opacity-80"
-          color={activeShaderColor}
+          color={cobaltShaderColor}
           backdropBlurAmount="sm"
         />
 
         {/* Ambient atmospheric backlights */}
-        <div className="absolute -top-24 left-1/4 w-96 h-96 bg-rose-600/20 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute top-1/2 right-10 w-96 h-96 bg-amber-500/15 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute -top-24 left-1/4 w-96 h-96 bg-blue-600/25 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute top-1/2 right-10 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             {/* Left Column: Heading, Badge, Description & CTAs */}
             <div className="lg:col-span-7 space-y-6 text-left">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-950/80 border border-rose-500/30 text-rose-300 text-xs font-semibold backdrop-blur-md shadow-sm">
-                <Activity className="w-3.5 h-3.5 text-rose-400 animate-pulse" />
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-950/80 border border-blue-500/30 text-sky-300 text-xs font-semibold backdrop-blur-md shadow-sm">
+                <Activity className="w-3.5 h-3.5 text-sky-400 animate-pulse" />
                 <span>Platform Siaga Bencana &amp; Perlindungan Adaptif Indonesia</span>
               </div>
 
@@ -273,34 +245,6 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   <Maximize2 className="w-4 h-4 mr-1.5 text-rose-300" />
                   <span>Mode Demo Shader</span>
                 </GradientButton>
-              </div>
-
-              {/* Shader Interactive Palette Switcher */}
-              <div className="pt-2 flex flex-wrap items-center gap-3">
-                <div className="flex items-center gap-1.5 text-xs text-slate-400 font-medium">
-                  <Palette className="w-3.5 h-3.5 text-rose-400" />
-                  <span>Tema Warna Shader:</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  {sigapPalette.map((swatch) => (
-                    <button
-                      key={swatch.id}
-                      type="button"
-                      onClick={() => {
-                        soundEffects.playClick();
-                        setActiveShaderColor(swatch.hex);
-                      }}
-                      className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 border transition-all cursor-pointer backdrop-blur-md ${
-                        activeShaderColor === swatch.hex
-                          ? `${swatch.bg} text-white border-white/40 shadow-md scale-105`
-                          : 'bg-slate-900/70 text-slate-300 border-white/10 hover:border-white/30'
-                      }`}
-                    >
-                      <span className={`w-2 h-2 rounded-full ${swatch.bg} ring-1 ring-white/50`}></span>
-                      <span>{swatch.name.split(' ')[1]}</span>
-                    </button>
-                  ))}
-                </div>
               </div>
 
               {/* Quick Metrics Bar in Dark Contrast */}
