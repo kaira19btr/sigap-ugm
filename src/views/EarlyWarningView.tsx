@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { RegionRiskData, UserRole, UserProfile } from '../types';
 import { RealEarlyWarningMap } from '../components/RealEarlyWarningMap';
+import { Indonesia3DGlobe } from '../components/Indonesia3DGlobe';
 import { AnimatedCounter } from '../components/AnimatedCounter';
 import { EarlyWarningMetricModal, EarlyWarningMetricType } from '../components/EarlyWarningMetricModal';
 import { RegionRadarChartModal } from '../components/RegionRadarChartModal';
@@ -26,6 +27,8 @@ import {
   Radar,
   Workflow,
   Lock,
+  Globe2,
+  Map as MapIcon,
 } from 'lucide-react';
 
 interface EarlyWarningViewProps {
@@ -46,6 +49,7 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
   activeProfile,
 }) => {
   const [filterStatus, setFilterStatus] = useState<'all' | 'darurat' | 'siaga' | 'normal'>('all');
+  const [mapDisplayMode, setMapDisplayMode] = useState<'globe3d' | 'map2d'>('globe3d');
   const [activeMetricModal, setActiveMetricModal] = useState<EarlyWarningMetricType | null>(null);
   const [isRadarModalOpen, setIsRadarModalOpen] = useState<boolean>(false);
   const [isArchitectureModalOpen, setIsArchitectureModalOpen] = useState<boolean>(false);
@@ -252,102 +256,148 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
             <div className="flex items-center gap-2">
               <span className="text-xs font-bold uppercase tracking-wide text-slate-100 flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
-                {isDaerah ? `Peta Pantauan Wilayah Kerja (${targetRegionName})` : 'Peta Pantauan Kerentanan Wilayah'}
+                {isDaerah ? `Pantauan Wilayah Kerja (${targetRegionName})` : 'Pusat Pantauan Kerentanan Wilayah'}
               </span>
               <span className="text-[10px] bg-rose-950/60 text-rose-300 border border-rose-800/40 px-2 py-0.5 rounded font-mono font-bold">
                 {filteredRegions.length} Titik Fokus Aktif
               </span>
             </div>
 
-            {/* Filter Buttons */}
-            <div className="flex items-center gap-1.5 bg-slate-900/80 p-1 rounded-lg border border-slate-800">
-              <button
-                onClick={() => setFilterStatus('all')}
-                className={`text-[11px] font-semibold px-2.5 py-1 rounded transition-all ${
-                  filterStatus === 'all'
-                    ? 'bg-gradient-to-r from-rose-600 to-blue-600 text-white shadow-xs'
-                    : 'text-slate-400 hover:text-slate-200'
-                }`}
-              >
-                Semua ({scopedRegions.length})
-              </button>
-              <button
-                onClick={() => setFilterStatus('darurat')}
-                className={`text-[11px] font-semibold px-2.5 py-1 rounded transition-all ${
-                  filterStatus === 'darurat'
-                    ? 'bg-rose-600 text-white shadow-xs'
-                    : 'text-rose-400 hover:bg-rose-950/40'
-                }`}
-              >
-                Darurat ({daruratCount})
-              </button>
-              <button
-                onClick={() => setFilterStatus('siaga')}
-                className={`text-[11px] font-semibold px-2.5 py-1 rounded transition-all ${
-                  filterStatus === 'siaga'
-                    ? 'bg-amber-500 text-white shadow-xs'
-                    : 'text-amber-400 hover:bg-amber-950/40'
-                }`}
-              >
-                Siaga ({siagaCount})
-              </button>
-              <button
-                onClick={() => setFilterStatus('normal')}
-                className={`text-[11px] font-semibold px-2.5 py-1 rounded transition-all ${
-                  filterStatus === 'normal'
-                    ? 'bg-emerald-600 text-white shadow-xs'
-                    : 'text-emerald-400 hover:bg-emerald-950/40'
-                }`}
-              >
-                Normal
-              </button>
+            <div className="flex flex-wrap items-center gap-2">
+              {/* View Mode Toggle: 3D Globe vs 2D GIS Map */}
+              <div className="flex items-center bg-slate-900/90 p-1 rounded-lg border border-slate-800 shadow-xs">
+                <button
+                  id="btn-mode-globe-3d"
+                  onClick={() => setMapDisplayMode('globe3d')}
+                  className={`flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded transition-all cursor-pointer ${
+                    mapDisplayMode === 'globe3d'
+                      ? 'bg-blue-600 text-white shadow-xs'
+                      : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  <Globe2 className="w-3.5 h-3.5 text-sky-300" />
+                  <span>Globe 3D Indonesia</span>
+                </button>
+                <button
+                  id="btn-mode-map-2d"
+                  onClick={() => setMapDisplayMode('map2d')}
+                  className={`flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded transition-all cursor-pointer ${
+                    mapDisplayMode === 'map2d'
+                      ? 'bg-blue-600 text-white shadow-xs'
+                      : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  <MapIcon className="w-3.5 h-3.5 text-sky-300" />
+                  <span>Peta 2D GIS</span>
+                </button>
+              </div>
+
+              {/* Filter Buttons */}
+              <div className="flex items-center gap-1 bg-slate-900/80 p-1 rounded-lg border border-slate-800">
+                <button
+                  onClick={() => setFilterStatus('all')}
+                  className={`text-[11px] font-semibold px-2 py-1 rounded transition-all cursor-pointer ${
+                    filterStatus === 'all'
+                      ? 'bg-gradient-to-r from-rose-600 to-blue-600 text-white shadow-xs'
+                      : 'text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  Semua ({scopedRegions.length})
+                </button>
+                <button
+                  onClick={() => setFilterStatus('darurat')}
+                  className={`text-[11px] font-semibold px-2 py-1 rounded transition-all cursor-pointer ${
+                    filterStatus === 'darurat'
+                      ? 'bg-rose-600 text-white shadow-xs'
+                      : 'text-rose-400 hover:bg-rose-950/40'
+                  }`}
+                >
+                  Darurat ({daruratCount})
+                </button>
+                <button
+                  onClick={() => setFilterStatus('siaga')}
+                  className={`text-[11px] font-semibold px-2 py-1 rounded transition-all cursor-pointer ${
+                    filterStatus === 'siaga'
+                      ? 'bg-amber-500 text-white shadow-xs'
+                      : 'text-amber-400 hover:bg-amber-950/40'
+                  }`}
+                >
+                  Siaga ({siagaCount})
+                </button>
+                <button
+                  onClick={() => setFilterStatus('normal')}
+                  className={`text-[11px] font-semibold px-2 py-1 rounded transition-all cursor-pointer ${
+                    filterStatus === 'normal'
+                      ? 'bg-emerald-600 text-white shadow-xs'
+                      : 'text-emerald-400 hover:bg-emerald-950/40'
+                  }`}
+                >
+                  Normal
+                </button>
+              </div>
             </div>
           </div>
 
-          {/* Real Interactive Geolocation Map */}
+          {/* Visualization: Globe 3D Indonesia or Real Interactive 2D Map */}
           <div className="relative">
-            <RealEarlyWarningMap
-              regions={filteredRegions}
-              selectedRegion={effectiveSelectedRegion}
-              onSelectRegion={onSelectRegion}
-              onOpenEmergencyAction={onOpenEmergencyAction}
-              onOpenRadar={(region) => {
-                onSelectRegion(region);
-                setIsRadarModalOpen(true);
-              }}
-              isDaerah={isDaerah}
-              regionTitle={targetRegionName}
-            />
+            {mapDisplayMode === 'globe3d' ? (
+              <Indonesia3DGlobe
+                regions={filteredRegions}
+                selectedRegion={effectiveSelectedRegion}
+                onSelectRegion={onSelectRegion}
+                onOpenEmergencyAction={onOpenEmergencyAction}
+                onOpenRadar={(region) => {
+                  onSelectRegion(region);
+                  setIsRadarModalOpen(true);
+                }}
+                isDaerah={isDaerah}
+              />
+            ) : (
+              <RealEarlyWarningMap
+                regions={filteredRegions}
+                selectedRegion={effectiveSelectedRegion}
+                onSelectRegion={onSelectRegion}
+                onOpenEmergencyAction={onOpenEmergencyAction}
+                onOpenRadar={(region) => {
+                  onSelectRegion(region);
+                  setIsRadarModalOpen(true);
+                }}
+                isDaerah={isDaerah}
+                regionTitle={targetRegionName}
+              />
+            )}
           </div>
 
-          {/* Quick Region Selector Strip */}
-          <div className="p-3 bg-gradient-to-r from-[#0B0F19] via-[#1A0B22] to-[#0A1325] border-t border-rose-950/40 flex items-center gap-2 overflow-x-auto">
-            <span className="text-[11px] font-bold text-rose-400 uppercase shrink-0 pl-1">
-              Fokus Wilayah:
-            </span>
-            {scopedRegions.map((reg) => (
-              <button
-                key={reg.id}
-                onClick={() => onSelectRegion(reg)}
-                className={`text-xs px-3 py-1.5 rounded-lg font-medium shrink-0 transition-all flex items-center gap-1.5 ${
-                  effectiveSelectedRegion.id === reg.id
-                    ? 'bg-gradient-to-r from-rose-600 to-blue-600 text-white font-bold shadow-xs'
-                    : 'bg-slate-900/90 text-slate-300 hover:bg-slate-800 border border-slate-800'
-                }`}
-              >
-                <span
-                  className={`w-2 h-2 rounded-full ${
-                    reg.status === 'darurat'
-                      ? 'bg-rose-500 animate-ping'
-                      : reg.status === 'siaga'
-                      ? 'bg-amber-400'
-                      : 'bg-emerald-400'
+          {/* Quick Region Selector Strip (Only shown in 2D mode, since 3D globe has built-in quick strip) */}
+          {mapDisplayMode === 'map2d' && (
+            <div className="p-3 bg-gradient-to-r from-[#0B0F19] via-[#1A0B22] to-[#0A1325] border-t border-rose-950/40 flex items-center gap-2 overflow-x-auto">
+              <span className="text-[11px] font-bold text-rose-400 uppercase shrink-0 pl-1">
+                Fokus Wilayah:
+              </span>
+              {scopedRegions.map((reg) => (
+                <button
+                  key={reg.id}
+                  onClick={() => onSelectRegion(reg)}
+                  className={`text-xs px-3 py-1.5 rounded-lg font-medium shrink-0 transition-all flex items-center gap-1.5 cursor-pointer ${
+                    effectiveSelectedRegion.id === reg.id
+                      ? 'bg-gradient-to-r from-rose-600 to-blue-600 text-white font-bold shadow-xs'
+                      : 'bg-slate-900/90 text-slate-300 hover:bg-slate-800 border border-slate-800'
                   }`}
-                ></span>
-                <span>{reg.name}</span>
-              </button>
-            ))}
-          </div>
+                >
+                  <span
+                    className={`w-2 h-2 rounded-full ${
+                      reg.status === 'darurat'
+                        ? 'bg-rose-500 animate-ping'
+                        : reg.status === 'siaga'
+                        ? 'bg-amber-400'
+                        : 'bg-emerald-400'
+                    }`}
+                  ></span>
+                  <span>{reg.name}</span>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Selected Region Detailed Card */}
