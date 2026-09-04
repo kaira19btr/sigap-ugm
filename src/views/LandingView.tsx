@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { UserRole } from '../types';
 import { SigapLogo } from '../components/SigapLogo';
 import { TechnicalArchitectureModal } from '../components/TechnicalArchitectureModal';
+import { ResilienceJourneyTracker } from '../components/ResilienceJourneyTracker';
 import { soundEffects } from '../utils/soundEffects';
 import { SmokeyBackground, LoginForm } from '@/components/ui/login-form';
 import { GradientButton } from '@/components/ui/gradient-button';
@@ -30,11 +32,15 @@ import {
   Maximize2,
   X,
   Sparkle,
+  Radar,
+  AlertTriangle,
+  ChevronRight,
+  LogIn,
 } from 'lucide-react';
 
 interface LandingViewProps {
   onLoginClick: () => void;
-  onEnterDashboard: () => void;
+  onEnterDashboard: (role?: UserRole) => void;
 }
 
 export const LandingView: React.FC<LandingViewProps> = ({
@@ -268,26 +274,121 @@ export const LandingView: React.FC<LandingViewProps> = ({
               </div>
             </div>
 
-            {/* Right Column: Embedded Glassmorphic LoginForm in SIGAP Theme */}
+            {/* Right Column: Interactive Live Command Center & Beranda Showcase Card */}
             <div className="lg:col-span-5 flex flex-col items-center justify-center relative">
-              {/* Subtle ambient glow behind login form */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-rose-600/20 to-amber-500/20 rounded-3xl blur-2xl pointer-events-none"></div>
+              {/* Subtle ambient glow behind card */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/20 via-indigo-500/20 to-rose-500/20 rounded-3xl blur-2xl pointer-events-none"></div>
               
-              <div className="w-full max-w-sm">
-                <LoginForm
-                  title="Portal SIGAP"
-                  subtitle="Akses Masuk Petugas &amp; Operator Kemensos"
-                  accentColor="sigap-rose"
-                  onLogin={() => {
-                    soundEffects.playSuccessChime();
-                    onEnterDashboard();
-                  }}
-                />
+              <div className="w-full max-w-md bg-slate-950/85 border border-white/15 rounded-3xl p-6 shadow-2xl backdrop-blur-xl relative z-10 space-y-4 text-left">
+                {/* Card Top Header & Status */}
+                <div className="flex items-center justify-between border-b border-white/10 pb-3.5">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-9 h-9 rounded-xl bg-blue-600/30 border border-blue-500/50 flex items-center justify-center text-sky-300">
+                      <Radar className="w-5 h-5 animate-spin text-sky-400" style={{ animationDuration: '6s' }} />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-black text-white tracking-wide flex items-center gap-1.5">
+                        <span>Pusat Kendali SIGAP</span>
+                        <span className="text-[9px] bg-rose-500/30 text-rose-300 font-mono font-bold px-1.5 py-0.5 rounded border border-rose-500/40">
+                          LIVE
+                        </span>
+                      </h3>
+                      <p className="text-[11px] text-slate-400 font-medium">
+                        Portal Terpadu SPBE Perlindungan Sosial Adaptif
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-[10px] text-emerald-300 font-mono font-semibold">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span>24/7 Terkoneksi</span>
+                  </div>
+                </div>
 
-                {/* Quick 1-Click Role Access below the form */}
-                <div className="mt-3 p-2.5 rounded-2xl bg-slate-950/60 border border-white/10 backdrop-blur-md text-center">
-                  <span className="text-[10px] font-bold text-rose-300/80 uppercase tracking-wider block mb-1.5">
-                    Akses Cepat Demo Peran
+                {/* 3-Pillar Real-Time Status Overview */}
+                <div className="space-y-2">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 block">
+                    Status 3 Pilar Ketahanan (Real-Time):
+                  </span>
+
+                  {/* SHIELD */}
+                  <div className="p-2.5 rounded-xl bg-slate-900/80 border border-blue-500/20 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-lg bg-blue-950 flex items-center justify-center text-blue-400 shrink-0">
+                        <Shield className="w-3.5 h-3.5" />
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-white flex items-center gap-1.5">
+                          <span>SHIELD</span>
+                          <span className="text-[9px] font-mono text-blue-300 font-normal">Early Warning &amp; Trigger</span>
+                        </div>
+                        <div className="text-[10px] text-slate-400">BMKG/PVMBG • 3 Hotspot Darurat</div>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-mono font-bold text-rose-400 bg-rose-950/60 px-2 py-0.5 rounded border border-rose-800/40">
+                      Siaga Aktif
+                    </span>
+                  </div>
+
+                  {/* CONVERGE */}
+                  <div className="p-2.5 rounded-xl bg-slate-900/80 border border-indigo-500/20 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-lg bg-indigo-950 flex items-center justify-center text-indigo-400 shrink-0">
+                        <Layers className="w-3.5 h-3.5" />
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-white flex items-center gap-1.5">
+                          <span>CONVERGE</span>
+                          <span className="text-[9px] font-mono text-indigo-300 font-normal">Poverty Map &amp; Supply</span>
+                        </div>
+                        <div className="text-[10px] text-slate-400">15.240 KPM Terpetakan • Lintas K/L</div>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-mono font-bold text-sky-400 bg-blue-950/60 px-2 py-0.5 rounded border border-blue-800/40">
+                      Interoperable
+                    </span>
+                  </div>
+
+                  {/* RISE */}
+                  <div className="p-2.5 rounded-xl bg-slate-900/80 border border-emerald-500/20 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-lg bg-emerald-950 flex items-center justify-center text-emerald-400 shrink-0">
+                        <TrendingUp className="w-3.5 h-3.5" />
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-white flex items-center gap-1.5">
+                          <span>RISE</span>
+                          <span className="text-[9px] font-mono text-emerald-300 font-normal">Inclusion &amp; Graduation</span>
+                        </div>
+                        <div className="text-[10px] text-slate-400">3.420 Keluarga Mandiri • Kurasi Modal</div>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800/40">
+                      Graduasi Aktif
+                    </span>
+                  </div>
+                </div>
+
+                {/* Primary Enter Action Button */}
+                <div className="pt-1">
+                  <GradientButton
+                    id="btn-hero-enter-now"
+                    size="lg"
+                    variant="rose"
+                    onClick={() => {
+                      soundEffects.playSuccessChime();
+                      onEnterDashboard();
+                    }}
+                    className="w-full !py-3 shadow-lg shadow-rose-900/50 flex items-center justify-center"
+                  >
+                    <span className="font-extrabold text-sm">Masuk ke Dasbor Siaga Bencana</span>
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </GradientButton>
+                </div>
+
+                {/* Quick 1-Click Role Direct Access */}
+                <div className="p-3 rounded-2xl bg-slate-900/70 border border-white/10 text-center space-y-1.5">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                    Pilih Peran Demo untuk Langsung Masuk:
                   </span>
                   <div className="grid grid-cols-3 gap-1.5">
                     <GradientButton
@@ -295,9 +396,10 @@ export const LandingView: React.FC<LandingViewProps> = ({
                       variant="rose"
                       onClick={() => {
                         soundEffects.playClick();
-                        onEnterDashboard();
+                        onEnterDashboard('admin_pusat');
                       }}
                       className="!min-w-0 !w-full !py-1.5 !px-1 text-[10px] leading-tight"
+                      title="Masuk sebagai Administrator Pusat Kemensos"
                     >
                       Pusat Kemensos
                     </GradientButton>
@@ -306,9 +408,10 @@ export const LandingView: React.FC<LandingViewProps> = ({
                       variant="cobalt"
                       onClick={() => {
                         soundEffects.playClick();
-                        onEnterDashboard();
+                        onEnterDashboard('dinas_daerah');
                       }}
                       className="!min-w-0 !w-full !py-1.5 !px-1 text-[10px] leading-tight"
+                      title="Masuk sebagai Dinas Sosial Daerah"
                     >
                       Dinas Daerah
                     </GradientButton>
@@ -317,13 +420,29 @@ export const LandingView: React.FC<LandingViewProps> = ({
                       variant="emerald"
                       onClick={() => {
                         soundEffects.playClick();
-                        onEnterDashboard();
+                        onEnterDashboard('petugas_lapangan');
                       }}
                       className="!min-w-0 !w-full !py-1.5 !px-1 text-[10px] leading-tight"
+                      title="Masuk sebagai Petugas Lapangan Tagana"
                     >
                       Tagana Lapangan
                     </GradientButton>
                   </div>
+                </div>
+
+                {/* Secondary Option: Login Screen Link */}
+                <div className="text-center pt-1 border-t border-white/10 flex items-center justify-center gap-2">
+                  <span className="text-[11px] text-slate-400">Petugas terdaftar?</span>
+                  <button
+                    onClick={() => {
+                      soundEffects.playClick();
+                      onLoginClick();
+                    }}
+                    className="text-[11px] text-sky-400 hover:text-sky-300 font-semibold underline underline-offset-2 flex items-center gap-1 cursor-pointer transition-colors"
+                  >
+                    <LogIn className="w-3 h-3" />
+                    <span>Masuk via Login Akun SPBE</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -488,7 +607,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
       {/* 3-Pillar Resilience Journey Framework Section */}
       <section id="fitur" className="py-20 px-6 max-w-7xl mx-auto w-full">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold uppercase tracking-wider mb-3">
             <Layers className="w-3.5 h-3.5" />
             <span>Satu Rumah Tangga, Satu Resilience Pathway</span>
@@ -499,6 +618,23 @@ export const LandingView: React.FC<LandingViewProps> = ({
           <p className="text-slate-600 text-base mt-3 leading-relaxed">
             SIGAP bukan tiga sistem terpisah yang berdiri sendiri, melainkan <strong>satu rangkaian perjalanan berurutan</strong> untuk setiap rumah tangga terdampak: menstabilkan konsumsi saat krisis (<strong>SHIELD</strong>), melindungi modal manusia kesehatan &amp; pendidikan (<strong>CONVERGE</strong>), hingga mandiri ekonomi (<strong>RISE</strong>) berlandaskan <strong>DTSEN (Data Tunggal Ekonomi Sosial Nasional)</strong>.
           </p>
+        </div>
+
+        {/* Paragraf Penjelasan Backbone: SIGAP Data & Trigger Engine */}
+        <div className="max-w-4xl mx-auto mb-6">
+          <p className="text-sm sm:text-[15px] text-slate-700 bg-blue-50/80 border border-blue-200/90 rounded-2xl p-4 sm:p-5 leading-relaxed text-center sm:text-left shadow-xs">
+            Ketiga pilar ini digerakkan oleh satu fondasi yang sama: <strong>SIGAP Data &amp; Trigger Engine</strong>, yang menyilangkan data sosial, bencana, kesehatan, pendidikan, dan ketenagakerjaan menjadi satu skor risiko per rumah tangga sebelum diteruskan ke Shield, Converge, atau Rise. Tanpa fondasi ini, ketiga pilar akan tetap berjalan terpisah — persis kondisi fragmentasi yang selama ini terjadi.
+          </p>
+        </div>
+
+        {/* Hero Visual: Resilience Journey Tracker (SHIELD -> CONVERGE -> RISE) */}
+        <div className="max-w-5xl mx-auto mb-14 shadow-sm rounded-2xl overflow-hidden">
+          <ResilienceJourneyTracker
+            activeStageOverride="shield"
+            householdContextName="Simulasi Alur Rumah Tangga"
+            householdNik="3201************"
+            onNavigateStage={() => onEnterDashboard()}
+          />
         </div>
 
         {/* 3 Continuous Journey Cards with Sequential Connected Pathway */}

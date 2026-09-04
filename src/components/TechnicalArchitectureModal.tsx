@@ -137,7 +137,27 @@ export const TechnicalArchitectureModal: React.FC<TechnicalArchitectureModalProp
         </div>
 
         {/* Modal Body Architecture Canvas */}
-        <div className="p-6 overflow-y-auto space-y-6 flex-1">
+        <div className="p-6 overflow-y-auto space-y-5 flex-1">
+          {/* Penyelarasan Esai Akademik (Bagian 4.1) Banner */}
+          <div className="bg-gradient-to-r from-blue-50/90 via-indigo-50/70 to-purple-50/60 border border-blue-200/90 rounded-xl p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+            <div className="flex items-start gap-2.5">
+              <div className="p-1.5 rounded-lg bg-blue-600 text-white shrink-0 mt-0.5">
+                <Workflow className="w-4 h-4" />
+              </div>
+              <div>
+                <div className="font-extrabold text-slate-900 flex items-center gap-2">
+                  <span>Penyelarasan Esai Akademik (Bagian 4.1): SIGAP Data &amp; Trigger Engine</span>
+                  <span className="text-[10px] font-mono bg-blue-100 text-blue-800 px-2 py-0.5 rounded font-bold">
+                    6 Lapisan Proses
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-600 mt-0.5 leading-relaxed">
+                  6 Lapisan Konseptual Kebijakan esai (<em>Data Layer &rarr; Risk Engine &rarr; Trigger Engine &rarr; Intervention Matching &rarr; Program Layer &rarr; Outcome Monitoring</em>) diimplementasikan secara teknis ke dalam 5 lapisan decoupled arsitektur SPBE berikut.
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* Architecture Visual Grid */}
           <div className="space-y-4">
             {/* LAYER 1: Ingestion & Telemetry Sources */}
@@ -149,13 +169,18 @@ export const TechnicalArchitectureModal: React.FC<TechnicalArchitectureModalProp
               }`}
             >
               <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <span className="w-6 h-6 rounded-lg bg-blue-600 text-white text-xs font-bold font-mono flex items-center justify-center">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-6 h-6 rounded-lg bg-blue-600 text-white text-xs font-bold font-mono flex items-center justify-center shrink-0">
                     01
                   </span>
-                  <h4 className="font-extrabold text-sm text-slate-900">
-                    Lapisan Ingestion Data &amp; Telemetri Edge Lapangan
-                  </h4>
+                  <div>
+                    <h4 className="font-extrabold text-sm text-slate-900">
+                      Ingestion &amp; Edge Sensors (Telemetri Lapangan)
+                    </h4>
+                    <span className="text-[11px] font-bold text-blue-700 block">
+                      Mengimplementasikan: Data Layer
+                    </span>
+                  </div>
                 </div>
                 <span className="text-[10px] bg-blue-100 text-blue-800 font-mono font-bold px-2 py-0.5 rounded">
                   HTTP/2 • MQTT • Offline-First Sync
@@ -222,13 +247,18 @@ export const TechnicalArchitectureModal: React.FC<TechnicalArchitectureModalProp
               }`}
             >
               <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <span className="w-6 h-6 rounded-lg bg-indigo-600 text-white text-xs font-bold font-mono flex items-center justify-center">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-6 h-6 rounded-lg bg-indigo-600 text-white text-xs font-bold font-mono flex items-center justify-center shrink-0">
                     02
                   </span>
-                  <h4 className="font-extrabold text-sm text-slate-900">
-                    Multi-Agency API Gateway &amp; Governance (UU PDP No. 27/2022)
-                  </h4>
+                  <div>
+                    <h4 className="font-extrabold text-sm text-slate-900">
+                      API Gateway &amp; Auth (PDP) — UU PDP No. 27/2022
+                    </h4>
+                    <span className="text-[11px] font-medium text-indigo-700 block">
+                      Lapisan keamanan &amp; interoperabilitas lintas lapisan
+                    </span>
+                  </div>
                 </div>
                 <span className="text-[10px] bg-indigo-100 text-indigo-800 font-mono font-bold px-2 py-0.5 rounded">
                   Rate Limiting • JWT RBAC • Anonymizer
@@ -276,7 +306,7 @@ export const TechnicalArchitectureModal: React.FC<TechnicalArchitectureModalProp
               </div>
             </div>
 
-            {/* LAYER 3: Core Parametric Rules Engine & Data Lake */}
+            {/* LAYER 3 & 4: Core Parametric Rules Engine & Data Lake */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {/* Rules Engine */}
               <div
@@ -287,15 +317,20 @@ export const TechnicalArchitectureModal: React.FC<TechnicalArchitectureModalProp
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <span className="w-6 h-6 rounded-lg bg-amber-600 text-white text-xs font-bold font-mono flex items-center justify-center">
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-6 h-6 rounded-lg bg-amber-600 text-white text-xs font-bold font-mono flex items-center justify-center shrink-0">
                       03
                     </span>
-                    <h4 className="font-extrabold text-sm text-slate-900">
-                      Decoupled Parametric Rules Engine
-                    </h4>
+                    <div>
+                      <h4 className="font-extrabold text-sm text-slate-900">
+                        Core Rules Engine &amp; AI (Decoupled Parametric Engine)
+                      </h4>
+                      <span className="text-[11px] font-bold text-amber-800 block">
+                        Mengimplementasikan: Risk Engine + Trigger Engine + Intervention Matching
+                      </span>
+                    </div>
                   </div>
-                  <span className="text-[10px] bg-amber-100 text-amber-800 font-mono font-bold px-2 py-0.5 rounded">
+                  <span className="text-[10px] bg-amber-100 text-amber-800 font-mono font-bold px-2 py-0.5 rounded shrink-0">
                     Stateless Engine
                   </span>
                 </div>
@@ -323,15 +358,20 @@ export const TechnicalArchitectureModal: React.FC<TechnicalArchitectureModalProp
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <span className="w-6 h-6 rounded-lg bg-emerald-600 text-white text-xs font-bold font-mono flex items-center justify-center">
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-6 h-6 rounded-lg bg-emerald-600 text-white text-xs font-bold font-mono flex items-center justify-center shrink-0">
                       04
                     </span>
-                    <h4 className="font-extrabold text-sm text-slate-900">
-                      Interoperable Data Lake &amp; DTKS
-                    </h4>
+                    <div>
+                      <h4 className="font-extrabold text-sm text-slate-900">
+                        Encrypted Data Lake &amp; DB (Interoperable DTKS &amp; DTSEN)
+                      </h4>
+                      <span className="text-[11px] font-bold text-emerald-800 block">
+                        Mengimplementasikan: Program Layer
+                      </span>
+                    </div>
                   </div>
-                  <span className="text-[10px] bg-emerald-100 text-emerald-800 font-mono font-bold px-2 py-0.5 rounded">
+                  <span className="text-[10px] bg-emerald-100 text-emerald-800 font-mono font-bold px-2 py-0.5 rounded shrink-0">
                     PostgreSQL Sharded • S3
                   </span>
                 </div>
@@ -368,13 +408,18 @@ export const TechnicalArchitectureModal: React.FC<TechnicalArchitectureModalProp
               }`}
             >
               <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <span className="w-6 h-6 rounded-lg bg-rose-600 text-white text-xs font-bold font-mono flex items-center justify-center">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-6 h-6 rounded-lg bg-rose-600 text-white text-xs font-bold font-mono flex items-center justify-center shrink-0">
                     05
                   </span>
-                  <h4 className="font-extrabold text-sm text-slate-900">
-                    Lapisan Egress &amp; Penyaluran Kilat Terpadu
-                  </h4>
+                  <div>
+                    <h4 className="font-extrabold text-sm text-slate-900">
+                      Egress &amp; Penyaluran Kilat (Multi-Channel Delivery)
+                    </h4>
+                    <span className="text-[11px] font-bold text-rose-700 block">
+                      Mengimplementasikan: Outcome Monitoring
+                    </span>
+                  </div>
                 </div>
                 <span className="text-[10px] bg-rose-100 text-rose-800 font-mono font-bold px-2 py-0.5 rounded">
                   Open Banking API • PT Pos API • SMS Blast

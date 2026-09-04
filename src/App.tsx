@@ -231,7 +231,10 @@ export default function App() {
     return (
       <LandingView
         onLoginClick={() => setViewMode('login')}
-        onEnterDashboard={() => setViewMode('app')}
+        onEnterDashboard={(role?: UserRole) => {
+          if (role) setCurrentRole(role);
+          setViewMode('app');
+        }}
       />
     );
   }
@@ -259,7 +262,7 @@ export default function App() {
         currentRole={currentRole}
         onChangeRole={handleRoleChange}
         userProfile={activeProfile}
-        onLogout={() => setViewMode('login')}
+        onLogout={() => setViewMode('landing')}
         onGoToLanding={() => setViewMode('landing')}
         pendingApprovalsCount={proposals.filter((p) => p.status === 'Menunggu').length}
         pendingSyncCount={fieldQueue.filter((f) => f.status === 'Pending Sync').length}
@@ -274,7 +277,7 @@ export default function App() {
           currentModule={currentModule}
           onSelectModule={setCurrentModule}
           onGoToLanding={() => setViewMode('landing')}
-          onLogout={() => setViewMode('login')}
+          onLogout={() => setViewMode('landing')}
           onOpenAuditLog={() => setAuditLogModalOpen(true)}
           regions={regions}
           satuData={satuData}
