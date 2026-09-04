@@ -3,7 +3,6 @@ import { SatuDataItem, UserRole, UserProfile, AppModule } from '../types';
 import { AnimatedCounter } from '../components/AnimatedCounter';
 import { StageDetailModal } from '../components/StageDetailModal';
 import { SatuDataProfileModal, getSampleHouseholdsForVillage, BeneficiaryHousehold } from '../components/SatuDataProfileModal';
-import { ModuleNarrativeBanner } from '../components/ModuleNarrativeBanner';
 import { GradientButton } from '@/components/ui/gradient-button';
 import {
   Database,
@@ -251,14 +250,6 @@ export const SatuDataView: React.FC<SatuDataViewProps> = ({
           </GradientButton>
         </div>
       </div>
-
-      {/* Flowing Narrative Connector */}
-      <ModuleNarrativeBanner
-        currentModule="satu_data"
-        narrativeText="Setelah status siaga aktif, sistem berpindah ke DTSEN untuk menjawab 'siapa yang rentan' di wilayah tersebut — melanjutkan sinyal dari Deteksi Dini menjadi daftar rumah tangga yang perlu ditindaklanjuti."
-        previousStepName="Modul 01: Deteksi Dini"
-        nextStepName="Modul 03: Penilaian Risiko & Aktivasi"
-      />
 
       {/* RBAC Notification Banner */}
       {isDaerah && (

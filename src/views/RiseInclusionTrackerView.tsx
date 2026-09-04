@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { UserRole, UserProfile } from '../types';
-import { ModuleNarrativeBanner } from '../components/ModuleNarrativeBanner';
 import {
   TrendingUp,
   Award,
@@ -419,14 +418,6 @@ export const RiseInclusionTrackerView: React.FC<RiseInclusionTrackerViewProps> =
           </div>
         </div>
       </div>
-
-      {/* Flowing Narrative Connector */}
-      <ModuleNarrativeBanner
-        currentModule="rise_inclusion_tracker"
-        narrativeText="Setelah kesehatan dan pendidikan terlindungi di tahap Protect, keluarga kini dipersiapkan untuk lepas dari bansos reguler — dirujuk ke pelatihan Kartu Prakerja, modal PNM Mekaar / UMi, dan akses pasar lokal BUMDes."
-        previousStepName="Tahap 2: Protect (Modul CV-2)"
-        nextStepName="Modul RS-2: Graduation Scorecard"
-      />
 
       {/* Conceptual Banner with Clear Principle */}
       <div className="p-4.5 rounded-2xl bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-900 text-white border border-purple-800/40 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { UserRole, UserProfile, RegionRiskData } from '../types';
-import { ModuleNarrativeBanner } from '../components/ModuleNarrativeBanner';
 import {
   SlidersHorizontal,
   AlertTriangle,
@@ -573,20 +572,6 @@ export const RiskAssessmentView: React.FC<RiskAssessmentViewProps> = ({
           <button onClick={() => setShowExportNotification(null)} className="text-emerald-700 text-xs font-bold">✕</button>
         </div>
       )}
-
-      {/* Flowing Narrative Connector */}
-      <ModuleNarrativeBanner
-        currentModule="risk_assessment"
-        narrativeText="Dengan profil rumah tangga di tangan, tahap ini mengubah data menjadi keputusan — skor risiko dihitung (Skala 120 Poin), confidence score diperiksa, dan rekomendasi aktivasi disiapkan untuk melanjutkan rumah tangga menuju tahap Protect."
-        previousStepName="Modul 02: Satu Data Terpadu (DTSEN)"
-        nextStepName="Modul 03b: DRFI / Modul CV-1 (Protect)"
-        shockBadge={regionTarget.includes('PHK') || regionTarget.includes('Idiosinkratik') ? 'idiosinkratik' : 'kovariat'}
-        shockCustomNote={
-          regionTarget.includes('PHK') || regionTarget.includes('Idiosinkratik')
-            ? 'Prinsip Shock Idiosinkratik: Verifikasi berjalan melalui case management pendamping sosial per kasus, berfokus pada hilangnya pendapatan kepala keluarga.'
-            : 'Prinsip Shock Kovariat: Verifikasi berjalan berbasis sampling area (satuan wilayah terdampak), bukan per rumah tangga, guna mencegah bottleneck logistik pada bencana masal.'
-        }
-      />
 
       {/* Academic Disclaimer Banner */}
       <div className="p-3.5 rounded-xl bg-blue-50/70 border border-blue-200 text-xs text-blue-950 flex items-start gap-3">

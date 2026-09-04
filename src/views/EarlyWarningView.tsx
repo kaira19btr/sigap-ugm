@@ -6,7 +6,6 @@ import { AnimatedCounter } from '../components/AnimatedCounter';
 import { EarlyWarningMetricModal, EarlyWarningMetricType } from '../components/EarlyWarningMetricModal';
 import { RegionRadarChartModal } from '../components/RegionRadarChartModal';
 import { TechnicalArchitectureModal } from '../components/TechnicalArchitectureModal';
-import { ModuleNarrativeBanner } from '../components/ModuleNarrativeBanner';
 import { GradientButton } from '@/components/ui/gradient-button';
 import {
   AlertTriangle,
@@ -115,15 +114,6 @@ export const EarlyWarningView: React.FC<EarlyWarningViewProps> = ({
           </button>
         </div>
       </div>
-
-      {/* Flowing Narrative Connector */}
-      <ModuleNarrativeBanner
-        currentModule="early_warning"
-        narrativeText="Perjalanan pemulihan rumah tangga dimulai di sini — begitu sensor BMKG dan BNPB mendeteksi anomali, status wilayah naik ke siaga sebelum SK darurat administratif diterbitkan, memberi waktu bagi tahap berikutnya untuk bergerak lebih cepat."
-        nextStepName="Modul 02: Satu Data Terpadu (DTSEN)"
-        shockBadge="kovariat"
-        shockCustomNote="Prinsip Shock Kovariat: Verifikasi berjalan berbasis sampling area (satuan wilayah terdampak), bukan per rumah tangga, guna mencegah bottleneck logistik pada bencana masal."
-      />
 
       {/* 4 Interactive KPI Metrics with Hover Expand & Counter Animation */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

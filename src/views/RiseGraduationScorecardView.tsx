@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { UserRole, UserProfile } from '../types';
-import { ModuleNarrativeBanner } from '../components/ModuleNarrativeBanner';
 import {
   Award,
   CheckCircle2,
@@ -153,14 +152,6 @@ export const RiseGraduationScorecardView: React.FC<RiseGraduationScorecardViewPr
           </div>
         </div>
       </div>
-
-      {/* Flowing Narrative Connector */}
-      <ModuleNarrativeBanner
-        currentModule="rise_graduation_scorecard"
-        narrativeText="Puncak dari perjalanan resiliensi keluarga: verifikasi 4 kriteria objektif untuk memastikan keluarga telah benar-benar mandiri, tidak rentan jatuh kembali saat terjadi krisis, dan lulus secara permanen dari bansos reguler."
-        previousStepName="Modul RS-1: Pelacak Graduasi"
-        nextStepName="Modul 04: Monitoring & Evaluasi Dampak (Monev)"
-      />
 
       {/* Conceptual Note */}
       <div className="p-4 rounded-xl bg-gradient-to-r from-purple-50 via-white to-emerald-50 border border-purple-200 text-xs text-slate-700 flex items-start gap-3 shadow-2xs">

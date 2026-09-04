@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { UserRole, UserProfile } from '../types';
-import { ModuleNarrativeBanner } from '../components/ModuleNarrativeBanner';
 import {
   Building2,
   Stethoscope,
@@ -209,14 +208,6 @@ export const ConvergeSupplySideView: React.FC<ConvergeSupplySideViewProps> = ({
           </div>
         </div>
       </div>
-
-      {/* Flowing Narrative Connector */}
-      <ModuleNarrativeBanner
-        currentModule="converge_supply_side"
-        narrativeText="Bantuan PKH Kesehatan dan Kartu Indonesia Pintar (KIP) tidak optimal jika faskes atau sekolah setempat lumpuh. Modul ini memastikan fasilitas kesehatan dan sekolah telah siap menyerap kebutuhan keluarga sebelum mereka melangkah ke tahap kemandirian ekonomi (Graduate)."
-        previousStepName="Modul CV-1: Human Capital Map"
-        nextStepName="Tahap 3: Graduate (Modul RS-1 Inclusion Tracker)"
-      />
 
       {/* Aggregate Readiness Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
