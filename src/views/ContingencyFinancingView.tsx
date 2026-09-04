@@ -21,7 +21,10 @@ import {
   Download,
   Clock,
   HelpCircle,
+  ExternalLink,
+  BookOpen,
 } from 'lucide-react';
+import { ContingencyDetailModal, ContingencyLayerId } from '../components/ContingencyDetailModal';
 
 interface ContingencyFinancingViewProps {
   currentRole?: UserRole;
@@ -38,6 +41,15 @@ export const ContingencyFinancingView: React.FC<ContingencyFinancingViewProps> =
   const [apbdReserveCapacity, setApbdReserveCapacity] = useState<number>(3.5); // 3.5 Miliar BTT Kab. Cianjur
   const [apbnTransferCeiling, setApbnTransferCeiling] = useState<number>(15.0); // Plafon alokasi transfer cadangan per kabupaten/kejadian
   const [pfbActive, setPfbActive] = useState<boolean>(true);
+
+  // Detail Modal State
+  const [detailModalOpen, setDetailModalOpen] = useState<boolean>(false);
+  const [selectedLayerDetail, setSelectedLayerDetail] = useState<ContingencyLayerId>('layer1');
+
+  const handleOpenLayerDetail = (layer: ContingencyLayerId) => {
+    setSelectedLayerDetail(layer);
+    setDetailModalOpen(true);
+  };
 
   // Pre-configured Scenarios
   const handleScenarioChange = (scenario: string) => {
@@ -135,24 +147,45 @@ export const ContingencyFinancingView: React.FC<ContingencyFinancingViewProps> =
             </p>
           </div>
 
-          <div className="flex items-center gap-3 text-[11px] font-mono shrink-0 bg-slate-950/70 p-2.5 rounded-xl border border-slate-700">
-            <div className="text-center px-2">
-              <div className="text-[9px] uppercase tracking-wider text-blue-400 font-bold">Lini Pertama</div>
-              <div className="font-bold text-white">Lapisan 1 (APBD)</div>
+          <div className="flex items-center gap-2 text-[11px] font-mono shrink-0 bg-slate-950/70 p-1.5 sm:p-2 rounded-xl border border-slate-700">
+            <button
+              onClick={() => handleOpenLayerDetail('layer1')}
+              className="text-center px-2.5 py-1 rounded-lg hover:bg-slate-800/80 transition-colors cursor-pointer text-left sm:text-center group"
+              title="Klik untuk membuka rincian kontinjensi Lapisan 1"
+            >
+              <div className="text-[9px] uppercase tracking-wider text-blue-400 font-bold flex items-center gap-1">
+                <span>Lini Pertama</span>
+                <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
+              <div className="font-bold text-white text-xs">Lapisan 1 (APBD)</div>
               <div className="text-[9px] text-slate-400">&lt; 24-48 Jam</div>
-            </div>
-            <ArrowRight className="w-3.5 h-3.5 text-slate-500" />
-            <div className="text-center px-2">
-              <div className="text-[9px] uppercase tracking-wider text-emerald-400 font-bold">Lini Kedua</div>
-              <div className="font-bold text-white">Lapisan 2 (APBN)</div>
+            </button>
+            <ArrowRight className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+            <button
+              onClick={() => handleOpenLayerDetail('layer2')}
+              className="text-center px-2.5 py-1 rounded-lg hover:bg-slate-800/80 transition-colors cursor-pointer text-left sm:text-center group"
+              title="Klik untuk membuka rincian kontinjensi Lapisan 2"
+            >
+              <div className="text-[9px] uppercase tracking-wider text-emerald-400 font-bold flex items-center gap-1">
+                <span>Lini Kedua</span>
+                <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
+              <div className="font-bold text-white text-xs">Lapisan 2 (APBN)</div>
               <div className="text-[9px] text-slate-400">3 - 7 Hari</div>
-            </div>
-            <ArrowRight className="w-3.5 h-3.5 text-slate-500" />
-            <div className="text-center px-2">
-              <div className="text-[9px] uppercase tracking-wider text-purple-400 font-bold">Lini Terakhir</div>
-              <div className="font-bold text-white">Lapisan 3 (PFB)</div>
+            </button>
+            <ArrowRight className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+            <button
+              onClick={() => handleOpenLayerDetail('layer3')}
+              className="text-center px-2.5 py-1 rounded-lg hover:bg-slate-800/80 transition-colors cursor-pointer text-left sm:text-center group"
+              title="Klik untuk membuka rincian kontinjensi Lapisan 3"
+            >
+              <div className="text-[9px] uppercase tracking-wider text-purple-400 font-bold flex items-center gap-1">
+                <span>Lini Terakhir</span>
+                <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
+              <div className="font-bold text-white text-xs">Lapisan 3 (PFB)</div>
               <div className="text-[9px] text-slate-400">Klaim Parametrik</div>
-            </div>
+            </button>
           </div>
         </div>
       </div>
@@ -164,7 +197,10 @@ export const ContingencyFinancingView: React.FC<ContingencyFinancingViewProps> =
         {/* ------------------------------------------------------------- */}
         {/* LAPISAN 1: APBD CONTINGENCY */}
         {/* ------------------------------------------------------------- */}
-        <div className="bg-white rounded-2xl border-2 border-blue-200 hover:border-blue-400 transition-all shadow-sm flex flex-col justify-between overflow-hidden">
+        <div
+          onClick={() => handleOpenLayerDetail('layer1')}
+          className="bg-white rounded-2xl border-2 border-blue-200 hover:border-blue-500 hover:shadow-lg transition-all flex flex-col justify-between overflow-hidden cursor-pointer group"
+        >
           {/* Card Header */}
           <div className="bg-gradient-to-br from-blue-50 via-white to-blue-50/30 p-5 border-b border-blue-100 space-y-3">
             <div className="flex items-center justify-between">
@@ -173,26 +209,32 @@ export const ContingencyFinancingView: React.FC<ContingencyFinancingViewProps> =
                 Tier 1 • Lini Pertama
               </span>
 
-              {/* Dynamic Status Indicator linked to simulation */}
-              {isLayer1Active ? (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
-                  AKTIF: Rp {layer1_APBD.toFixed(1)} M
+              <div className="flex items-center gap-2">
+                {/* Dynamic Status Indicator linked to simulation */}
+                {isLayer1Active ? (
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                    AKTIF: Rp {layer1_APBD.toFixed(1)} M
+                  </span>
+                ) : (
+                  <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-500">
+                    STANDBY
+                  </span>
+                )}
+
+                <span className="text-[10px] font-bold text-blue-600 group-hover:translate-x-0.5 transition-transform flex items-center">
+                  <ExternalLink className="w-3.5 h-3.5" />
                 </span>
-              ) : (
-                <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-500">
-                  STANDBY
-                </span>
-              )}
+              </div>
             </div>
 
             <div>
               <div className="flex items-center gap-2.5">
-                <div className="p-2.5 rounded-xl bg-blue-600 text-white shadow-xs">
+                <div className="p-2.5 rounded-xl bg-blue-600 text-white shadow-xs group-hover:scale-105 transition-transform">
                   <Landmark className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-extrabold text-slate-900 leading-tight">
+                  <h3 className="text-base font-extrabold text-slate-900 leading-tight group-hover:text-blue-700 transition-colors">
                     Lapisan 1: APBD Contingency
                   </h3>
                   <span className="text-[11px] text-blue-700 font-semibold block">
@@ -250,19 +292,36 @@ export const ContingencyFinancingView: React.FC<ContingencyFinancingViewProps> =
             </div>
           </div>
 
-          {/* Card Footer Metric */}
-          <div className="p-4 bg-blue-50/50 border-t border-blue-100 flex items-center justify-between text-[11px]">
-            <span className="text-slate-600 font-medium">Kapasitas Simulasi Daerah:</span>
-            <span className="font-mono font-extrabold text-blue-700 text-xs">
-              Rp {apbdReserveCapacity.toFixed(1)} Miliar
-            </span>
+          {/* Card Footer Metric + Interactive Button */}
+          <div className="p-4 bg-blue-50/50 border-t border-blue-100 space-y-2.5">
+            <div className="flex items-center justify-between text-[11px]">
+              <span className="text-slate-600 font-medium">Kapasitas Simulasi Daerah:</span>
+              <span className="font-mono font-extrabold text-blue-700 text-xs">
+                Rp {apbdReserveCapacity.toFixed(1)} Miliar
+              </span>
+            </div>
+
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleOpenLayerDetail('layer1');
+              }}
+              className="w-full py-2 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-2xs cursor-pointer"
+            >
+              <BookOpen className="w-3.5 h-3.5" />
+              <span>Buka SOP &amp; Rincian Kontinjensi APBD</span>
+              <ArrowRight className="w-3.5 h-3.5 ml-0.5" />
+            </button>
           </div>
         </div>
 
         {/* ------------------------------------------------------------- */}
         {/* LAPISAN 2: APBN TRANSFER/CONTINGENCY */}
         {/* ------------------------------------------------------------- */}
-        <div className="bg-white rounded-2xl border-2 border-emerald-200 hover:border-emerald-400 transition-all shadow-sm flex flex-col justify-between overflow-hidden">
+        <div
+          onClick={() => handleOpenLayerDetail('layer2')}
+          className="bg-white rounded-2xl border-2 border-emerald-200 hover:border-emerald-500 hover:shadow-lg transition-all flex flex-col justify-between overflow-hidden cursor-pointer group"
+        >
           {/* Card Header */}
           <div className="bg-gradient-to-br from-emerald-50 via-white to-emerald-50/30 p-5 border-b border-emerald-100 space-y-3">
             <div className="flex items-center justify-between">
@@ -271,26 +330,32 @@ export const ContingencyFinancingView: React.FC<ContingencyFinancingViewProps> =
                 Tier 2 • Eskalasi Nasional
               </span>
 
-              {/* Dynamic Status Indicator */}
-              {isLayer2Active ? (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
-                  ESKALASI: Rp {layer2_APBN.toFixed(1)} M
+              <div className="flex items-center gap-2">
+                {/* Dynamic Status Indicator */}
+                {isLayer2Active ? (
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                    ESKALASI: Rp {layer2_APBN.toFixed(1)} M
+                  </span>
+                ) : (
+                  <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-500">
+                    STANDBY (Belum Perlu)
+                  </span>
+                )}
+
+                <span className="text-[10px] font-bold text-emerald-600 group-hover:translate-x-0.5 transition-transform flex items-center">
+                  <ExternalLink className="w-3.5 h-3.5" />
                 </span>
-              ) : (
-                <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-500">
-                  STANDBY (Belum Perlu)
-                </span>
-              )}
+              </div>
             </div>
 
             <div>
               <div className="flex items-center gap-2.5">
-                <div className="p-2.5 rounded-xl bg-emerald-600 text-white shadow-xs">
+                <div className="p-2.5 rounded-xl bg-emerald-600 text-white shadow-xs group-hover:scale-105 transition-transform">
                   <Building2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-extrabold text-slate-900 leading-tight">
+                  <h3 className="text-base font-extrabold text-slate-900 leading-tight group-hover:text-emerald-700 transition-colors">
                     Lapisan 2: APBN Transfer/Contingency
                   </h3>
                   <span className="text-[11px] text-emerald-700 font-semibold block">
@@ -348,19 +413,36 @@ export const ContingencyFinancingView: React.FC<ContingencyFinancingViewProps> =
             </div>
           </div>
 
-          {/* Card Footer Metric */}
-          <div className="p-4 bg-emerald-50/50 border-t border-emerald-100 flex items-center justify-between text-[11px]">
-            <span className="text-slate-600 font-medium">Plafon Transfer per Kejadian:</span>
-            <span className="font-mono font-extrabold text-emerald-700 text-xs">
-              Rp {apbnTransferCeiling.toFixed(1)} Miliar
-            </span>
+          {/* Card Footer Metric + Interactive Button */}
+          <div className="p-4 bg-emerald-50/50 border-t border-emerald-100 space-y-2.5">
+            <div className="flex items-center justify-between text-[11px]">
+              <span className="text-slate-600 font-medium">Plafon Transfer per Kejadian:</span>
+              <span className="font-mono font-extrabold text-emerald-700 text-xs">
+                Rp {apbnTransferCeiling.toFixed(1)} Miliar
+              </span>
+            </div>
+
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleOpenLayerDetail('layer2');
+              }}
+              className="w-full py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-2xs cursor-pointer"
+            >
+              <BookOpen className="w-3.5 h-3.5" />
+              <span>Buka SOP &amp; Rincian Kontinjensi APBN</span>
+              <ArrowRight className="w-3.5 h-3.5 ml-0.5" />
+            </button>
           </div>
         </div>
 
         {/* ------------------------------------------------------------- */}
         {/* LAPISAN 3: CONTINGENT FINANCING / ASURANSI (POOLING FUND BENCANA) */}
         {/* ------------------------------------------------------------- */}
-        <div className="bg-white rounded-2xl border-2 border-purple-200 hover:border-purple-400 transition-all shadow-sm flex flex-col justify-between overflow-hidden">
+        <div
+          onClick={() => handleOpenLayerDetail('layer3')}
+          className="bg-white rounded-2xl border-2 border-purple-200 hover:border-purple-500 hover:shadow-lg transition-all flex flex-col justify-between overflow-hidden cursor-pointer group"
+        >
           {/* Card Header */}
           <div className="bg-gradient-to-br from-purple-50 via-white to-purple-50/30 p-5 border-b border-purple-100 space-y-3">
             <div className="flex items-center justify-between">
@@ -369,27 +451,33 @@ export const ContingencyFinancingView: React.FC<ContingencyFinancingViewProps> =
                 Tier 3 • Jaring Pengaman Terakhir
               </span>
 
-              {/* Dynamic Status Indicator */}
-              {isLayer3Active ? (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800 border border-purple-300">
-                  <span className="w-1.5 h-1.5 rounded-full bg-purple-600 animate-pulse"></span>
-                  TERPICU: Rp {layer3_Contingent.toFixed(1)} M
+              <div className="flex items-center gap-2">
+                {/* Dynamic Status Indicator */}
+                {isLayer3Active ? (
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800 border border-purple-300">
+                    <span className="w-1.5 h-1.5 rounded-full bg-purple-600 animate-pulse"></span>
+                    TERPICU: Rp {layer3_Contingent.toFixed(1)} M
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-600 border border-slate-200">
+                    <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                    STANDBY (Cadangan Aman)
+                  </span>
+                )}
+
+                <span className="text-[10px] font-bold text-purple-600 group-hover:translate-x-0.5 transition-transform flex items-center">
+                  <ExternalLink className="w-3.5 h-3.5" />
                 </span>
-              ) : (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-600 border border-slate-200">
-                  <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                  STANDBY (Cadangan Aman)
-                </span>
-              )}
+              </div>
             </div>
 
             <div>
               <div className="flex items-center gap-2.5">
-                <div className="p-2.5 rounded-xl bg-purple-600 text-white shadow-xs">
+                <div className="p-2.5 rounded-xl bg-purple-600 text-white shadow-xs group-hover:scale-105 transition-transform">
                   <Umbrella className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-extrabold text-slate-900 leading-tight">
+                  <h3 className="text-base font-extrabold text-slate-900 leading-tight group-hover:text-purple-700 transition-colors">
                     Lapisan 3: Contingent Financing &amp; Asuransi
                   </h3>
                   <span className="text-[11px] text-purple-700 font-semibold block">
@@ -459,13 +547,27 @@ export const ContingencyFinancingView: React.FC<ContingencyFinancingViewProps> =
             </div>
           </div>
 
-          {/* Card Footer Metric */}
-          <div className="p-4 bg-purple-50/50 border-t border-purple-100 flex items-center justify-between text-[11px]">
-            <span className="text-slate-600 font-medium">Status Kesiapan PFB:</span>
-            <span className="font-mono font-bold text-purple-700 text-xs flex items-center gap-1">
-              <Sparkles className="w-3.5 h-3.5 text-purple-600" />
-              Rp 7,3 Triliun (Dana Pokok)
-            </span>
+          {/* Card Footer Metric + Interactive Button */}
+          <div className="p-4 bg-purple-50/50 border-t border-purple-100 space-y-2.5">
+            <div className="flex items-center justify-between text-[11px]">
+              <span className="text-slate-600 font-medium">Status Kesiapan PFB:</span>
+              <span className="font-mono font-bold text-purple-700 text-xs flex items-center gap-1">
+                <Sparkles className="w-3.5 h-3.5 text-purple-600" />
+                Rp 7,3 Triliun (Dana Pokok)
+              </span>
+            </div>
+
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleOpenLayerDetail('layer3');
+              }}
+              className="w-full py-2 px-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-2xs cursor-pointer"
+            >
+              <BookOpen className="w-3.5 h-3.5" />
+              <span>Buka Tata Kelola PFB &amp; Asuransi</span>
+              <ArrowRight className="w-3.5 h-3.5 ml-0.5" />
+            </button>
           </div>
         </div>
       </div>
@@ -770,6 +872,29 @@ export const ContingencyFinancingView: React.FC<ContingencyFinancingViewProps> =
           </div>
         </div>
       </div>
+
+      {/* Detail Modal Kontinjensi, Regulasi & SOP */}
+      <ContingencyDetailModal
+        isOpen={detailModalOpen}
+        onClose={() => setDetailModalOpen(false)}
+        initialLayerId={selectedLayerDetail}
+        simulationData={{
+          fundingNeedMiliar,
+          apbdReserveCapacity,
+          apbnTransferCeiling,
+          layer1_APBD,
+          layer2_APBN,
+          layer3_Contingent,
+          scenarioName:
+            selectedDisasterScenario === 'gempa_cianjur'
+              ? 'Kab. Cianjur — Gempa Sesar Cugenang'
+              : selectedDisasterScenario === 'banjir_demak'
+              ? 'Kab. Demak — Tanggul Sungai Wulan Jebol'
+              : selectedDisasterScenario === 'kekeringan_sumba'
+              ? 'Kab. Sumba Timur — Kekeringan Ekstrem & Krisis Pangan'
+              : 'Flores Timur & Lembata — Erupsi Katastrofik & Tsunami',
+        }}
+      />
     </div>
   );
 };
