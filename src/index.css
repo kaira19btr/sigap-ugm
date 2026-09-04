@@ -530,5 +530,249 @@
   --border-color-2: hsla(142, 70%, 55%, 0.95);
 }
 
+/* Theme: SIGAP Purple (Rise / Kemandirian Ekonomi) */
+.gradient-button-purple {
+  --color-1: #0b0217;
+  --color-2: #2e1065;
+  --color-3: #581c87;
+  --color-4: #7c3aed;
+  --color-5: #a855f7;
+  --border-angle: 40deg;
+  --border-color-1: hsla(270, 75%, 60%, 0.35);
+  --border-color-2: hsla(280, 85%, 65%, 0.85);
+}
+
+.gradient-button-purple:hover {
+  --pos-x: 0%;
+  --pos-y: 90%;
+  --spread-x: 120%;
+  --spread-y: 110%;
+  --color-1: #c084fc;
+  --color-2: #a855f7;
+  --color-3: #7c3aed;
+  --color-4: #581c87;
+  --color-5: #2e1065;
+  --border-angle: 220deg;
+  --border-color-1: hsla(270, 75%, 60%, 0.2);
+  --border-color-2: hsla(280, 85%, 65%, 0.95);
+}
+
+/* ==========================================================================
+   Resilience Journey Tracker Boxes (Gradient Box Component)
+   ========================================================================== */
+
+.gradient-box {
+  position: relative;
+  appearance: none;
+  background: radial-gradient(
+    var(--spread-x) var(--spread-y) at var(--pos-x) var(--pos-y),
+    var(--color-1) var(--stop-1),
+    var(--color-2) var(--stop-2),
+    var(--color-3) var(--stop-3),
+    var(--color-4) var(--stop-4),
+    var(--color-5) var(--stop-5)
+  );
+  transition:
+    --pos-x 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    --pos-y 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    --spread-x 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    --spread-y 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    --color-1 0.5s ease,
+    --color-2 0.5s ease,
+    --color-3 0.5s ease,
+    --color-4 0.5s ease,
+    --color-5 0.5s ease,
+    --border-angle 0.5s ease,
+    --border-color-1 0.5s ease,
+    --border-color-2 0.5s ease,
+    --stop-1 0.5s ease,
+    --stop-2 0.5s ease,
+    --stop-3 0.5s ease,
+    --stop-4 0.5s ease,
+    --stop-5 0.5s ease,
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.25s ease;
+}
+
+.gradient-box::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(
+    var(--border-angle),
+    var(--border-color-1),
+    var(--border-color-2)
+  );
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Pilar 1 / Pusat Kemensos: SHIELD (Rose / Ruby Tanggap Darurat & Deteksi Dini) */
+.gradient-box-shield,
+.gradient-box-rose {
+  --color-1: #1a0409;
+  --color-2: #380714;
+  --color-3: #5c0b20;
+  --color-4: #881337;
+  --color-5: #be123c;
+  --border-angle: 25deg;
+  --border-color-1: hsla(348, 83%, 60%, 0.4);
+  --border-color-2: hsla(38, 92%, 50%, 0.85);
+  --pos-x: 15%;
+  --pos-y: 120%;
+  --spread-x: 130%;
+  --spread-y: 140%;
+}
+
+.gradient-box-shield:hover,
+.gradient-box-rose:hover {
+  --pos-x: 5%;
+  --pos-y: 85%;
+  --spread-x: 115%;
+  --spread-y: 110%;
+  --color-1: #fb7185;
+  --color-2: #f43f5e;
+  --color-3: #e11d48;
+  --color-4: #9f1239;
+  --color-5: #380714;
+  --border-angle: 205deg;
+  --border-color-1: hsla(38, 92%, 50%, 0.35);
+  --border-color-2: hsla(348, 83%, 60%, 0.95);
+}
+
+/* Pilar 2 / Dinas Daerah: CONVERGE (Cobalt / Sky Blue Layanan Dasar & Pemda) */
+.gradient-box-converge,
+.gradient-box-cobalt {
+  --color-1: #030712;
+  --color-2: #0f172a;
+  --color-3: #1e3a8a;
+  --color-4: #1d4ed8;
+  --color-5: #2563eb;
+  --border-angle: 25deg;
+  --border-color-1: hsla(220, 90%, 60%, 0.4);
+  --border-color-2: hsla(199, 89%, 48%, 0.85);
+  --pos-x: 15%;
+  --pos-y: 120%;
+  --spread-x: 130%;
+  --spread-y: 140%;
+}
+
+.gradient-box-converge:hover,
+.gradient-box-cobalt:hover {
+  --pos-x: 5%;
+  --pos-y: 85%;
+  --spread-x: 115%;
+  --spread-y: 110%;
+  --color-1: #38bdf8;
+  --color-2: #60a5fa;
+  --color-3: #2563eb;
+  --color-4: #1d4ed8;
+  --color-5: #0f172a;
+  --border-angle: 205deg;
+  --border-color-1: hsla(220, 90%, 60%, 0.35);
+  --border-color-2: hsla(199, 89%, 48%, 0.95);
+}
+
+/* Pilar 3 / Tagana Lapangan: RISE (Emerald / Teal Green Inklusi & Aksi Lapangan) */
+.gradient-box-rise,
+.gradient-box-emerald {
+  --color-1: #021a12;
+  --color-2: #053326;
+  --color-3: #064e3b;
+  --color-4: #047857;
+  --color-5: #059669;
+  --border-angle: 35deg;
+  --border-color-1: hsla(160, 84%, 45%, 0.4);
+  --border-color-2: hsla(142, 70%, 55%, 0.85);
+  --pos-x: 15%;
+  --pos-y: 120%;
+  --spread-x: 130%;
+  --spread-y: 140%;
+}
+
+.gradient-box-rise:hover,
+.gradient-box-emerald:hover {
+  --pos-x: 5%;
+  --pos-y: 85%;
+  --spread-x: 115%;
+  --spread-y: 110%;
+  --color-1: #6ee7b7;
+  --color-2: #34d399;
+  --color-3: #10b981;
+  --color-4: #059669;
+  --color-5: #053326;
+  --border-angle: 215deg;
+  --border-color-1: hsla(160, 84%, 45%, 0.35);
+  --border-color-2: hsla(142, 70%, 55%, 0.95);
+}
+
+/* Standby / Upcoming Stage (Elegant Dark Obsidian Tint) */
+.gradient-box-standby {
+  --color-1: #090d16;
+  --color-2: #0f172a;
+  --color-3: #1e293b;
+  --color-4: #334155;
+  --color-5: #475569;
+  --border-angle: 30deg;
+  --border-color-1: hsla(215, 20%, 65%, 0.2);
+  --border-color-2: hsla(215, 25%, 45%, 0.4);
+  --pos-x: 15%;
+  --pos-y: 120%;
+  --spread-x: 130%;
+  --spread-y: 140%;
+}
+
+.gradient-box-standby:hover {
+  --pos-x: 10%;
+  --pos-y: 90%;
+  --spread-x: 120%;
+  --spread-y: 120%;
+  --color-1: #1e293b;
+  --color-2: #334155;
+  --color-3: #475569;
+  --color-4: #1e293b;
+  --color-5: #0f172a;
+  --border-angle: 210deg;
+  --border-color-1: hsla(215, 20%, 65%, 0.3);
+  --border-color-2: hsla(215, 25%, 45%, 0.7);
+}
+
+/* Completed Stage (Refined Emerald-tinted Obsidian) */
+.gradient-box-completed {
+  --color-1: #03140e;
+  --color-2: #062a1c;
+  --color-3: #0c432d;
+  --color-4: #115e3f;
+  --color-5: #10b981;
+  --border-angle: 35deg;
+  --border-color-1: hsla(158, 75%, 50%, 0.3);
+  --border-color-2: hsla(142, 70%, 55%, 0.7);
+  --pos-x: 15%;
+  --pos-y: 120%;
+  --spread-x: 130%;
+  --spread-y: 140%;
+}
+
+.gradient-box-completed:hover {
+  --pos-x: 5%;
+  --pos-y: 85%;
+  --spread-x: 115%;
+  --spread-y: 110%;
+  --color-1: #34d399;
+  --color-2: #10b981;
+  --color-3: #059669;
+  --color-4: #047857;
+  --color-5: #062a1c;
+  --border-angle: 215deg;
+  --border-color-1: hsla(158, 75%, 50%, 0.25);
+  --border-color-2: hsla(142, 70%, 55%, 0.9);
+}
+
 
 

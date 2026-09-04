@@ -640,105 +640,102 @@ export const LandingView: React.FC<LandingViewProps> = ({
         {/* 3 Continuous Journey Cards with Sequential Connected Pathway */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
           {/* Tahap 1: SHIELD */}
-          <div className="p-7 rounded-3xl bg-gradient-to-b from-rose-50/60 via-white to-rose-50/20 border-2 border-rose-200 shadow-lg shadow-rose-900/5 hover:border-rose-300 transition-all flex flex-col justify-between relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full blur-2xl pointer-events-none group-hover:scale-150 transition-transform"></div>
-            <div>
+          <div className="p-7 rounded-3xl gradient-box gradient-box-shield text-white shadow-xl shadow-rose-950/40 hover:shadow-2xl hover:-translate-y-1 transition-all flex flex-col justify-between relative overflow-hidden group">
+            <div className="relative z-10">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 rounded-2xl bg-rose-600 text-white flex items-center justify-center shadow-md shadow-rose-600/30">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-500 to-amber-600 text-white flex items-center justify-center shadow-lg shadow-rose-600/40 border border-rose-300/30 group-hover:scale-105 transition-transform">
                   <Shield className="w-6 h-6" />
                 </div>
-                <span className="px-2.5 py-1 rounded-full bg-rose-100 text-rose-800 font-mono text-[10px] font-extrabold tracking-wider uppercase">
+                <span className="px-2.5 py-1 rounded-full bg-rose-950/80 border border-rose-500/40 text-rose-200 font-mono text-[10px] font-extrabold tracking-wider uppercase backdrop-blur-xs">
                   Pilar 1 • Respons Kilat
                 </span>
               </div>
-              <h3 className="text-xl font-extrabold text-slate-900 mb-1">
+              <h3 className="text-2xl font-black text-white mb-1 drop-shadow-xs">
                 SHIELD
               </h3>
-              <p className="text-xs font-semibold text-rose-600 mb-3 uppercase tracking-wide">
+              <p className="text-xs font-bold text-rose-300 mb-3 uppercase tracking-wide">
                 Perlindungan Konsumsi &amp; Stabilisasi Darurat
               </p>
-              <p className="text-sm text-slate-600 leading-relaxed">
+              <p className="text-sm text-rose-100/80 leading-relaxed">
                 Respons darurat berbasis telemetri BMKG/PVMBG, penilaian risiko 8 indikator analitis (Skala 120 Poin), pembiayaan kontinjensi berlapis (DRFI: APBD BTT, APBN DSP, Pooling Fund Bencana), dan top-up bansos adaptif (PKH/BPNT/BLT Kemensos) &lt; 5 hari.
               </p>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-rose-100 flex flex-col gap-2">
-              <div className="flex items-center gap-1.5 text-xs font-bold text-rose-700">
-                <CheckCircle2 className="w-4 h-4 text-rose-600 shrink-0" />
+            <div className="mt-6 pt-4 border-t border-rose-500/20 flex flex-col gap-2 relative z-10">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-rose-200">
+                <CheckCircle2 className="w-4 h-4 text-rose-400 shrink-0" />
                 <span>Deteksi Dini, Aktivasi 120 Poin &amp; DRFI</span>
               </div>
-              <div className="flex items-center gap-1.5 text-xs font-bold text-rose-700">
-                <CheckCircle2 className="w-4 h-4 text-rose-600 shrink-0" />
+              <div className="flex items-center gap-1.5 text-xs font-bold text-rose-200">
+                <CheckCircle2 className="w-4 h-4 text-rose-400 shrink-0" />
                 <span>Safeguard Human-in-the-Loop 45-35-20</span>
               </div>
             </div>
           </div>
 
-          {/* Tahap 2: CONVERGE */}
-          <div className="p-7 rounded-3xl bg-gradient-to-b from-emerald-50/60 via-white to-emerald-50/20 border-2 border-emerald-200 shadow-lg shadow-emerald-900/5 hover:border-emerald-300 transition-all flex flex-col justify-between relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none group-hover:scale-150 transition-transform"></div>
-            <div>
+          {/* Tahap 2: CONVERGE (Dinas Daerah: Cobalt / Blue) */}
+          <div className="p-7 rounded-3xl gradient-box gradient-box-cobalt text-white shadow-xl shadow-blue-950/40 hover:shadow-2xl hover:-translate-y-1 transition-all flex flex-col justify-between relative overflow-hidden group">
+            <div className="relative z-10">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-md shadow-emerald-600/30">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 text-white flex items-center justify-center shadow-lg shadow-blue-600/40 border border-sky-300/30 group-hover:scale-105 transition-transform">
                   <Activity className="w-6 h-6" />
                 </div>
-                <span className="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-mono text-[10px] font-extrabold tracking-wider uppercase">
+                <span className="px-2.5 py-1 rounded-full bg-blue-950/80 border border-blue-500/40 text-sky-200 font-mono text-[10px] font-extrabold tracking-wider uppercase backdrop-blur-xs">
                   Pilar 2 • Layanan Dasar
                 </span>
               </div>
-              <h3 className="text-xl font-extrabold text-slate-900 mb-1">
+              <h3 className="text-2xl font-black text-white mb-1 drop-shadow-xs">
                 CONVERGE
               </h3>
-              <p className="text-xs font-semibold text-emerald-600 mb-3 uppercase tracking-wide">
+              <p className="text-xs font-bold text-sky-300 mb-3 uppercase tracking-wide">
                 Konvergensi Layanan Kesehatan &amp; Pendidikan
               </p>
-              <p className="text-sm text-slate-600 leading-relaxed">
+              <p className="text-sm text-sky-100/80 leading-relaxed">
                 Pemetaan kerentanan modal manusia: prevalensi stunting, Angka Partisipasi Murni (APM) sekolah, kepesertaan JKN/PBI Kemenkes, afirmasi KIP Kemendikbudristek, serta pemerataan sarana esensial (Puskesmas Prima, PLTS, sanitasi).
               </p>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-emerald-100 flex flex-col gap-2">
-              <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-700">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+            <div className="mt-6 pt-4 border-t border-blue-500/20 flex flex-col gap-2 relative z-10">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-sky-200">
+                <CheckCircle2 className="w-4 h-4 text-sky-400 shrink-0" />
                 <span>Human Capital Vulnerability Mapping</span>
               </div>
-              <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-700">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+              <div className="flex items-center gap-1.5 text-xs font-bold text-sky-200">
+                <CheckCircle2 className="w-4 h-4 text-sky-400 shrink-0" />
                 <span>Supply-Side Equalization Dashboard</span>
               </div>
             </div>
           </div>
 
-          {/* Tahap 3: RISE */}
-          <div className="p-7 rounded-3xl bg-gradient-to-b from-purple-50/60 via-white to-purple-50/20 border-2 border-purple-200 shadow-lg shadow-purple-900/5 hover:border-purple-300 transition-all flex flex-col justify-between relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl pointer-events-none group-hover:scale-150 transition-transform"></div>
-            <div>
+          {/* Tahap 3: RISE (Tagana Lapangan: Emerald / Green) */}
+          <div className="p-7 rounded-3xl gradient-box gradient-box-emerald text-white shadow-xl shadow-emerald-950/40 hover:shadow-2xl hover:-translate-y-1 transition-all flex flex-col justify-between relative overflow-hidden group">
+            <div className="relative z-10">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 rounded-2xl bg-purple-600 text-white flex items-center justify-center shadow-md shadow-purple-600/30">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center shadow-lg shadow-emerald-600/40 border border-emerald-300/30 group-hover:scale-105 transition-transform">
                   <TrendingUp className="w-6 h-6" />
                 </div>
-                <span className="px-2.5 py-1 rounded-full bg-purple-100 text-purple-800 font-mono text-[10px] font-extrabold tracking-wider uppercase">
+                <span className="px-2.5 py-1 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-200 font-mono text-[10px] font-extrabold tracking-wider uppercase backdrop-blur-xs">
                   Pilar 3 • Kemandirian
                 </span>
               </div>
-              <h3 className="text-xl font-extrabold text-slate-900 mb-1">
+              <h3 className="text-2xl font-black text-white mb-1 drop-shadow-xs">
                 RISE
               </h3>
-              <p className="text-xs font-semibold text-purple-600 mb-3 uppercase tracking-wide">
+              <p className="text-xs font-bold text-emerald-300 mb-3 uppercase tracking-wide">
                 Inklusi Produktif &amp; Graduasi Ekonomi
               </p>
-              <p className="text-sm text-slate-600 leading-relaxed">
+              <p className="text-sm text-emerald-100/80 leading-relaxed">
                 Kohort 5 tahap bertingkat (Stabilize ➔ Assess ➔ Build ➔ Connect ➔ Graduate), pelatihan Kartu Prakerja, permodalan PNM Mekaar / UMi, kemitraan BUMDes &amp; E-Katalog LKPP, serta validasi kelulusan mandiri DTSEN.
               </p>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-purple-100 flex flex-col gap-2">
-              <div className="flex items-center gap-1.5 text-xs font-bold text-purple-700">
-                <CheckCircle2 className="w-4 h-4 text-purple-600 shrink-0" />
+            <div className="mt-6 pt-4 border-t border-emerald-500/20 flex flex-col gap-2 relative z-10">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-200">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                 <span>Sequenced Productive Inclusion Tracker</span>
               </div>
-              <div className="flex items-center gap-1.5 text-xs font-bold text-purple-700">
-                <CheckCircle2 className="w-4 h-4 text-purple-600 shrink-0" />
+              <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-200">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                 <span>Graduation Scorecard &amp; Sertifikat Mandiri</span>
               </div>
             </div>
